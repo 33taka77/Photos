@@ -2,14 +2,16 @@
 //  AppDelegate.h
 //  Photos
 //
-//  Created by 相澤 隆志 on 2014/03/06.
-//  Copyright (c) 2014年 相澤 隆志. All rights reserved.
+//  Created by Aizawa Takashi on 2014/03/05.
+//  Copyright (c) 2014年 Aizawa Takashi. All rights reserved.
 //
 
 #import <UIKit/UIKit.h>
+#import "ImageLibrary.h"
 
-@interface AppDelegate : UIResponder <UIApplicationDelegate>
+@interface AppDelegate : UIResponder <UIApplicationDelegate, ImageLibraryDelegate>
 
 @property (strong, nonatomic) UIWindow *window;
+@property (nonatomic, retain) ImageLibrary* m_imageLibrary;
 
 @end

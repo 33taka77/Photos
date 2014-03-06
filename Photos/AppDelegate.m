@@ -2,17 +2,33 @@
 //  AppDelegate.m
 //  Photos
 //
-//  Created by 相澤 隆志 on 2014/03/06.
-//  Copyright (c) 2014年 相澤 隆志. All rights reserved.
+//  Created by Aizawa Takashi on 2014/03/05.
+//  Copyright (c) 2014年 Aizawa Takashi. All rights reserved.
 //
 
 #import "AppDelegate.h"
 
+
 @implementation AppDelegate
+
+- (void)updateView
+{
+    //[self.m_imageLibrary createSectionDataAndSortByDate];
+    //NSLog(@"AppDelegate:updateView is called.");
+}
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
     // Override point for customization after application launch.
+    self.m_imageLibrary = [ImageLibrary sharedLibrary:kImageLibraryTypeLocal];
+    [self.m_imageLibrary initializeLibrary];
+    self.m_imageLibrary.delegate = self;
+    [self.m_imageLibrary createSectionDataAndSortByDate];
+    NSArray* array = [self.m_imageLibrary getSectionNames];
+    for( NSString* name in array )
+    {
+        NSLog(@"SectionName: %@",name);
+    }
     return YES;
 }
 							

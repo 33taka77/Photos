@@ -22,6 +22,10 @@
 		F958340418C8BAB300114C29 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F95833E318C8BAB300114C29 /* UIKit.framework */; };
 		F958340C18C8BAB300114C29 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = F958340A18C8BAB300114C29 /* InfoPlist.strings */; };
 		F958340E18C8BAB300114C29 /* PhotosTests.m in Sources */ = {isa = PBXBuildFile; fileRef = F958340D18C8BAB300114C29 /* PhotosTests.m */; };
+		F958342118C8BB8D00114C29 /* AssetMngr.m in Sources */ = {isa = PBXBuildFile; fileRef = F958341718C8BB8D00114C29 /* AssetMngr.m */; };
+		F958342218C8BB8D00114C29 /* ImageLibrary.m in Sources */ = {isa = PBXBuildFile; fileRef = F958341818C8BB8D00114C29 /* ImageLibrary.m */; };
+		F958342318C8BB8D00114C29 /* SectionData.m in Sources */ = {isa = PBXBuildFile; fileRef = F958341B18C8BB8D00114C29 /* SectionData.m */; };
+		F958342518C8BB8D00114C29 /* AssetGroupData.m in Sources */ = {isa = PBXBuildFile; fileRef = F958342018C8BB8D00114C29 /* AssetGroupData.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -55,6 +59,14 @@
 		F958340918C8BAB300114C29 /* PhotosTests-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "PhotosTests-Info.plist"; sourceTree = "<group>"; };
 		F958340B18C8BAB300114C29 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		F958340D18C8BAB300114C29 /* PhotosTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = PhotosTests.m; sourceTree = "<group>"; };
+		F958341718C8BB8D00114C29 /* AssetMngr.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AssetMngr.m; sourceTree = "<group>"; };
+		F958341818C8BB8D00114C29 /* ImageLibrary.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ImageLibrary.m; sourceTree = "<group>"; };
+		F958341918C8BB8D00114C29 /* ImageLibrary.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ImageLibrary.h; sourceTree = "<group>"; };
+		F958341A18C8BB8D00114C29 /* SectionData.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SectionData.h; sourceTree = "<group>"; };
+		F958341B18C8BB8D00114C29 /* SectionData.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SectionData.m; sourceTree = "<group>"; };
+		F958341C18C8BB8D00114C29 /* AssetMngr.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AssetMngr.h; sourceTree = "<group>"; };
+		F958341F18C8BB8D00114C29 /* AssetGroupData.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AssetGroupData.h; sourceTree = "<group>"; };
+		F958342018C8BB8D00114C29 /* AssetGroupData.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AssetGroupData.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -114,6 +126,14 @@
 		F95833E518C8BAB300114C29 /* Photos */ = {
 			isa = PBXGroup;
 			children = (
+				F958341718C8BB8D00114C29 /* AssetMngr.m */,
+				F958341818C8BB8D00114C29 /* ImageLibrary.m */,
+				F958341918C8BB8D00114C29 /* ImageLibrary.h */,
+				F958341A18C8BB8D00114C29 /* SectionData.h */,
+				F958341B18C8BB8D00114C29 /* SectionData.m */,
+				F958341C18C8BB8D00114C29 /* AssetMngr.h */,
+				F958341F18C8BB8D00114C29 /* AssetGroupData.h */,
+				F958342018C8BB8D00114C29 /* AssetGroupData.m */,
 				F95833EE18C8BAB300114C29 /* AppDelegate.h */,
 				F95833EF18C8BAB300114C29 /* AppDelegate.m */,
 				F95833F118C8BAB300114C29 /* Main_iPhone.storyboard */,
@@ -253,8 +273,12 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				F958342218C8BB8D00114C29 /* ImageLibrary.m in Sources */,
+				F958342518C8BB8D00114C29 /* AssetGroupData.m in Sources */,
 				F95833F918C8BAB300114C29 /* ViewController.m in Sources */,
 				F95833F018C8BAB300114C29 /* AppDelegate.m in Sources */,
+				F958342318C8BB8D00114C29 /* SectionData.m in Sources */,
+				F958342118C8BB8D00114C29 /* AssetMngr.m in Sources */,
 				F95833EC18C8BAB300114C29 /* main.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -474,6 +498,7 @@
 				F958341318C8BAB300114C29 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		F958341418C8BAB300114C29 /* Build configuration list for PBXNativeTarget "PhotosTests" */ = {
 			isa = XCConfigurationList;
@@ -482,6 +507,7 @@
 				F958341618C8BAB300114C29 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
