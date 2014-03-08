@@ -17,6 +17,8 @@
     NSMutableArray* m_sectionDatas; /* array of SectionData */
     AssetMngr* m_assetMngr;
 }
+@property NSInteger m_currentGroup;
+
 @end
 
 
@@ -43,6 +45,18 @@
 {
     m_assetMngr.delegate = self;
 }
+
+
+- (void)setCurrentGroup:(NSInteger)index
+{
+    self.m_currentGroup = index;
+}
+
+-(NSInteger)getCurrentGroupIndex
+{
+    return self.m_currentGroup;
+}
+
 
 - (void)setWithType:(NSUInteger)type
 {
@@ -156,6 +170,21 @@
     }
 }
 
+
+- (void)createSectionDataAndSortByDateAtGroup:(NSInteger)GroupIndex
+{
+    if( m_isLocal )
+    {
+        NSArray* groupNames = [m_assetMngr GetGroupNames];
+        NSString* name = groupNames[GroupIndex];
+        //SectionData* section = [[SectionData alloc] initWithTitle:name];
+        //section.kind = kImageLibraryTypeLocal;
+        NSArray* array = [m_assetMngr buildSectionsForDateWithGroupName:name kind:kImageLibraryTypeLocal];
+        //section.items = [array mutableCopy];
+        [m_sectionDatas addObjectsFromArray:array];
+    }
+}
+
 - (NSInteger)getGroupCount
 {
     NSArray* groupArray = [m_assetMngr GetGroupNames];
@@ -262,6 +291,17 @@
         }
     }
     return image;
+}
+
+- (void)cleanupSectionsData
+{
+    for( SectionData* section in m_sectionDatas )
+    {
+        [section.items removeAllObjects];
+        section.items = nil;
+    }
+    [m_sectionDatas removeAllObjects];
+    //m_sectionDatas = nil;
 }
 
 

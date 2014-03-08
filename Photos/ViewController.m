@@ -9,7 +9,7 @@
 #import "ViewController.h"
 #import "AppDelegate.h"
 #import "GroupCell.h"
-
+#import "ImageLibrary.h"
 
 @interface ViewController () <UICollectionViewDataSource, UICollectionViewDelegateFlowLayout>
 
@@ -107,6 +107,11 @@
 
 - (void)collectionView:(UICollectionView*)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath
 {
+    NSInteger currentIndex = indexPath.row;
+    [self.m_appDelegate.m_imageLibrary setCurrentGroup:currentIndex];
+    
+    UITabBarController* viewController = [self.storyboard instantiateViewControllerWithIdentifier:@"LibararyViewController"];
+    [self.navigationController pushViewController:viewController animated:YES];
     
 }
 - (IBAction)applicationSettingButtonClicked:(id)sender {

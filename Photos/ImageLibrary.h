@@ -47,6 +47,12 @@
 */
 - (void)createSectionDataAndSortByDate;
 
+- (void)createSectionDataAndSortByDateAtGroup:(NSInteger)GroupIndex;
+
+- (void)setCurrentGroup:(NSInteger)index;
+
+-(NSInteger)getCurrentGroupIndex;
+
 -(void)createSectionEntries;
 
 - (NSInteger)getGroupCount;
@@ -70,5 +76,7 @@
 - (UIImage*)getThumbnailAtSectionName:(NSString*)sectionName index:(NSInteger)index;
 
 - (UIImage*)getFullViewImageAtSectionName:(NSString*)sectionName index:(NSInteger)index;
+
+- (void)cleanupSectionsData;
 
 @end

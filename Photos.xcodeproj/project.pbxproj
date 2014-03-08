@@ -27,6 +27,10 @@
 		F958342318C8BB8D00114C29 /* SectionData.m in Sources */ = {isa = PBXBuildFile; fileRef = F958341B18C8BB8D00114C29 /* SectionData.m */; };
 		F958342518C8BB8D00114C29 /* AssetGroupData.m in Sources */ = {isa = PBXBuildFile; fileRef = F958342018C8BB8D00114C29 /* AssetGroupData.m */; };
 		F958346F18C9AF2200114C29 /* GroupCell.m in Sources */ = {isa = PBXBuildFile; fileRef = F958346E18C9AF2200114C29 /* GroupCell.m */; };
+		F9F26BA318CB51EC000E9B64 /* LibraryBaseCell.m in Sources */ = {isa = PBXBuildFile; fileRef = F9F26B9D18CB51EC000E9B64 /* LibraryBaseCell.m */; };
+		F9F26BA418CB51EC000E9B64 /* baseCollectionHeader.m in Sources */ = {isa = PBXBuildFile; fileRef = F9F26B9F18CB51EC000E9B64 /* baseCollectionHeader.m */; };
+		F9F26BA518CB51EC000E9B64 /* ItemThumbnailCell.m in Sources */ = {isa = PBXBuildFile; fileRef = F9F26BA218CB51EC000E9B64 /* ItemThumbnailCell.m */; };
+		F9F26BA818CB5250000E9B64 /* LibrayViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F9F26BA618CB5250000E9B64 /* LibrayViewController.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -70,6 +74,14 @@
 		F958342018C8BB8D00114C29 /* AssetGroupData.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AssetGroupData.m; sourceTree = "<group>"; };
 		F958346D18C9AF2200114C29 /* GroupCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GroupCell.h; sourceTree = "<group>"; };
 		F958346E18C9AF2200114C29 /* GroupCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GroupCell.m; sourceTree = "<group>"; };
+		F9F26B9D18CB51EC000E9B64 /* LibraryBaseCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LibraryBaseCell.m; sourceTree = "<group>"; };
+		F9F26B9E18CB51EC000E9B64 /* baseCollectionHeader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = baseCollectionHeader.h; sourceTree = "<group>"; };
+		F9F26B9F18CB51EC000E9B64 /* baseCollectionHeader.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = baseCollectionHeader.m; sourceTree = "<group>"; };
+		F9F26BA018CB51EC000E9B64 /* ItemThumbnailCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ItemThumbnailCell.h; sourceTree = "<group>"; };
+		F9F26BA118CB51EC000E9B64 /* LibraryBaseCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LibraryBaseCell.h; sourceTree = "<group>"; };
+		F9F26BA218CB51EC000E9B64 /* ItemThumbnailCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ItemThumbnailCell.m; sourceTree = "<group>"; };
+		F9F26BA618CB5250000E9B64 /* LibrayViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LibrayViewController.m; sourceTree = "<group>"; };
+		F9F26BA718CB5250000E9B64 /* LibrayViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LibrayViewController.h; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -129,9 +141,11 @@
 		F95833E518C8BAB300114C29 /* Photos */ = {
 			isa = PBXGroup;
 			children = (
+				F9F26BA718CB5250000E9B64 /* LibrayViewController.h */,
+				F9F26BA618CB5250000E9B64 /* LibrayViewController.m */,
+				F958341918C8BB8D00114C29 /* ImageLibrary.h */,
 				F958341818C8BB8D00114C29 /* ImageLibrary.m */,
 				F958341A18C8BB8D00114C29 /* SectionData.h */,
-				F958341918C8BB8D00114C29 /* ImageLibrary.h */,
 				F958341B18C8BB8D00114C29 /* SectionData.m */,
 				F958341C18C8BB8D00114C29 /* AssetMngr.h */,
 				F958341718C8BB8D00114C29 /* AssetMngr.m */,
@@ -139,12 +153,18 @@
 				F958342018C8BB8D00114C29 /* AssetGroupData.m */,
 				F95833EE18C8BAB300114C29 /* AppDelegate.h */,
 				F95833EF18C8BAB300114C29 /* AppDelegate.m */,
-				F95833F118C8BAB300114C29 /* Main_iPhone.storyboard */,
+				F9F26B9E18CB51EC000E9B64 /* baseCollectionHeader.h */,
+				F9F26B9F18CB51EC000E9B64 /* baseCollectionHeader.m */,
+				F9F26BA018CB51EC000E9B64 /* ItemThumbnailCell.h */,
+				F9F26BA218CB51EC000E9B64 /* ItemThumbnailCell.m */,
+				F9F26BA118CB51EC000E9B64 /* LibraryBaseCell.h */,
+				F9F26B9D18CB51EC000E9B64 /* LibraryBaseCell.m */,
 				F958346D18C9AF2200114C29 /* GroupCell.h */,
 				F958346E18C9AF2200114C29 /* GroupCell.m */,
-				F95833F418C8BAB300114C29 /* Main_iPad.storyboard */,
 				F95833F718C8BAB300114C29 /* ViewController.h */,
 				F95833F818C8BAB300114C29 /* ViewController.m */,
+				F95833F118C8BAB300114C29 /* Main_iPhone.storyboard */,
+				F95833F418C8BAB300114C29 /* Main_iPad.storyboard */,
 				F95833FA18C8BAB300114C29 /* Images.xcassets */,
 				F95833E618C8BAB300114C29 /* Supporting Files */,
 			);
@@ -280,12 +300,16 @@
 			files = (
 				F958342218C8BB8D00114C29 /* ImageLibrary.m in Sources */,
 				F958342518C8BB8D00114C29 /* AssetGroupData.m in Sources */,
+				F9F26BA318CB51EC000E9B64 /* LibraryBaseCell.m in Sources */,
 				F95833F918C8BAB300114C29 /* ViewController.m in Sources */,
+				F9F26BA518CB51EC000E9B64 /* ItemThumbnailCell.m in Sources */,
 				F958346F18C9AF2200114C29 /* GroupCell.m in Sources */,
 				F95833F018C8BAB300114C29 /* AppDelegate.m in Sources */,
+				F9F26BA818CB5250000E9B64 /* LibrayViewController.m in Sources */,
 				F958342318C8BB8D00114C29 /* SectionData.m in Sources */,
 				F958342118C8BB8D00114C29 /* AssetMngr.m in Sources */,
 				F95833EC18C8BAB300114C29 /* main.m in Sources */,
+				F9F26BA418CB51EC000E9B64 /* baseCollectionHeader.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
