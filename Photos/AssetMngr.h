@@ -44,6 +44,7 @@
  Get thumbnail data.
 */
 - (UIImage*)getThumbnail:(NSURL*)url;
+- (UIImage*)getThumbnailByGroupName:(NSString*)groupName index:(NSUInteger)index;
 
 /*
  Get fuu image data.
@@ -56,6 +57,11 @@
 - (NSArray*)GetGroupNames;
 
 /*
+ Get the number of inages.
+ */
+- (NSInteger)GetCountOfImagesInGroup:(NSString*)nmes;
+
+/*
  Enumulate the urls associated with the images.
  */
 - (NSArray*)enumeImagesWithGroupName:(NSString*)groupName;
@@ -63,7 +69,8 @@
 /*
  Build the url array for date.
 */
-- (NSArray*)buildSectionsForDateWithGroupName:(NSString*)groupName;
+- (NSArray*)buildSectionsForDateWithGroupName:(NSString*)groupName kind:(NSUInteger)kind
+;
 
 
 @end

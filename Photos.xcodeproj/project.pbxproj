@@ -26,6 +26,7 @@
 		F958342218C8BB8D00114C29 /* ImageLibrary.m in Sources */ = {isa = PBXBuildFile; fileRef = F958341818C8BB8D00114C29 /* ImageLibrary.m */; };
 		F958342318C8BB8D00114C29 /* SectionData.m in Sources */ = {isa = PBXBuildFile; fileRef = F958341B18C8BB8D00114C29 /* SectionData.m */; };
 		F958342518C8BB8D00114C29 /* AssetGroupData.m in Sources */ = {isa = PBXBuildFile; fileRef = F958342018C8BB8D00114C29 /* AssetGroupData.m */; };
+		F958346F18C9AF2200114C29 /* GroupCell.m in Sources */ = {isa = PBXBuildFile; fileRef = F958346E18C9AF2200114C29 /* GroupCell.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -67,6 +68,8 @@
 		F958341C18C8BB8D00114C29 /* AssetMngr.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AssetMngr.h; sourceTree = "<group>"; };
 		F958341F18C8BB8D00114C29 /* AssetGroupData.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AssetGroupData.h; sourceTree = "<group>"; };
 		F958342018C8BB8D00114C29 /* AssetGroupData.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AssetGroupData.m; sourceTree = "<group>"; };
+		F958346D18C9AF2200114C29 /* GroupCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GroupCell.h; sourceTree = "<group>"; };
+		F958346E18C9AF2200114C29 /* GroupCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GroupCell.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -126,17 +129,19 @@
 		F95833E518C8BAB300114C29 /* Photos */ = {
 			isa = PBXGroup;
 			children = (
-				F958341718C8BB8D00114C29 /* AssetMngr.m */,
 				F958341818C8BB8D00114C29 /* ImageLibrary.m */,
-				F958341918C8BB8D00114C29 /* ImageLibrary.h */,
 				F958341A18C8BB8D00114C29 /* SectionData.h */,
+				F958341918C8BB8D00114C29 /* ImageLibrary.h */,
 				F958341B18C8BB8D00114C29 /* SectionData.m */,
 				F958341C18C8BB8D00114C29 /* AssetMngr.h */,
+				F958341718C8BB8D00114C29 /* AssetMngr.m */,
 				F958341F18C8BB8D00114C29 /* AssetGroupData.h */,
 				F958342018C8BB8D00114C29 /* AssetGroupData.m */,
 				F95833EE18C8BAB300114C29 /* AppDelegate.h */,
 				F95833EF18C8BAB300114C29 /* AppDelegate.m */,
 				F95833F118C8BAB300114C29 /* Main_iPhone.storyboard */,
+				F958346D18C9AF2200114C29 /* GroupCell.h */,
+				F958346E18C9AF2200114C29 /* GroupCell.m */,
 				F95833F418C8BAB300114C29 /* Main_iPad.storyboard */,
 				F95833F718C8BAB300114C29 /* ViewController.h */,
 				F95833F818C8BAB300114C29 /* ViewController.m */,
@@ -276,6 +281,7 @@
 				F958342218C8BB8D00114C29 /* ImageLibrary.m in Sources */,
 				F958342518C8BB8D00114C29 /* AssetGroupData.m in Sources */,
 				F95833F918C8BAB300114C29 /* ViewController.m in Sources */,
+				F958346F18C9AF2200114C29 /* GroupCell.m in Sources */,
 				F95833F018C8BAB300114C29 /* AppDelegate.m in Sources */,
 				F958342318C8BB8D00114C29 /* SectionData.m in Sources */,
 				F958342118C8BB8D00114C29 /* AssetMngr.m in Sources */,

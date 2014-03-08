@@ -14,7 +14,7 @@
     BOOL m_isLocal;
     BOOL m_isFlickr;
     BOOL m_Facebook;
-    NSMutableArray* m_groupDatas; /* array of SectionData */
+    NSMutableArray* m_sectionDatas; /* array of SectionData */
     AssetMngr* m_assetMngr;
 }
 @end
@@ -91,40 +91,83 @@
             m_assetMngr = [AssetMngr create];
             [m_assetMngr initializeALAssetLibrary];
             [m_assetMngr buildAssetData];
-            if( m_groupDatas != nil )
+            if( m_sectionDatas == nil )
             {
-                m_groupDatas = [[NSMutableArray alloc] init];
+                m_sectionDatas = [[NSMutableArray alloc] init];
             }
         }
 }
 
-- (void) createSectionDataAndSortByDate
+-(void)createSectionEntries
 {
     if( m_isLocal )
     {
         NSArray* groupNames = [m_assetMngr GetGroupNames];
+        BOOL skipToNext = NO;
         for( NSString* name in groupNames )
         {
-            for( SectionData* data in m_groupDatas )
+            for( SectionData* data in m_sectionDatas )
             {
                 if( data.sectionTitle == name )
-                    return;
+                {
+                    skipToNext = YES;
+                    break;
+                }
             }
-            SectionData* section = [[SectionData alloc] initWithTitle:name];
-            section.kind = kImageLibraryTypeLocal;
-            NSArray* array = [m_assetMngr buildSectionsForDateWithGroupName:name];
-            section.items = [array mutableCopy];
-            [m_groupDatas addObject:section];
+            if( skipToNext == NO )
+            {
+                SectionData* section = [[SectionData alloc] initWithTitle:name];
+                section.kind = kImageLibraryTypeLocal;
+                //NSArray* array = [m_assetMngr buildSectionsForDateWithGroupName:name];
+                //section.items = [array mutableCopy];
+                [m_sectionDatas addObject:section];
+            }
+            skipToNext = NO;
         }
     }
 }
 
-- (NSInteger)getSectionCount
+- (void)createSectionDataAndSortByDate
 {
-    return m_groupDatas.count;
+    if( m_isLocal )
+    {
+        NSArray* groupNames = [m_assetMngr GetGroupNames];
+        BOOL skipToNext = NO;
+        for( NSString* name in groupNames )
+        {
+            for( SectionData* data in m_sectionDatas )
+            {
+                if( data.sectionTitle == name )
+                {
+                    skipToNext = YES;
+                    break;
+                }
+            }
+            if( skipToNext == NO )
+            {
+                //SectionData* section = [[SectionData alloc] initWithTitle:name];
+                //section.kind = kImageLibraryTypeLocal;
+                NSArray* array = [m_assetMngr buildSectionsForDateWithGroupName:name kind:kImageLibraryTypeLocal];
+                //section.items = [array mutableCopy];
+                [m_sectionDatas addObjectsFromArray:array];
+            }
+            skipToNext = NO;
+        }
+    }
 }
 
-- (NSArray*)getSectionNames
+- (NSInteger)getGroupCount
+{
+    NSArray* groupArray = [m_assetMngr GetGroupNames];
+    return groupArray.count;
+}
+
+- (NSInteger)getSectionCount
+{
+    return m_sectionDatas.count;
+}
+
+- (NSArray*)getGroupNames
 {
     if( m_isLocal )
     {
@@ -133,29 +176,67 @@
     return nil;
 }
 
+- (NSArray*)getSectionNames
+{
+    NSMutableArray* array = [[NSMutableArray alloc] init];
+    for( SectionData* section in m_sectionDatas )
+    {
+        [array addObject:section.sectionTitle];
+    }
+    return array;
+}
+
+- (NSString*)getSectonNameAtGroup:(NSString*)groupName index:(NSInteger)index
+{
+    return [m_assetMngr GetGroupNames][index];
+}
+
+- (NSString*)getGroupNameAtIndex:(NSInteger)index
+{
+    return [m_assetMngr GetGroupNames][index];
+}
+
+- (NSInteger)getNumOfImagesInGroup:(NSString*)groupName
+{
+    return [m_assetMngr GetCountOfImagesInGroup:groupName];
+}
+
 - (NSInteger)getNumOfImagesInSection:(NSString*)sectionName
 {
     NSInteger count = 0;
-    for( SectionData* section in m_groupDatas )
+    for( SectionData* section in m_sectionDatas )
     {
         if( [section.sectionTitle isEqual:sectionName] )
         {
-            count = section.items.count;
+            //count = section.items.count;
+            count = [m_assetMngr GetCountOfImagesInGroup:sectionName];
             break;
         }
     }
     return count;
 }
 
+- (UIImage*)getThumbnailAtGroupName:(NSString*)groupName index:(NSInteger)index
+{
+    UIImage* image = [m_assetMngr getThumbnailByGroupName:groupName index:index];
+    return image;
+}
+
 - (UIImage*)getThumbnailAtSectionName:(NSString*)sectionName index:(NSInteger)index
 {
     UIImage* image;
-    for( SectionData* section in m_groupDatas )
+    for( SectionData* section in m_sectionDatas )
     {
         if( [section.sectionTitle isEqual:sectionName] )
         {
             if( section.kind == kImageLibraryTypeLocal )
             {
+                NSInteger num = section.items.count;
+                if( num < index+1 )
+                {
+                    NSLog(@"error");
+                    break;
+                }
                 NSURL* url = section.items[index];
                 image = [m_assetMngr getThumbnail:url];
             }
@@ -168,7 +249,7 @@
 - (UIImage*)getFullViewImageAtSectionName:(NSString*)sectionName index:(NSInteger)index
 {
     UIImage* image;
-    for( SectionData* section in m_groupDatas )
+    for( SectionData* section in m_sectionDatas )
     {
         if( [section.sectionTitle isEqual:sectionName] )
         {

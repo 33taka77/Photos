@@ -14,7 +14,7 @@
 - (void)updateView
 {
     //[self.m_imageLibrary createSectionDataAndSortByDate];
-    //NSLog(@"AppDelegate:updateView is called.");
+    [[NSNotificationCenter defaultCenter] postNotificationName:@"BaseCollectionInit" object:self userInfo:nil];
 }
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions

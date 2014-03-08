@@ -45,13 +45,27 @@
 /*
  Create the image datas and sort the data by the date.
 */
-- (void) createSectionDataAndSortByDate;
+- (void)createSectionDataAndSortByDate;
+
+-(void)createSectionEntries;
+
+- (NSInteger)getGroupCount;
+
+- (NSArray*)getGroupNames;
 
 - (NSInteger)getSectionCount;
 
 - (NSArray*)getSectionNames;
 
+- (NSString*)getGroupNameAtIndex:(NSInteger)index;
+
+- (NSString*)getSectonNameAtGroup:(NSString*)groupName index:(NSInteger)index;
+
 - (NSInteger)getNumOfImagesInSection:(NSString*)sectionName;
+
+- (NSInteger)getNumOfImagesInGroup:(NSString*)groupName;
+
+- (UIImage*)getThumbnailAtGroupName:(NSString*)groupName index:(NSInteger)index;
 
 - (UIImage*)getThumbnailAtSectionName:(NSString*)sectionName index:(NSInteger)index;
 
