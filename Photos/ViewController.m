@@ -33,6 +33,7 @@
     //[self.m_appDelegate.m_imageLibrary createSectionDataAndSortByDate];
     //[self.groupCollectionView reloadData];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(updateData:) name:@"BaseCollectionInit" object:nil];
+    self.navigationItem.title = @"Library";
     
 }
 

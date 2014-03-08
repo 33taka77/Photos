@@ -39,6 +39,7 @@
     [self.m_appDelegate.m_imageLibrary createSectionDataAndSortByDateAtGroup:currentGroupIndex];
     NSString* libraryName = [self.m_appDelegate.m_imageLibrary getGroupNameAtIndex:[self.m_appDelegate.m_imageLibrary getCurrentGroupIndex]];
     
+    /*
     //[self.navigationController setNavigationBarHidden:NO animated:NO];
     //ラベルを生成
     UILabel* navigationTitle = [[UILabel alloc] init];
@@ -55,7 +56,8 @@
     
     //navigationItemのtitleViewをLabelに置き換える
     self.navigationItem.titleView = navigationTitle;
-    //self.navigationItem.title = libraryName;
+    */
+    self.navigationItem.title = libraryName;
 }
 
 - (void)viewWillDisappear:(BOOL)animated
