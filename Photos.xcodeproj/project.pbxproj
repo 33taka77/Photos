@@ -31,6 +31,7 @@
 		F9F26BA418CB51EC000E9B64 /* baseCollectionHeader.m in Sources */ = {isa = PBXBuildFile; fileRef = F9F26B9F18CB51EC000E9B64 /* baseCollectionHeader.m */; };
 		F9F26BA518CB51EC000E9B64 /* ItemThumbnailCell.m in Sources */ = {isa = PBXBuildFile; fileRef = F9F26BA218CB51EC000E9B64 /* ItemThumbnailCell.m */; };
 		F9F26BA818CB5250000E9B64 /* LibrayViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F9F26BA618CB5250000E9B64 /* LibrayViewController.m */; };
+		F9F26BAB18CB6377000E9B64 /* ItemThumbnailCollectionView.m in Sources */ = {isa = PBXBuildFile; fileRef = F9F26BAA18CB6377000E9B64 /* ItemThumbnailCollectionView.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -82,6 +83,8 @@
 		F9F26BA218CB51EC000E9B64 /* ItemThumbnailCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ItemThumbnailCell.m; sourceTree = "<group>"; };
 		F9F26BA618CB5250000E9B64 /* LibrayViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LibrayViewController.m; sourceTree = "<group>"; };
 		F9F26BA718CB5250000E9B64 /* LibrayViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LibrayViewController.h; sourceTree = "<group>"; };
+		F9F26BA918CB6377000E9B64 /* ItemThumbnailCollectionView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ItemThumbnailCollectionView.h; sourceTree = "<group>"; };
+		F9F26BAA18CB6377000E9B64 /* ItemThumbnailCollectionView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ItemThumbnailCollectionView.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -164,6 +167,8 @@
 				F95833F718C8BAB300114C29 /* ViewController.h */,
 				F95833F818C8BAB300114C29 /* ViewController.m */,
 				F95833F118C8BAB300114C29 /* Main_iPhone.storyboard */,
+				F9F26BA918CB6377000E9B64 /* ItemThumbnailCollectionView.h */,
+				F9F26BAA18CB6377000E9B64 /* ItemThumbnailCollectionView.m */,
 				F95833F418C8BAB300114C29 /* Main_iPad.storyboard */,
 				F95833FA18C8BAB300114C29 /* Images.xcassets */,
 				F95833E618C8BAB300114C29 /* Supporting Files */,
@@ -299,6 +304,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				F958342218C8BB8D00114C29 /* ImageLibrary.m in Sources */,
+				F9F26BAB18CB6377000E9B64 /* ItemThumbnailCollectionView.m in Sources */,
 				F958342518C8BB8D00114C29 /* AssetGroupData.m in Sources */,
 				F9F26BA318CB51EC000E9B64 /* LibraryBaseCell.m in Sources */,
 				F95833F918C8BAB300114C29 /* ViewController.m in Sources */,

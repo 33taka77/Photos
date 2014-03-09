@@ -9,6 +9,8 @@
 #import "LibraryBaseCell.h"
 #import "ItemThumbnailCell.h"
 #import "AppDelegate.h"
+#import "ItemThumbnailCollectionView.h"
+
 
 @interface LibraryBaseCell ()
 @property (nonatomic, retain) AppDelegate* m_appDelegate;
@@ -55,7 +57,10 @@
     //NSArray* names = [self.m_appDelegate.m_imageLibrary getSectionNames];
     //NSString* name = names[currentIndex];
     NSArray* array = [self.m_appDelegate.m_imageLibrary getSectionNames];
-    NSString* sectionTitle = array[section];
+    ItemThumbnailCollectionView* thumbnaulCollection = (ItemThumbnailCollectionView*)collectionView;
+    NSInteger index = thumbnaulCollection.identifier;
+
+    NSString* sectionTitle = array[index-1];
     NSInteger numOfImage = [self.m_appDelegate.m_imageLibrary getNumOfImagesInSection:sectionTitle];
     
     /*

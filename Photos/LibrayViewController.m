@@ -10,6 +10,7 @@
 #import "AppDelegate.h"
 #import "LibraryBaseCell.h"
 #import "baseCollectionHeader.h"
+#import "ItemThumbnailCollectionView.h"
 
 @interface LibrayViewController ()
 @property (nonatomic, retain) AppDelegate* m_appDelegate;
@@ -85,6 +86,10 @@
 - (UICollectionViewCell*)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath
 {
     LibraryBaseCell* baseCell = [collectionView dequeueReusableCellWithReuseIdentifier:@"LibBaseCell" forIndexPath:indexPath];
+    ItemThumbnailCollectionView* currentCollectionView = [[ItemThumbnailCollectionView alloc] initWithIndex:indexPath.section];
+    currentCollectionView.delegate = baseCell;
+    currentCollectionView.dataSource = baseCell;
+    
     return baseCell;
 }
 

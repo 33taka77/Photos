@@ -237,8 +237,8 @@
     {
         if( [section.sectionTitle isEqual:sectionName] )
         {
-            //count = section.items.count;
-            count = [m_assetMngr GetCountOfImagesInGroup:sectionName];
+            count = section.items.count;
+            //count = [m_assetMngr GetCountOfImagesInGroup:sectionName];
             break;
         }
     }
