@@ -61,6 +61,8 @@
 
 - (NSInteger)getSectionCount;
 
+- (NSArray*)getItemsInSection:(NSString*)sectionName;
+
 - (NSArray*)getSectionNames;
 
 - (NSString*)getGroupNameAtIndex:(NSInteger)index;

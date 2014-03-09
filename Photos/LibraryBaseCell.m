@@ -18,6 +18,8 @@
 
 @implementation LibraryBaseCell
 
+@synthesize items;
+
 - (id)initWithFrame:(CGRect)frame
 {
     self = [super initWithFrame:frame];
@@ -53,6 +55,7 @@
 
 - (NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section
 {
+    /*
     //NSInteger currentIndex = [self.m_appDelegate.m_imageLibrary getCurrentGroupIndex];
     //NSArray* names = [self.m_appDelegate.m_imageLibrary getSectionNames];
     //NSString* name = names[currentIndex];
@@ -63,11 +66,12 @@
     NSString* sectionTitle = array[index-1];
     NSInteger numOfImage = [self.m_appDelegate.m_imageLibrary getNumOfImagesInSection:sectionTitle];
     
-    /*
-     SectionData* sectionData = self.dateEntry[section];
-     NSInteger num = sectionData.items.count;
-     return num;
+    
+     //SectionData* sectionData = self.dateEntry[section];
+     //NSInteger num = sectionData.items.count;
+     //return num;
      */
+    NSInteger numOfImage = self.items.count;
     return numOfImage;
 }
 

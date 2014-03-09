@@ -63,7 +63,7 @@
 
 - (void)viewWillDisappear:(BOOL)animated
 {
-    //***[self.m_appDelegate.m_imageLibrary cleanupSectionsData];
+    [self.m_appDelegate.m_imageLibrary cleanupSectionsData];
 }
 
 - (void)didReceiveMemoryWarning
@@ -86,10 +86,16 @@
 - (UICollectionViewCell*)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath
 {
     LibraryBaseCell* baseCell = [collectionView dequeueReusableCellWithReuseIdentifier:@"LibBaseCell" forIndexPath:indexPath];
-    ItemThumbnailCollectionView* currentCollectionView = [[ItemThumbnailCollectionView alloc] initWithIndex:indexPath.section];
-    currentCollectionView.delegate = baseCell;
-    currentCollectionView.dataSource = baseCell;
+    //ItemThumbnailCollectionView* currentCollectionView = [[ItemThumbnailCollectionView alloc] initWithIndex:indexPath.section];
+    //currentCollectionView.delegate = baseCell;
+    //currentCollectionView.dataSource = baseCell;
+    NSInteger index = indexPath.section;
+    NSString* mameOfSection = [self.m_appDelegate.m_imageLibrary getSectionNames][index];
+    NSArray* array = [self.m_appDelegate.m_imageLibrary getItemsInSection:mameOfSection];
     
+    //currentCollectionView.items = array;
+    baseCell.items = array;
+    [baseCell.itemThumbnailCollection reloadData];
     return baseCell;
 }
 

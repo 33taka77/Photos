@@ -245,6 +245,21 @@
     return count;
 }
 
+- (NSArray*)getItemsInSection:(NSString*)sectionName
+{
+    NSArray* array;
+    for( SectionData* section in m_sectionDatas )
+    {
+        if( [section.sectionTitle isEqual:sectionName] )
+        {
+            array = section.items;
+            //count = [m_assetMngr GetCountOfImagesInGroup:sectionName];
+            break;
+        }
+    }
+    return array;
+}
+
 - (UIImage*)getThumbnailAtGroupName:(NSString*)groupName index:(NSInteger)index
 {
     UIImage* image = [m_assetMngr getThumbnailByGroupName:groupName index:index];

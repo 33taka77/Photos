@@ -13,7 +13,7 @@
     NSInteger identifier;
 }
 @property   NSInteger identifier;
-
+@property (nonatomic, retain) NSArray* items;
 - (id)initWithIndex:(NSInteger)index;
 
 @end
