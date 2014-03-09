@@ -10,6 +10,7 @@
 #import "ItemThumbnailCell.h"
 #import "AppDelegate.h"
 #import "ItemThumbnailCollectionView.h"
+#import "ItemThumbnailCell.h"
 
 
 @interface LibraryBaseCell ()
@@ -78,8 +79,28 @@
 - (UICollectionViewCell*)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath
 {
     ItemThumbnailCell* cell = [collectionView dequeueReusableCellWithReuseIdentifier:@"ItemThumbnailCell" forIndexPath:indexPath];
-    cell.backgroundView.backgroundColor = [UIColor yellowColor];
+    UIImage* thumbnailData = [self.m_appDelegate.m_imageLibrary getThumbnailAtSectionName:self.sectionName index:indexPath.row];
+    cell.thumbnailImageView.image = thumbnailData;
     return cell;
 }
+
+- (CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout sizeForItemAtIndexPath:(NSIndexPath *)indexPath
+{
+    UIImage* thumbnailData = [self.m_appDelegate.m_imageLibrary getThumbnailAtSectionName:self.sectionName index:indexPath.row];
+    
+    /*
+    NSString* searchTerm = self.searches[indexPath.section];
+    FlickrPhoto* photo = self.searchResults[searchTerm][indexPath.row];
+    */
+    CGSize retval = thumbnailData.size.width > 0 ? CGSizeMake(thumbnailData.size.width, thumbnailData.size.height): CGSizeMake(100, 100);
+    retval.height += 15; retval.width += 15;
+    return retval;
+}
+
+- (UIEdgeInsets)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout insetForSectionAtIndex:(NSInteger)section
+{
+    return UIEdgeInsetsMake(50, 20, 50, 20);
+}
+
 
 @end

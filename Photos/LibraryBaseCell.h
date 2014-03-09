@@ -11,4 +11,5 @@
 @interface LibraryBaseCell : UICollectionViewCell < UICollectionViewDelegateFlowLayout, UICollectionViewDataSource >
 @property (weak, nonatomic) IBOutlet UICollectionView *itemThumbnailCollection;
 @property (nonatomic, retain) NSArray* items;
+@property (nonatomic, retain) NSString* sectionName;
 @end

@@ -77,6 +77,8 @@
 
 - (UIImage*)getThumbnailAtSectionName:(NSString*)sectionName index:(NSInteger)index;
 
+- (UIImage*)getThumbnailAtSectionName:(NSString*)sectionName URL:(NSURL*)url;
+
 - (UIImage*)getFullViewImageAtSectionName:(NSString*)sectionName index:(NSInteger)index;
 
 - (void)cleanupSectionsData;

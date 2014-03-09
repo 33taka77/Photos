@@ -90,11 +90,12 @@
     //currentCollectionView.delegate = baseCell;
     //currentCollectionView.dataSource = baseCell;
     NSInteger index = indexPath.section;
-    NSString* mameOfSection = [self.m_appDelegate.m_imageLibrary getSectionNames][index];
-    NSArray* array = [self.m_appDelegate.m_imageLibrary getItemsInSection:mameOfSection];
+    NSString* nameOfSection = [self.m_appDelegate.m_imageLibrary getSectionNames][index];
+    NSArray* array = [self.m_appDelegate.m_imageLibrary getItemsInSection:nameOfSection];
     
     //currentCollectionView.items = array;
     baseCell.items = array;
+    baseCell.sectionName = nameOfSection;
     [baseCell.itemThumbnailCollection reloadData];
     return baseCell;
 }
