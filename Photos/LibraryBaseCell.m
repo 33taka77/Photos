@@ -102,5 +102,16 @@
     return UIEdgeInsetsMake(50, 20, 50, 20);
 }
 
+- (void)collectionView:(UICollectionView*)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath
+{
+    NSInteger currentIndex = indexPath.row;
+    NSArray* names = [self.m_appDelegate.m_imageLibrary getSectionNames];
+    NSString* sectionName = names[currentIndex];
+    NSDictionary *userInfo = [NSDictionary dictionaryWithObjectsAndKeys:sectionName, @"SectionName",[NSNumber numberWithInt:indexPath.row], @"index", nil];
+
+    [[NSNotificationCenter defaultCenter] postNotificationName:@"WillFullviewDisplay" object:self userInfo:userInfo];
+    
+}
+
 
 @end

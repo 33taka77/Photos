@@ -11,6 +11,8 @@
 #import "LibraryBaseCell.h"
 #import "baseCollectionHeader.h"
 #import "ItemThumbnailCollectionView.h"
+#import "SingleViewController.h"
+
 
 @interface LibrayViewController ()
 @property (nonatomic, retain) AppDelegate* m_appDelegate;
@@ -29,6 +31,19 @@
     return self;
 }
 
+
+- (void)willGoSingleView:(NSNotification *)notification
+{
+    NSString* sectionName = [notification.userInfo objectForKey:@"SectionName"];
+    NSNumber *index = [notification.userInfo objectForKey:@"index"];
+    NSInteger indexOf = [index intValue];
+    SingleViewController* viewController = [self.storyboard instantiateViewControllerWithIdentifier:@"SingleImageViewContoller"];
+    viewController.sectionName = sectionName;
+    viewController.index = indexOf;
+    [self.navigationController pushViewController:viewController animated:YES];
+}
+
+
 - (void)viewDidLoad
 {
     [super viewDidLoad];
@@ -46,6 +61,8 @@
     CGSize size = CGSizeMake(self.closeBaseCollectionView.frame.size.width, 200);
     layout.itemSize = size;
     
+    NSNotificationCenter *nc =[NSNotificationCenter defaultCenter];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(willGoSingleView:) name:@"WillFullviewDisplay" object:nil];
     /*
     //[self.navigationController setNavigationBarHidden:NO animated:NO];
     //ラベルを生成

@@ -267,6 +267,33 @@
             </objects>
             <point key="canvasLocation" x="976" y="-12"/>
         </scene>
+        <!--Single View Controller-->
+        <scene sceneID="eYz-eq-Qpf">
+            <objects>
+                <viewController storyboardIdentifier="SingleImageViewContoller" useStoryboardIdentifierAsRestorationIdentifier="YES" id="Fi1-6q-NFg" customClass="SingleViewController" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="bxU-eE-xgY"/>
+                        <viewControllerLayoutGuide type="bottom" id="D2b-XE-VRz"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="pLA-Za-7TH">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                        <subviews>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="p2m-eL-FIG">
+                                <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+                                <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                            </imageView>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+                    </view>
+                    <connections>
+                        <outlet property="fullImageView" destination="p2m-eL-FIG" id="f4X-Ho-wR5"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="xoN-8n-lmL" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1370" y="-12"/>
+        </scene>
         <!--Navigation Controller-->
         <scene sceneID="7NM-e5-rUh">
             <objects>
