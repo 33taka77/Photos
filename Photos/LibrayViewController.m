@@ -67,6 +67,13 @@
     self.navigationItem.title = libraryName;
 }
 
+/* 横向き対応のため追加 */
+- (void)didRotateFromInterfaceOrientation:(UIInterfaceOrientation)fromInterfaceOrientation{
+    [self.closeBaseCollectionView performBatchUpdates:nil completion:nil];
+}
+
+
+
 - (void)viewWillDisappear:(BOOL)animated
 {
     [self.m_appDelegate.m_imageLibrary cleanupSectionsData];
