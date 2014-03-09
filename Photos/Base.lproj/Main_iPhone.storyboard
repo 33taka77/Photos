@@ -162,7 +162,7 @@
                                             <rect key="frame" x="0.0" y="0.0" width="319" height="200"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
-                                                <collectionView opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" ambiguous="YES" misplaced="YES" minimumZoomScale="0.0" maximumZoomScale="0.0" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="xQz-ar-b4t" customClass="ItemThumbnailCollectionView">
+                                                <collectionView opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" minimumZoomScale="0.0" maximumZoomScale="0.0" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="xQz-ar-b4t" customClass="ItemThumbnailCollectionView">
                                                     <rect key="frame" x="0.0" y="0.0" width="319" height="200"/>
                                                     <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                                     <collectionViewFlowLayout key="collectionViewLayout" scrollDirection="horizontal" minimumLineSpacing="10" minimumInteritemSpacing="10" id="Sqe-lU-Q1U">
@@ -219,6 +219,8 @@
                                             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                         </view>
                                         <constraints>
+                                            <constraint firstItem="xQz-ar-b4t" firstAttribute="top" secondItem="tTH-dI-7YZ" secondAttribute="top" id="RXs-1l-XiE"/>
+                                            <constraint firstAttribute="bottom" secondItem="xQz-ar-b4t" secondAttribute="bottom" id="Y4x-YT-5wG"/>
                                             <constraint firstAttribute="trailing" secondItem="xQz-ar-b4t" secondAttribute="trailing" id="opk-qA-a6J"/>
                                             <constraint firstItem="xQz-ar-b4t" firstAttribute="leading" secondItem="tTH-dI-7YZ" secondAttribute="leading" id="vnU-tk-fJA"/>
                                         </constraints>
