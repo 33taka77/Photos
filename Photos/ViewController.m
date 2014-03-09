@@ -40,7 +40,7 @@
 - (void)updateData:(NSNotification *)notification
 {
     [self.groupCollectionView reloadData];
-    NSLog(@"reload is called");
+    //NSLog(@"reload is called");
 }
 
 - (void)didReceiveMemoryWarning

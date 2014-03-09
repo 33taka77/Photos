@@ -40,6 +40,12 @@
     [self.m_appDelegate.m_imageLibrary createSectionDataAndSortByDateAtGroup:currentGroupIndex];
     NSString* libraryName = [self.m_appDelegate.m_imageLibrary getGroupNameAtIndex:[self.m_appDelegate.m_imageLibrary getCurrentGroupIndex]];
     
+    CGRect rect = CGRectMake(0, 0, self.view.frame.size.width, self.view.frame.size.height);
+    [self.closeBaseCollectionView setFrame:rect];
+    UICollectionViewFlowLayout *layout = (id) self.closeBaseCollectionView.collectionViewLayout;
+    CGSize size = CGSizeMake(self.closeBaseCollectionView.frame.size.width, 200);
+    layout.itemSize = size;
+    
     /*
     //[self.navigationController setNavigationBarHidden:NO animated:NO];
     //ラベルを生成
@@ -110,4 +116,8 @@
     return headerView;
 }
 
+-(CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout sizeForItemAtIndexPath:(NSIndexPath *)indexPath {
+    CGSize size = CGSizeMake(self.closeBaseCollectionView.frame.size.width, 190);
+    return size;
+}
 @end

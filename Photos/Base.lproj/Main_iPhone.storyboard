@@ -145,25 +145,25 @@
                         <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <subviews>
-                            <collectionView opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" minimumZoomScale="0.0" maximumZoomScale="0.0" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="RAX-9m-vNV">
-                                <rect key="frame" x="0.0" y="20" width="320" height="548"/>
+                            <collectionView opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" misplaced="YES" minimumZoomScale="0.0" maximumZoomScale="0.0" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="RAX-9m-vNV">
+                                <rect key="frame" x="0.0" y="10" width="320" height="548"/>
                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                 <collectionViewFlowLayout key="collectionViewLayout" minimumLineSpacing="10" minimumInteritemSpacing="10" id="6WP-Lo-gWZ">
-                                    <size key="itemSize" width="319" height="187"/>
+                                    <size key="itemSize" width="319" height="200"/>
                                     <size key="headerReferenceSize" width="50" height="50"/>
                                     <size key="footerReferenceSize" width="0.0" height="0.0"/>
                                     <inset key="sectionInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
                                 </collectionViewFlowLayout>
                                 <cells>
                                     <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="LibBaseCell" id="tTH-dI-7YZ" customClass="LibraryBaseCell">
-                                        <rect key="frame" x="1" y="50" width="319" height="187"/>
+                                        <rect key="frame" x="1" y="50" width="319" height="200"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center">
-                                            <rect key="frame" x="0.0" y="0.0" width="319" height="187"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="319" height="200"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
-                                                <collectionView opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" minimumZoomScale="0.0" maximumZoomScale="0.0" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="xQz-ar-b4t" customClass="ItemThumbnailCollectionView">
-                                                    <rect key="frame" x="0.0" y="0.0" width="319" height="187"/>
+                                                <collectionView opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" ambiguous="YES" misplaced="YES" minimumZoomScale="0.0" maximumZoomScale="0.0" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="xQz-ar-b4t" customClass="ItemThumbnailCollectionView">
+                                                    <rect key="frame" x="0.0" y="0.0" width="319" height="200"/>
                                                     <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                                     <collectionViewFlowLayout key="collectionViewLayout" scrollDirection="horizontal" minimumLineSpacing="10" minimumInteritemSpacing="10" id="Sqe-lU-Q1U">
                                                         <size key="itemSize" width="160" height="160"/>
@@ -173,7 +173,7 @@
                                                     </collectionViewFlowLayout>
                                                     <cells>
                                                         <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="ItemThumbnailCell" id="YGp-Vw-f0W" customClass="ItemThumbnailCell">
-                                                            <rect key="frame" x="0.0" y="14" width="160" height="160"/>
+                                                            <rect key="frame" x="0.0" y="20" width="160" height="160"/>
                                                             <autoresizingMask key="autoresizingMask"/>
                                                             <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center">
                                                                 <rect key="frame" x="0.0" y="0.0" width="160" height="160"/>
@@ -219,10 +219,8 @@
                                             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                         </view>
                                         <constraints>
-                                            <constraint firstAttribute="trailing" secondItem="xQz-ar-b4t" secondAttribute="trailing" id="Oor-Qm-T0W"/>
-                                            <constraint firstItem="xQz-ar-b4t" firstAttribute="leading" secondItem="tTH-dI-7YZ" secondAttribute="leading" id="dfx-A9-IsF"/>
-                                            <constraint firstItem="xQz-ar-b4t" firstAttribute="top" secondItem="tTH-dI-7YZ" secondAttribute="top" id="g6k-lW-XJp"/>
-                                            <constraint firstAttribute="bottom" secondItem="xQz-ar-b4t" secondAttribute="bottom" id="kFO-jR-gKA"/>
+                                            <constraint firstAttribute="trailing" secondItem="xQz-ar-b4t" secondAttribute="trailing" id="opk-qA-a6J"/>
+                                            <constraint firstItem="xQz-ar-b4t" firstAttribute="leading" secondItem="tTH-dI-7YZ" secondAttribute="leading" id="vnU-tk-fJA"/>
                                         </constraints>
                                         <connections>
                                             <outlet property="itemThumbnailCollection" destination="xQz-ar-b4t" id="uLP-ZT-CLW"/>
