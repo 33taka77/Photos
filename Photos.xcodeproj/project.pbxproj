@@ -33,6 +33,7 @@
 		F9F26BA818CB5250000E9B64 /* LibrayViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F9F26BA618CB5250000E9B64 /* LibrayViewController.m */; };
 		F9F26BAB18CB6377000E9B64 /* ItemThumbnailCollectionView.m in Sources */ = {isa = PBXBuildFile; fileRef = F9F26BAA18CB6377000E9B64 /* ItemThumbnailCollectionView.m */; };
 		F9F26C0218CC7ECB000E9B64 /* SingleViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F9F26C0118CC7ECB000E9B64 /* SingleViewController.m */; };
+		F9F26C0518CDCB0E000E9B64 /* AssetManager.m in Sources */ = {isa = PBXBuildFile; fileRef = F9F26C0318CDCB0E000E9B64 /* AssetManager.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -88,6 +89,8 @@
 		F9F26BAA18CB6377000E9B64 /* ItemThumbnailCollectionView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ItemThumbnailCollectionView.m; sourceTree = "<group>"; };
 		F9F26C0018CC7ECB000E9B64 /* SingleViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SingleViewController.h; sourceTree = "<group>"; };
 		F9F26C0118CC7ECB000E9B64 /* SingleViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SingleViewController.m; sourceTree = "<group>"; };
+		F9F26C0318CDCB0E000E9B64 /* AssetManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AssetManager.m; sourceTree = "<group>"; };
+		F9F26C0418CDCB0E000E9B64 /* AssetManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AssetManager.h; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -222,6 +225,8 @@
 		F9F26BFF18CC7E38000E9B64 /* DataModel */ = {
 			isa = PBXGroup;
 			children = (
+				F9F26C0418CDCB0E000E9B64 /* AssetManager.h */,
+				F9F26C0318CDCB0E000E9B64 /* AssetManager.m */,
 				F958341918C8BB8D00114C29 /* ImageLibrary.h */,
 				F958341818C8BB8D00114C29 /* ImageLibrary.m */,
 				F958341A18C8BB8D00114C29 /* SectionData.h */,
@@ -343,6 +348,7 @@
 				F9F26BA818CB5250000E9B64 /* LibrayViewController.m in Sources */,
 				F958342318C8BB8D00114C29 /* SectionData.m in Sources */,
 				F9F26C0218CC7ECB000E9B64 /* SingleViewController.m in Sources */,
+				F9F26C0518CDCB0E000E9B64 /* AssetManager.m in Sources */,
 				F958342118C8BB8D00114C29 /* AssetMngr.m in Sources */,
 				F95833EC18C8BAB300114C29 /* main.m in Sources */,
 				F9F26BA418CB51EC000E9B64 /* baseCollectionHeader.m in Sources */,
