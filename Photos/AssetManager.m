@@ -85,6 +85,14 @@ static AssetManager* g_assetManager = nil;
     UIImage* image = [UIImage imageWithCGImage:[assetRepresentaion fullScreenImage]];
     return image;
 }
+
+- (NSString*)getGroupNameByURL:(NSURL*)url
+{
+    NSString* name;
+    ALAssetsGroup* assetGroup = [self getAssetGroupByURL:url];
+    name = [assetGroup valueForProperty:ALAssetsGroupPropertyName];
+    return name;
+}
 - (NSArray*)getGroupNames
 {
     NSMutableArray* array = [[NSMutableArray alloc ] init];
@@ -96,19 +104,17 @@ static AssetManager* g_assetManager = nil;
     NSArray* retArray = [[NSArray alloc] initWithArray:array];
     return retArray;
 }
+
+/*
 - (NSString*)getGroupNameByURL:(NSURL*)url
 {
     NSString* name;
-    for( AssetGroupData* data in self.m_assetsGroups )
-    {
-        NSURL* currentUrl = [data.m_assetGroup valueForProperty:ALAssetsGroupPropertyURL];
-        if( [currentUrl isEqual:url] )
-        {
-            name = [data.m_assetGroup  valueForProperty:ALAssetsGroupPropertyName];
-        }
-    }
+    ALAssetsGroup* assetGroup = [self getAssetGroupByURL:url];
+    name = [assetGroup valueForProperty:ALAssetsGroupPropertyName];
     return name;
 }
+*/
+
 - (NSInteger)getCountOfImagesInGroup:(NSString*)name
 {
     NSInteger num;
@@ -162,6 +168,24 @@ static AssetManager* g_assetManager = nil;
         }
     };
     [groupData.m_assetGroup enumerateAssetsUsingBlock:photosBlock];
+}
+
+- (ALAssetsGroup*)getAssetGroupByURL:(NSURL*)url
+{
+    __block ALAssetsGroup* retAssetGroup = nil;
+    void (^getAssetGroupBlock)(ALAssetsGroup*) = ^(ALAssetsGroup* assetGroup){
+        retAssetGroup = assetGroup;
+    };
+    
+    void (^failBlock)(NSError*) = ^(NSError* error){
+        NSLog(@"exception in accessing assets by url. %@", error);
+    };
+    [self.m_assetLibrary groupForURL:url resultBlock:getAssetGroupBlock failureBlock:failBlock];
+    while (retAssetGroup == nil) {
+        [[NSRunLoop currentRunLoop] runUntilDate:[NSDate dateWithTimeIntervalSinceNow:0.05]];
+    }
+    
+    return retAssetGroup;
 }
 
 - (ALAsset*)getAssetByURL:(NSURL*)url

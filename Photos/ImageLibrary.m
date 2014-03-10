@@ -187,9 +187,15 @@
 
 - (NSArray*)getGroupNames
 {
+    NSMutableArray* retArray = [[NSMutableArray alloc] init];
     if( m_isLocal )
     {
-        return [m_assetMngr getGroupNames];
+        for( AssetObject* obj in self.m_assetGroups )
+        {
+            NSString* name = [m_assetMngr getGroupNameByURL:obj.m_groupURL];
+            [retArray addObject:name];
+        }
+        return retArray;
     }
     return nil;
 }

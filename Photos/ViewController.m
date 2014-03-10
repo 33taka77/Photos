@@ -58,6 +58,8 @@
 - (UICollectionViewCell*)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath
 {
     GroupCell* cell = [collectionView dequeueReusableCellWithReuseIdentifier:@"GroupCell" forIndexPath:indexPath];
+    NSInteger index = indexPath.row;
+    NSLog(@"index %d",index);
     NSString* name = [self.m_appDelegate.m_imageLibrary getGroupNameAtIndex:indexPath.row];
     cell.groupName.text = name;
     NSInteger count =  [self.m_appDelegate.m_imageLibrary getNumOfImagesInGroup:name];
