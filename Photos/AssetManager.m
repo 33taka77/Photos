@@ -26,6 +26,7 @@ static AssetManager* g_assetManager = nil;
     dispatch_once(&onceToken, ^{
         g_assetManager = [[AssetManager alloc] init];
         g_assetManager.m_assetLibrary = [[ALAssetsLibrary alloc] init];
+        g_assetManager.m_assetsGroups = [[NSMutableArray alloc] init];
     });
     return g_assetManager;
 }
