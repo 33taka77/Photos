@@ -76,11 +76,11 @@
 
 -(void)initializeLibrary
 {
-    m_assetMngr.delegate = self;
     self.m_assetGroups = [[NSMutableArray alloc] init];
     
     m_assetMngr = [AssetManager sharedAssetManager];
     [m_assetMngr setAssetManagerModeIsHoldItemData:NO];
+    m_assetMngr.delegate = self;
     [m_assetMngr enumeAssetItems];
 
 }
