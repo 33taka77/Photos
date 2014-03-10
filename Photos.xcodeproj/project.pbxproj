@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		F9152D4218CDD7620039E71E /* AssetObject.m in Sources */ = {isa = PBXBuildFile; fileRef = F9152D4118CDD7620039E71E /* AssetObject.m */; };
 		F95833E018C8BAB300114C29 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F95833DF18C8BAB300114C29 /* Foundation.framework */; };
 		F95833E218C8BAB300114C29 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F95833E118C8BAB300114C29 /* CoreGraphics.framework */; };
 		F95833E418C8BAB300114C29 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F95833E318C8BAB300114C29 /* UIKit.framework */; };
@@ -47,6 +48,8 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		F9152D4018CDD7620039E71E /* AssetObject.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AssetObject.h; sourceTree = "<group>"; };
+		F9152D4118CDD7620039E71E /* AssetObject.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AssetObject.m; sourceTree = "<group>"; };
 		F95833DC18C8BAB300114C29 /* Photos.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Photos.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		F95833DF18C8BAB300114C29 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		F95833E118C8BAB300114C29 /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
@@ -229,6 +232,8 @@
 				F9F26C0318CDCB0E000E9B64 /* AssetManager.m */,
 				F958341918C8BB8D00114C29 /* ImageLibrary.h */,
 				F958341818C8BB8D00114C29 /* ImageLibrary.m */,
+				F9152D4018CDD7620039E71E /* AssetObject.h */,
+				F9152D4118CDD7620039E71E /* AssetObject.m */,
 				F958341A18C8BB8D00114C29 /* SectionData.h */,
 				F958341B18C8BB8D00114C29 /* SectionData.m */,
 				F958341C18C8BB8D00114C29 /* AssetMngr.h */,
@@ -352,6 +357,7 @@
 				F958342118C8BB8D00114C29 /* AssetMngr.m in Sources */,
 				F95833EC18C8BAB300114C29 /* main.m in Sources */,
 				F9F26BA418CB51EC000E9B64 /* baseCollectionHeader.m in Sources */,
+				F9152D4218CDD7620039E71E /* AssetObject.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

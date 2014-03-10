@@ -84,7 +84,7 @@ static AssetManager* g_assetManager = nil;
     UIImage* image = [UIImage imageWithCGImage:[assetRepresentaion fullScreenImage]];
     return image;
 }
-- (NSArray*)GetGroupNames
+- (NSArray*)getGroupNames
 {
     NSMutableArray* array = [[NSMutableArray alloc ] init];
     for( AssetGroupData* data in self.m_assetsGroups )
@@ -108,7 +108,7 @@ static AssetManager* g_assetManager = nil;
     }
     return name;
 }
-- (NSInteger)GetCountOfImagesInGroup:(NSString*)name
+- (NSInteger)getCountOfImagesInGroup:(NSString*)name
 {
     NSInteger num;
     for( AssetGroupData* data in self.m_assetsGroups )
@@ -121,7 +121,7 @@ static AssetManager* g_assetManager = nil;
     }
     return num;
 }
-- (NSInteger)GetCountOfImagesInGroupByURL:(NSURL*)url
+- (NSInteger)getCountOfImagesInGroupByURL:(NSURL*)url
 {
     NSInteger num;
     for( AssetGroupData* data in self.m_assetsGroups )
@@ -134,7 +134,12 @@ static AssetManager* g_assetManager = nil;
     }
     return num;
 }
-
+- (NSDate*)getCaptureDateByURL:(NSURL*)url
+{
+    ALAsset* asset = [self getAssetByURL:url];
+    NSDate* date = [asset valueForProperty:ALAssetPropertyDate];
+    return date;
+}
 
 // ------- internal functions -------------------------------------------------------------------------
 

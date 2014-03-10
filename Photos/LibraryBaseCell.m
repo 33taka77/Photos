@@ -79,14 +79,14 @@
 - (UICollectionViewCell*)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath
 {
     ItemThumbnailCell* cell = [collectionView dequeueReusableCellWithReuseIdentifier:@"ItemThumbnailCell" forIndexPath:indexPath];
-    UIImage* thumbnailData = [self.m_appDelegate.m_imageLibrary getThumbnailAtSectionName:self.sectionName index:indexPath.row];
+    UIImage* thumbnailData = [self.m_appDelegate.m_imageLibrary getThumbnailAtSectionByIndex:self.sectionIndex index:indexPath.row];
     cell.thumbnailImageView.image = thumbnailData;
     return cell;
 }
 
 - (CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout sizeForItemAtIndexPath:(NSIndexPath *)indexPath
 {
-    UIImage* thumbnailData = [self.m_appDelegate.m_imageLibrary getThumbnailAtSectionName:self.sectionName index:indexPath.row];
+    UIImage* thumbnailData = [self.m_appDelegate.m_imageLibrary getThumbnailAtSectionByIndex:self.sectionIndex index:indexPath.row];
     
     /*
     NSString* searchTerm = self.searches[indexPath.section];
@@ -105,9 +105,9 @@
 - (void)collectionView:(UICollectionView*)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath
 {
     NSInteger currentIndex = indexPath.row;
-    NSArray* names = [self.m_appDelegate.m_imageLibrary getSectionNames];
-    NSString* sectionName = names[currentIndex];
-    NSDictionary *userInfo = [NSDictionary dictionaryWithObjectsAndKeys:sectionName, @"SectionName",[NSNumber numberWithInt:indexPath.row], @"index", nil];
+    //NSArray* names = [self.m_appDelegate.m_imageLibrary getSectionNames];
+    //NSString* sectionName = names[currentIndex];
+    NSDictionary *userInfo = [NSDictionary dictionaryWithObjectsAndKeys:[NSNumber numberWithInt:currentIndex], @"SectionIndex",[NSNumber numberWithInt:indexPath.row], @"index", nil];
 
     [[NSNotificationCenter defaultCenter] postNotificationName:@"WillFullviewDisplay" object:self userInfo:userInfo];
     

@@ -34,11 +34,12 @@
 
 - (void)willGoSingleView:(NSNotification *)notification
 {
-    NSString* sectionName = [notification.userInfo objectForKey:@"SectionName"];
+    NSNumber* sectionIndex = [notification.userInfo objectForKey:@"SectionInex"];
     NSNumber *index = [notification.userInfo objectForKey:@"index"];
     NSInteger indexOf = [index intValue];
+    NSInteger sectionIndexOf = [sectionIndex intValue];
     SingleViewController* viewController = [self.storyboard instantiateViewControllerWithIdentifier:@"SingleImageViewContoller"];
-    viewController.sectionName = sectionName;
+    viewController.sectionIndex = sectionIndexOf;
     viewController.index = indexOf;
     [self.navigationController pushViewController:viewController animated:YES];
 }
@@ -61,7 +62,7 @@
     CGSize size = CGSizeMake(self.closeBaseCollectionView.frame.size.width, 200);
     layout.itemSize = size;
     
-    NSNotificationCenter *nc =[NSNotificationCenter defaultCenter];
+    //NSNotificationCenter *nc =[NSNotificationCenter defaultCenter];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(willGoSingleView:) name:@"WillFullviewDisplay" object:nil];
     /*
     //[self.navigationController setNavigationBarHidden:NO animated:NO];
@@ -120,12 +121,13 @@
     //currentCollectionView.delegate = baseCell;
     //currentCollectionView.dataSource = baseCell;
     NSInteger index = indexPath.section;
-    NSString* nameOfSection = [self.m_appDelegate.m_imageLibrary getSectionNames][index];
-    NSArray* array = [self.m_appDelegate.m_imageLibrary getItemsInSection:nameOfSection];
+    //NSString* nameOfSection = [self.m_appDelegate.m_imageLibrary getSectionNames][index];
+    NSArray* array = [self.m_appDelegate.m_imageLibrary getItemsInSectionByIndex:index];
     
     //currentCollectionView.items = array;
     baseCell.items = array;
-    baseCell.sectionName = nameOfSection;
+    //baseCell.sectionName = nameOfSection;
+    baseCell.sectionIndex = index;
     [baseCell.itemThumbnailCollection reloadData];
     return baseCell;
 }

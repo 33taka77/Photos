@@ -7,17 +7,20 @@
 //
 
 #import "ImageLibrary.h"
-#import "AssetMngr.h"
+#import "AssetManager.h"
+#import "AssetObject.h"
+#import "SectionData.h"
 
 @interface ImageLibrary () <AssetLibraryDelegate>
 {
     BOOL m_isLocal;
     BOOL m_isFlickr;
     BOOL m_Facebook;
-    NSMutableArray* m_sectionDatas; /* array of SectionData */
-    AssetMngr* m_assetMngr;
+    AssetManager* m_assetMngr;
 }
 @property NSInteger m_currentGroup;
+@property (nonatomic, retain) NSMutableArray* m_sectionDatas; /* array of SectionData */
+@property (nonatomic, retain) NSMutableArray* m_assetGroups; /* array of AssetObject */
 
 @end
 
@@ -26,10 +29,12 @@
 
     static ImageLibrary* g_Library;
 
+/*
 - (void)updateView
 {
     [self.delegate updateView];
 }
+*/
 
 + (ImageLibrary*)sharedLibrary:(NSUInteger)type
 {
@@ -41,9 +46,43 @@
     return g_Library;
 }
 
+- (void)updateGroupDataGroupURL:(NSURL*)groupUrl
+{
+    NSLog(@"- (void)updateGroupDataGroupURL:(NSURL*)groupUrl is called");
+    [self.delegate updateView];
+}
+
+- (void)updateItemDataItemURL:(NSURL*)url groupURL:(NSURL*)groupUrl
+{
+    BOOL newGroup = YES;
+    for( AssetObject* group in self.m_assetGroups )
+    {
+        if( group.m_groupURL == groupUrl )
+        {
+            [group.m_items addObject:url];
+            newGroup = NO;
+            break;
+        }
+    }
+    if( newGroup == YES )
+    {
+        AssetObject* newGroup = [[AssetObject alloc] init];
+        newGroup.m_groupURL = groupUrl;
+        newGroup.m_items = [[NSMutableArray alloc] init];
+        [newGroup.m_items addObject:url];
+        [self.m_assetGroups addObject:newGroup];
+    }
+}
+
 -(void)initializeLibrary
 {
     m_assetMngr.delegate = self;
+    self.m_assetGroups = [[NSMutableArray alloc] init];
+    
+    m_assetMngr = [AssetManager sharedAssetManager];
+    [m_assetMngr setAssetManagerModeIsHoldItemData:NO];
+    [m_assetMngr enumeAssetItems];
+
 }
 
 
@@ -100,107 +139,57 @@
             default:
                 break;
         }
-        if( m_isLocal )
-        {
-            m_assetMngr = [AssetMngr create];
-            [m_assetMngr initializeALAssetLibrary];
-            [m_assetMngr buildAssetData];
-            if( m_sectionDatas == nil )
-            {
-                m_sectionDatas = [[NSMutableArray alloc] init];
-            }
-        }
 }
 
--(void)createSectionEntries
+- (void)createSectionDataAndSortByDateAtGroup:(NSInteger)groupIndex
 {
     if( m_isLocal )
     {
-        NSArray* groupNames = [m_assetMngr GetGroupNames];
-        BOOL skipToNext = NO;
-        for( NSString* name in groupNames )
+        AssetObject* assetObject = self.m_assetGroups[groupIndex];
+        
+        for( NSURL* url in assetObject.m_items )
         {
-            for( SectionData* data in m_sectionDatas )
+            NSDate* date = [m_assetMngr getCaptureDateByURL:url];
+            NSDateFormatter* formatter = [[NSDateFormatter alloc] init];
+            [formatter setDateFormat:@"yyyy/MM/dd"];
+            NSString *strDate = [formatter stringFromDate:date];
+            BOOL isNew = YES;
+            for( SectionData* sectionData in self.m_sectionDatas )
             {
-                if( data.sectionTitle == name )
+                if( [strDate isEqualToString:sectionData.sectionTitle] )
                 {
-                    skipToNext = YES;
+                    [sectionData.items addObject:url];
+                    isNew = NO;
                     break;
                 }
             }
-            if( skipToNext == NO )
+            if( isNew == YES )
             {
-                SectionData* section = [[SectionData alloc] initWithTitle:name];
-                section.kind = kImageLibraryTypeLocal;
-                //NSArray* array = [m_assetMngr buildSectionsForDateWithGroupName:name];
-                //section.items = [array mutableCopy];
-                [m_sectionDatas addObject:section];
+                SectionData* newSection = [[SectionData alloc] init];
+                newSection.sectionTitle = strDate;
+                newSection.items = [[NSMutableArray alloc] init];
+                [newSection.items addObject:url];
             }
-            skipToNext = NO;
         }
-    }
-}
-
-- (void)createSectionDataAndSortByDate
-{
-    if( m_isLocal )
-    {
-        NSArray* groupNames = [m_assetMngr GetGroupNames];
-        BOOL skipToNext = NO;
-        for( NSString* name in groupNames )
-        {
-            for( SectionData* data in m_sectionDatas )
-            {
-                if( data.sectionTitle == name )
-                {
-                    skipToNext = YES;
-                    break;
-                }
-            }
-            if( skipToNext == NO )
-            {
-                //SectionData* section = [[SectionData alloc] initWithTitle:name];
-                //section.kind = kImageLibraryTypeLocal;
-                NSArray* array = [m_assetMngr buildSectionsForDateWithGroupName:name kind:kImageLibraryTypeLocal];
-                //section.items = [array mutableCopy];
-                [m_sectionDatas addObjectsFromArray:array];
-            }
-            skipToNext = NO;
-        }
-    }
-}
-
-
-- (void)createSectionDataAndSortByDateAtGroup:(NSInteger)GroupIndex
-{
-    if( m_isLocal )
-    {
-        NSArray* groupNames = [m_assetMngr GetGroupNames];
-        NSString* name = groupNames[GroupIndex];
-        //SectionData* section = [[SectionData alloc] initWithTitle:name];
-        //section.kind = kImageLibraryTypeLocal;
-        NSArray* array = [m_assetMngr buildSectionsForDateWithGroupName:name kind:kImageLibraryTypeLocal];
-        //section.items = [array mutableCopy];
-        [m_sectionDatas addObjectsFromArray:array];
     }
 }
 
 - (NSInteger)getGroupCount
 {
-    NSArray* groupArray = [m_assetMngr GetGroupNames];
+    NSArray* groupArray = [m_assetMngr getGroupNames];
     return groupArray.count;
 }
 
 - (NSInteger)getSectionCount
 {
-    return m_sectionDatas.count;
+    return self.m_sectionDatas.count;
 }
 
 - (NSArray*)getGroupNames
 {
     if( m_isLocal )
     {
-        return [m_assetMngr GetGroupNames];
+        return [m_assetMngr getGroupNames];
     }
     return nil;
 }
@@ -208,7 +197,7 @@
 - (NSArray*)getSectionNames
 {
     NSMutableArray* array = [[NSMutableArray alloc] init];
-    for( SectionData* section in m_sectionDatas )
+    for( SectionData* section in self.m_sectionDatas )
     {
         [array addObject:section.sectionTitle];
     }
@@ -217,23 +206,23 @@
 
 - (NSString*)getSectonNameAtGroup:(NSString*)groupName index:(NSInteger)index
 {
-    return [m_assetMngr GetGroupNames][index];
+    return [m_assetMngr getGroupNames][index];
 }
 
 - (NSString*)getGroupNameAtIndex:(NSInteger)index
 {
-    return [m_assetMngr GetGroupNames][index];
+    return [m_assetMngr getGroupNames][index];
 }
 
 - (NSInteger)getNumOfImagesInGroup:(NSString*)groupName
 {
-    return [m_assetMngr GetCountOfImagesInGroup:groupName];
+    return [m_assetMngr getCountOfImagesInGroup:groupName];
 }
 
 - (NSInteger)getNumOfImagesInSection:(NSString*)sectionName
 {
     NSInteger count = 0;
-    for( SectionData* section in m_sectionDatas )
+    for( SectionData* section in self.m_sectionDatas )
     {
         if( [section.sectionTitle isEqual:sectionName] )
         {
@@ -245,10 +234,16 @@
     return count;
 }
 
+- (NSArray*)getItemsInSectionByIndex:(NSInteger)sectionIndex
+{
+    SectionData* sectionData = self.m_sectionDatas[sectionIndex];
+    return sectionData.items;
+}
+/*
 - (NSArray*)getItemsInSection:(NSString*)sectionName
 {
     NSArray* array;
-    for( SectionData* section in m_sectionDatas )
+    for( SectionData* section in self.m_sectionDatas )
     {
         if( [section.sectionTitle isEqual:sectionName] )
         {
@@ -259,17 +254,33 @@
     }
     return array;
 }
-
+*/
+- (UIImage*)getThumbnailAtGroupByIndex:(NSInteger)groupIndex index:(NSInteger)index
+{
+    AssetObject* assetObj = self.m_assetGroups[groupIndex];
+    return [m_assetMngr getThumbnail:assetObj.m_items[index]];
+}
+/*
 - (UIImage*)getThumbnailAtGroupName:(NSString*)groupName index:(NSInteger)index
 {
+    for( AssetObject* assetObj in self.m_assetGroups )
+    {
+        m_assetMngr  assetObj.m_groupURL
     UIImage* image = [m_assetMngr getThumbnailByGroupName:groupName index:index];
     return image;
 }
+*/
+- (UIImage*)getThumbnailAtSectionByIndex:(NSInteger)sectionIndex index:(NSInteger)index
+{
+    SectionData* sectionData = self.m_assetGroups[sectionIndex];
+    return [m_assetMngr getThumbnail:sectionData.items[index]];
+}
 
+/*
 - (UIImage*)getThumbnailAtSectionName:(NSString*)sectionName index:(NSInteger)index
 {
     UIImage* image;
-    for( SectionData* section in m_sectionDatas )
+    for( SectionData* section in self.m_sectionDatas )
     {
         if( [section.sectionTitle isEqual:sectionName] )
         {
@@ -289,11 +300,17 @@
     }
     return image;
 }
-
+*/
+- (UIImage*)getFullViewImageAtSectionByIndex:(NSInteger)sectionIndex index:(NSInteger)index
+{
+    SectionData* sectionData = self.m_assetGroups[sectionIndex];
+    return [m_assetMngr getFullImage:sectionData.items[index]];
+}
+/*
 - (UIImage*)getFullViewImageAtSectionName:(NSString*)sectionName index:(NSInteger)index
 {
     UIImage* image;
-    for( SectionData* section in m_sectionDatas )
+    for( SectionData* section in self.m_sectionDatas )
     {
         if( [section.sectionTitle isEqual:sectionName] )
         {
@@ -307,15 +324,15 @@
     }
     return image;
 }
-
+*/
 - (void)cleanupSectionsData
 {
-    for( SectionData* section in m_sectionDatas )
+    for( SectionData* section in self.m_sectionDatas )
     {
         [section.items removeAllObjects];
         section.items = nil;
     }
-    [m_sectionDatas removeAllObjects];
+    [self.m_sectionDatas removeAllObjects];
     //m_sectionDatas = nil;
 }
 

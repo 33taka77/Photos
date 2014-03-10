@@ -29,9 +29,10 @@
 - (void)enumeAssetItems;
 - (UIImage*)getFullImage:(NSURL*)url;
 - (UIImage*)getFullScreenImage:(NSURL*)url;
-- (NSArray*)GetGroupNames;
+- (NSArray*)getGroupNames;
 - (NSString*)getGroupNameByURL:(NSURL*)url;
-- (NSInteger)GetCountOfImagesInGroup:(NSString*)name;
-- (NSInteger)GetCountOfImagesInGroupByURL:(NSURL*)url;
+- (NSInteger)getCountOfImagesInGroup:(NSString*)name;
+- (NSInteger)getCountOfImagesInGroupByURL:(NSURL*)url;
+- (NSDate*)getCaptureDateByURL:(NSURL*)url;
 
 @end

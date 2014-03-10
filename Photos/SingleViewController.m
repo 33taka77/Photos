@@ -19,7 +19,7 @@
 @implementation SingleViewController
 
 @synthesize index;
-@synthesize sectionName;
+@synthesize sectionIndex;
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
@@ -37,7 +37,7 @@
     AppDelegate* appDelegate = [[UIApplication sharedApplication] delegate];
     self.m_appDelegate = appDelegate;
     
-    UIImage* image = [self.m_appDelegate.m_imageLibrary getFullViewImageAtSectionName:self.sectionName index:self.index];
+    UIImage* image = [self.m_appDelegate.m_imageLibrary getFullViewImageAtSectionByIndex:self.sectionIndex index:self.index];
     self.fullImageView.image = image;
 }
 

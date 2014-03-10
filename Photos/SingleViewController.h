@@ -9,7 +9,7 @@
 #import <UIKit/UIKit.h>
 
 @interface SingleViewController : UIViewController
-@property (nonatomic, retain) NSString* sectionName;
+@property NSInteger sectionIndex;
 @property NSInteger index;
 
 @end

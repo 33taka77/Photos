@@ -23,7 +23,7 @@
     self.m_imageLibrary = [ImageLibrary sharedLibrary:kImageLibraryTypeLocal];
     [self.m_imageLibrary initializeLibrary];
     self.m_imageLibrary.delegate = self;
-    [self.m_imageLibrary createSectionDataAndSortByDate];
+    //[self.m_imageLibrary createSectionDataAndSortByDate];
     NSArray* array = [self.m_imageLibrary getSectionNames];
     for( NSString* name in array )
     {

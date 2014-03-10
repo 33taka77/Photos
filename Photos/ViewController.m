@@ -66,7 +66,7 @@
 
     if( count > 2 )
     {
-        cell.groupImage1.image = [self.m_appDelegate.m_imageLibrary getThumbnailAtGroupName:name index:2];
+        cell.groupImage1.image = [self.m_appDelegate.m_imageLibrary getThumbnailAtGroupByIndex:indexPath.row index:2];
         //CGFloat angle = 20.0 * M_PI / 180.0;
         //cell.groupImage1.transform = CGAffineTransformMakeRotation(angle);
         //cell.groupImage1.transform = CGAffineTransformMakeScale( 1.3, 1.3);
@@ -77,7 +77,7 @@
     }
     if( count > 1 )
     {
-        cell.groupImage2.image = [self.m_appDelegate.m_imageLibrary getThumbnailAtGroupName:name index:1];
+        cell.groupImage2.image = [self.m_appDelegate.m_imageLibrary getThumbnailAtGroupByIndex:indexPath.row index:1];
         //CGFloat angle = 10.0 * M_PI / 180.0;
         //cell.groupImage2.transform = CGAffineTransformMakeRotation(angle);
         //cell.groupImage2.transform = CGAffineTransformMakeScale( 1.2, 1.2);
@@ -86,7 +86,7 @@
    }
     if( count > 0 )
     {
-        cell.groupImage3.image = [self.m_appDelegate.m_imageLibrary getThumbnailAtGroupName:name index:0];
+        cell.groupImage3.image = [self.m_appDelegate.m_imageLibrary getThumbnailAtGroupByIndex:indexPath.row  index:0];
         //CGFloat angle = 30.0 * M_PI / 180.0;
         //CGAffineTransform t1 = CGAffineTransformMakeRotation(angle);
         //CGAffineTransform t2 = CGAffineTransformScale(t1,1.2,1.2);

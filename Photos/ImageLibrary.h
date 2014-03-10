@@ -45,7 +45,7 @@
 /*
  Create the image datas and sort the data by the date.
 */
-- (void)createSectionDataAndSortByDate;
+//- (void)createSectionDataAndSortByDate;
 
 - (void)createSectionDataAndSortByDateAtGroup:(NSInteger)GroupIndex;
 
@@ -53,7 +53,7 @@
 
 -(NSInteger)getCurrentGroupIndex;
 
--(void)createSectionEntries;
+//-(void)createSectionEntries;
 
 - (NSInteger)getGroupCount;
 
@@ -61,7 +61,9 @@
 
 - (NSInteger)getSectionCount;
 
-- (NSArray*)getItemsInSection:(NSString*)sectionName;
+//- (NSArray*)getItemsInSection:(NSString*)sectionName;
+
+- (NSArray*)getItemsInSectionByIndex:(NSInteger)sectionIndex;
 
 - (NSArray*)getSectionNames;
 
@@ -73,13 +75,19 @@
 
 - (NSInteger)getNumOfImagesInGroup:(NSString*)groupName;
 
-- (UIImage*)getThumbnailAtGroupName:(NSString*)groupName index:(NSInteger)index;
+//- (UIImage*)getThumbnailAtGroupName:(NSString*)groupName index:(NSInteger)index;
 
-- (UIImage*)getThumbnailAtSectionName:(NSString*)sectionName index:(NSInteger)index;
+- (UIImage*)getThumbnailAtGroupByIndex:(NSInteger)groupIndex index:(NSInteger)index;
+
+- (UIImage*)getThumbnailAtSectionByIndex:(NSInteger)sectionIndex index:(NSInteger)index;
+
+//- (UIImage*)getThumbnailAtSectionName:(NSString*)sectionName index:(NSInteger)index;
 
 //- (UIImage*)getThumbnailAtSectionName:(NSString*)sectionName URL:(NSURL*)url;
 
-- (UIImage*)getFullViewImageAtSectionName:(NSString*)sectionName index:(NSInteger)index;
+//- (UIImage*)getFullViewImageAtSectionName:(NSString*)sectionName index:(NSInteger)index;
+
+- (UIImage*)getFullViewImageAtSectionByIndex:(NSInteger)sectionIndex index:(NSInteger)index;
 
 - (void)cleanupSectionsData;
 
