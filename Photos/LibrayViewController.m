@@ -12,6 +12,7 @@
 #import "baseCollectionHeader.h"
 #import "ItemThumbnailCollectionView.h"
 #import "SingleViewController.h"
+#import "TestViewController.h"
 
 
 @interface LibrayViewController ()
@@ -100,7 +101,7 @@
 - (void)viewWillDisappear:(BOOL)animated
 {
     NSInteger count = self.navigationController.viewControllers.count;
-    if( self.m_countOfViews < count )
+    if( self.m_countOfViews <= count )
     {
         
     }else{
@@ -158,10 +159,14 @@
     return size;
 }
 - (IBAction)testNext:(id)sender {
+    /*
     UIViewController* viewController = [self.storyboard instantiateViewControllerWithIdentifier:@"TestViewController"];
     //viewController.sectionIndex = sectionIndexOf;
     //viewController.index = indexOf;
     
     [self.navigationController pushViewController:viewController animated:YES];
+     */
+    TestViewController* viewController = [self.storyboard instantiateViewControllerWithIdentifier:@"TestViewController"];
+    [self presentModalViewController:viewController animated:YES];
 }
 @end

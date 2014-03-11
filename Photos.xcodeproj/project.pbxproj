@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		8138942918CEE459009D967D /* TestViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8138942818CEE459009D967D /* TestViewController.m */; };
 		F9152D4218CDD7620039E71E /* AssetObject.m in Sources */ = {isa = PBXBuildFile; fileRef = F9152D4118CDD7620039E71E /* AssetObject.m */; };
 		F95833E018C8BAB300114C29 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F95833DF18C8BAB300114C29 /* Foundation.framework */; };
 		F95833E218C8BAB300114C29 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F95833E118C8BAB300114C29 /* CoreGraphics.framework */; };
@@ -48,6 +49,8 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		8138942718CEE459009D967D /* TestViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TestViewController.h; sourceTree = "<group>"; };
+		8138942818CEE459009D967D /* TestViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TestViewController.m; sourceTree = "<group>"; };
 		F9152D4018CDD7620039E71E /* AssetObject.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AssetObject.h; sourceTree = "<group>"; };
 		F9152D4118CDD7620039E71E /* AssetObject.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AssetObject.m; sourceTree = "<group>"; };
 		F95833DC18C8BAB300114C29 /* Photos.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Photos.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -221,6 +224,8 @@
 				F95833EF18C8BAB300114C29 /* AppDelegate.m */,
 				F9F26C0018CC7ECB000E9B64 /* SingleViewController.h */,
 				F9F26C0118CC7ECB000E9B64 /* SingleViewController.m */,
+				8138942718CEE459009D967D /* TestViewController.h */,
+				8138942818CEE459009D967D /* TestViewController.m */,
 			);
 			name = Controller;
 			sourceTree = "<group>";
@@ -354,6 +359,7 @@
 				F958342318C8BB8D00114C29 /* SectionData.m in Sources */,
 				F9F26C0218CC7ECB000E9B64 /* SingleViewController.m in Sources */,
 				F9F26C0518CDCB0E000E9B64 /* AssetManager.m in Sources */,
+				8138942918CEE459009D967D /* TestViewController.m in Sources */,
 				F958342118C8BB8D00114C29 /* AssetMngr.m in Sources */,
 				F95833EC18C8BAB300114C29 /* main.m in Sources */,
 				F9F26BA418CB51EC000E9B64 /* baseCollectionHeader.m in Sources */,
