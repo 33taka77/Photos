@@ -34,5 +34,6 @@
 - (NSInteger)getCountOfImagesInGroup:(NSString*)name;
 - (NSInteger)getCountOfImagesInGroupByURL:(NSURL*)url;
 - (NSDate*)getCaptureDateByURL:(NSURL*)url;
+- (UIImage*)getThumbnailAspect:(NSURL *)url;
 
 @end

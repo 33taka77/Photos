@@ -293,12 +293,18 @@
                         <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <subviews>
-                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="p2m-eL-FIG">
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="p2m-eL-FIG">
                                 <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                             </imageView>
                         </subviews>
-                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+                        <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstAttribute="trailing" secondItem="p2m-eL-FIG" secondAttribute="trailing" id="96U-dC-twg"/>
+                            <constraint firstItem="p2m-eL-FIG" firstAttribute="leading" secondItem="pLA-Za-7TH" secondAttribute="leading" id="H02-1L-4t2"/>
+                            <constraint firstItem="D2b-XE-VRz" firstAttribute="top" secondItem="p2m-eL-FIG" secondAttribute="bottom" id="ZCV-5f-jnn"/>
+                            <constraint firstItem="p2m-eL-FIG" firstAttribute="top" secondItem="pLA-Za-7TH" secondAttribute="top" id="nte-tR-4pf"/>
+                        </constraints>
                     </view>
                     <connections>
                         <outlet property="fullImageView" destination="p2m-eL-FIG" id="f4X-Ho-wR5"/>
@@ -333,7 +339,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="GwP-4x-K8L" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1370" y="534"/>
+            <point key="canvasLocation" x="1381" y="658"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="7NM-e5-rUh">

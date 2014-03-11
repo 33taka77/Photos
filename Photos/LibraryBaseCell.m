@@ -12,6 +12,7 @@
 #import "ItemThumbnailCollectionView.h"
 #import "ItemThumbnailCell.h"
 
+#define kBaseCellHeight     (170)
 
 @interface LibraryBaseCell ()
 @property (nonatomic, retain) AppDelegate* m_appDelegate;
@@ -92,7 +93,14 @@
     NSString* searchTerm = self.searches[indexPath.section];
     FlickrPhoto* photo = self.searchResults[searchTerm][indexPath.row];
     */
-    CGSize retval = thumbnailData.size.width > 0 ? CGSizeMake(thumbnailData.size.width, thumbnailData.size.height): CGSizeMake(100, 100);
+    float width = thumbnailData.size.width;
+    float height = thumbnailData.size.height;
+    if( height > kBaseCellHeight )
+    {
+        height = kBaseCellHeight;
+        width = width * kBaseCellHeight/thumbnailData.size.height;
+    }
+    CGSize retval = thumbnailData.size.width > 0 ? CGSizeMake(width, height): CGSizeMake(100, 100);
     retval.height += 15; retval.width += 15;
     return retval;
 }

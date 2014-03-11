@@ -34,6 +34,7 @@
 {
  //   sectionIndex = 0;
  //   index = 0;
+    self.fullImageView.image = nil;
 }
 
 - (void)viewDidLoad
@@ -45,7 +46,8 @@
     NSInteger section = self.sectionIndex;
     NSInteger index = self.index;
     NSLog(@"SingleView section:%ld index:%ld",(long)section, (long)index);
-    UIImage* image = [self.m_appDelegate.m_imageLibrary getFullViewImageAtSectionByIndex:self.sectionIndex index:self.index];
+    UIImage* image = [self.m_appDelegate.m_imageLibrary getFullSreenViewImageAtSectionByIndex:self.sectionIndex index:self.index];
+    self.fullImageView.contentMode = UIViewContentModeScaleAspectFit;
     self.fullImageView.image = image;
 }
 

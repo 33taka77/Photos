@@ -68,32 +68,55 @@ static AssetManager* g_assetManager = nil;
 
 - (UIImage*)getThumbnail:(NSURL*)url
 {
-    ALAsset* asset = [self getAssetByURL:url];
-    UIImage* image = [UIImage imageWithCGImage:[asset thumbnail]];
-    return image;
+    @autoreleasepool {
+        ALAsset* asset = [self getAssetByURL:url];
+        UIImage* image = [UIImage imageWithCGImage:[asset thumbnail]];
+        return image;
+    }
+}
+
+- (UIImage*)getThumbnailAspect:(NSURL *)url
+{
+    @autoreleasepool {
+        ALAsset* asset = [self getAssetByURL:url];
+        
+        UIImage* image = [UIImage imageWithCGImage:[asset aspectRatioThumbnail]];
+        if( image == nil )
+        {
+            image = [UIImage imageWithCGImage:[asset thumbnail]];
+        }
+        return image;
+    }
 }
 
 - (UIImage*)getFullImage:(NSURL*)url
 {
-    ALAsset* asset = [self getAssetByURL:url];
-    ALAssetRepresentation* assetRepresentaion = [asset defaultRepresentation];
-    UIImage* image = [UIImage imageWithCGImage:[assetRepresentaion fullResolutionImage]];
-    return image;
+    @autoreleasepool {
+        ALAsset* asset = [self getAssetByURL:url];
+        ALAssetRepresentation* assetRepresentaion = [asset defaultRepresentation];
+        UIImage* image = [UIImage imageWithCGImage:[assetRepresentaion fullResolutionImage]];
+        return image;
+    }
 }
+
 - (UIImage*)getFullScreenImage:(NSURL*)url
 {
-    ALAsset* asset = [self getAssetByURL:url];
-    ALAssetRepresentation* assetRepresentaion = [asset defaultRepresentation];
-    UIImage* image = [UIImage imageWithCGImage:[assetRepresentaion fullScreenImage]];
-    return image;
+    @autoreleasepool {
+        ALAsset* asset = [self getAssetByURL:url];
+        ALAssetRepresentation* assetRepresentaion = [asset defaultRepresentation];
+        UIImage* image = [UIImage imageWithCGImage:[assetRepresentaion fullScreenImage]];
+        return image;
+    }
 }
 
 - (NSString*)getGroupNameByURL:(NSURL*)url
 {
-    NSString* name;
-    ALAssetsGroup* assetGroup = [self getAssetGroupByURL:url];
-    name = [assetGroup valueForProperty:ALAssetsGroupPropertyName];
-    return name;
+    @autoreleasepool {
+        NSString* name;
+        ALAssetsGroup* assetGroup = [self getAssetGroupByURL:url];
+        name = [assetGroup valueForProperty:ALAssetsGroupPropertyName];
+        return name;
+    }
 }
 - (NSArray*)getGroupNames
 {
@@ -119,36 +142,43 @@ static AssetManager* g_assetManager = nil;
 
 - (NSInteger)getCountOfImagesInGroup:(NSString*)name
 {
-    NSInteger num;
-    for( AssetGroupData* data in self.m_assetsGroups )
-    {
-        NSString* currentStr = [data.m_assetGroup valueForProperty:ALAssetsGroupPropertyName];
-        if( [currentStr isEqual:name] )
+    @autoreleasepool {
+        NSInteger num;
+        for( AssetGroupData* data in self.m_assetsGroups )
         {
-            num = [data.m_assetGroup numberOfAssets];
+            NSString* currentStr = [data.m_assetGroup valueForProperty:ALAssetsGroupPropertyName];
+            if( [currentStr isEqual:name] )
+            {
+                num = [data.m_assetGroup numberOfAssets];
+            }
         }
+        return num;
     }
-    return num;
 }
 - (NSInteger)getCountOfImagesInGroupByURL:(NSURL*)url
 {
-    NSInteger num;
-    for( AssetGroupData* data in self.m_assetsGroups )
-    {
-        NSURL* currentUrl = [data.m_assetGroup valueForProperty:ALAssetsGroupPropertyURL];
-        if( [currentUrl isEqual:url] )
+    @autoreleasepool {
+        NSInteger num;
+        for( AssetGroupData* data in self.m_assetsGroups )
         {
-            num = [data.m_assetGroup numberOfAssets];
+            NSURL* currentUrl = [data.m_assetGroup valueForProperty:ALAssetsGroupPropertyURL];
+            if( [currentUrl isEqual:url] )
+            {
+                num = [data.m_assetGroup numberOfAssets];
+            }
         }
+        return num;
     }
-    return num;
 }
 - (NSDate*)getCaptureDateByURL:(NSURL*)url
 {
-    ALAsset* asset = [self getAssetByURL:url];
-    NSDate* date = [asset valueForProperty:ALAssetPropertyDate];
-    return date;
+    @autoreleasepool {
+        ALAsset* asset = [self getAssetByURL:url];
+        NSDate* date = [asset valueForProperty:ALAssetPropertyDate];
+        return date;
+    }
 }
+
 
 // ------- internal functions -------------------------------------------------------------------------
 

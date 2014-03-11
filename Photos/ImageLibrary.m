@@ -299,6 +299,11 @@
     return [m_assetMngr getThumbnail:sectionData.items[index]];
 }
 
+- (UIImage*)getAspectThumbnailAtSectionByIndex:(NSInteger)sectionIndex index:(NSInteger)index
+{
+    SectionData* sectionData = self.m_sectionDatas[sectionIndex];
+    return [m_assetMngr getThumbnailAspect:sectionData.items[index]];
+}
 /*
 - (UIImage*)getThumbnailAtSectionName:(NSString*)sectionName index:(NSInteger)index
 {
@@ -328,6 +333,12 @@
 {
     SectionData* sectionData = self.m_sectionDatas[sectionIndex];
     return [m_assetMngr getFullImage:sectionData.items[index]];
+}
+
+- (UIImage*)getFullSreenViewImageAtSectionByIndex:(NSInteger)sectionIndex index:(NSInteger)index
+{
+    SectionData* sectionData = self.m_sectionDatas[sectionIndex];
+    return [m_assetMngr getFullScreenImage:sectionData.items[index]];
 }
 /*
 - (UIImage*)getFullViewImageAtSectionName:(NSString*)sectionName index:(NSInteger)index
