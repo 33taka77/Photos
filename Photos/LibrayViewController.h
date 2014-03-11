@@ -11,5 +11,6 @@
 @interface LibrayViewController : UIViewController < UICollectionViewDataSource, UICollectionViewDelegateFlowLayout >
 //@property (weak, nonatomic) IBOutlet UITabBarItem *tabBarItem;
 @property (weak, nonatomic) IBOutlet UICollectionView *closeBaseCollectionView;
+- (IBAction)testNext:(id)sender;
 
 @end

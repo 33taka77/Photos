@@ -77,9 +77,10 @@
 -(void)initializeLibrary
 {
     self.m_assetGroups = [[NSMutableArray alloc] init];
-    
+    self.m_sectionDatas = [[NSMutableArray alloc] init];
+  
     m_assetMngr = [AssetManager sharedAssetManager];
-    [m_assetMngr setAssetManagerModeIsHoldItemData:NO];
+     [m_assetMngr setAssetManagerModeIsHoldItemData:NO];
     m_assetMngr.delegate = self;
     [m_assetMngr enumeAssetItems];
 
@@ -169,6 +170,7 @@
                 newSection.sectionTitle = strDate;
                 newSection.items = [[NSMutableArray alloc] init];
                 [newSection.items addObject:url];
+                [self.m_sectionDatas addObject:newSection];
             }
         }
     }
@@ -176,12 +178,16 @@
 
 - (NSInteger)getGroupCount
 {
+    /*
     NSArray* groupArray = [m_assetMngr getGroupNames];
     return groupArray.count;
+    */
+    return self.m_assetGroups.count;
 }
 
 - (NSInteger)getSectionCount
 {
+    NSInteger num = self.m_sectionDatas.count;
     return self.m_sectionDatas.count;
 }
 
@@ -210,14 +216,19 @@
     return array;
 }
 
+/*
 - (NSString*)getSectonNameAtGroup:(NSString*)groupName index:(NSInteger)index
 {
     return [m_assetMngr getGroupNames][index];
 }
-
+*/
 - (NSString*)getGroupNameAtIndex:(NSInteger)index
 {
-    return [m_assetMngr getGroupNames][index];
+    NSString* str;
+    AssetObject* obj = self.m_assetGroups[index];
+    str = [m_assetMngr getGroupNameByURL:obj.m_groupURL];
+    return str;
+   //return [m_assetMngr getGroupNames][index];
 }
 
 - (NSInteger)getNumOfImagesInGroup:(NSString*)groupName
@@ -225,6 +236,12 @@
     return [m_assetMngr getCountOfImagesInGroup:groupName];
 }
 
+- (NSInteger)getNumOfImagesInSectionBySectonIndex:(NSInteger)sectionIndex
+{
+    SectionData* sectionData = self.m_sectionDatas[sectionIndex];
+    NSInteger num = sectionData.items.count;
+    return num;
+}
 - (NSInteger)getNumOfImagesInSection:(NSString*)sectionName
 {
     NSInteger count = 0;
@@ -278,7 +295,7 @@
 */
 - (UIImage*)getThumbnailAtSectionByIndex:(NSInteger)sectionIndex index:(NSInteger)index
 {
-    SectionData* sectionData = self.m_assetGroups[sectionIndex];
+    SectionData* sectionData = self.m_sectionDatas[sectionIndex];
     return [m_assetMngr getThumbnail:sectionData.items[index]];
 }
 
@@ -309,7 +326,7 @@
 */
 - (UIImage*)getFullViewImageAtSectionByIndex:(NSInteger)sectionIndex index:(NSInteger)index
 {
-    SectionData* sectionData = self.m_assetGroups[sectionIndex];
+    SectionData* sectionData = self.m_sectionDatas[sectionIndex];
     return [m_assetMngr getFullImage:sectionData.items[index]];
 }
 /*

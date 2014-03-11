@@ -104,10 +104,13 @@
 
 - (void)collectionView:(UICollectionView*)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath
 {
-    NSInteger currentIndex = indexPath.row;
+    //NSInteger currentIndex = indexPath.row;
     //NSArray* names = [self.m_appDelegate.m_imageLibrary getSectionNames];
     //NSString* sectionName = names[currentIndex];
-    NSDictionary *userInfo = [NSDictionary dictionaryWithObjectsAndKeys:[NSNumber numberWithInt:currentIndex], @"SectionIndex",[NSNumber numberWithInt:indexPath.row], @"index", nil];
+    NSInteger row = indexPath.row;
+    NSInteger section = self.sectionIndex;
+    NSLog(@"didSelectItem section:%ld index:%ld", (long)section, (long)row);
+    NSDictionary *userInfo = [NSDictionary dictionaryWithObjectsAndKeys:[NSNumber numberWithInt:section], @"SectionIndex",[NSNumber numberWithInt:row], @"index", nil];
 
     [[NSNotificationCenter defaultCenter] postNotificationName:@"WillFullviewDisplay" object:self userInfo:userInfo];
     

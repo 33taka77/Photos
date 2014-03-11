@@ -30,13 +30,21 @@
     return self;
 }
 
+- (void)viewWillDisappear:(BOOL)animated
+{
+ //   sectionIndex = 0;
+ //   index = 0;
+}
+
 - (void)viewDidLoad
 {
     [super viewDidLoad];
 	// Do any additional setup after loading the view.
     AppDelegate* appDelegate = [[UIApplication sharedApplication] delegate];
     self.m_appDelegate = appDelegate;
-    
+    NSInteger section = self.sectionIndex;
+    NSInteger index = self.index;
+    NSLog(@"SingleView section:%ld index:%ld",(long)section, (long)index);
     UIImage* image = [self.m_appDelegate.m_imageLibrary getFullViewImageAtSectionByIndex:self.sectionIndex index:self.index];
     self.fullImageView.image = image;
 }

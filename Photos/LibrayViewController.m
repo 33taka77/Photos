@@ -16,7 +16,7 @@
 
 @interface LibrayViewController ()
 @property (nonatomic, retain) AppDelegate* m_appDelegate;
-
+@property NSInteger m_countOfViews;
 
 @end
 
@@ -27,6 +27,7 @@
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
     if (self) {
         // Custom initialization
+        self.m_countOfViews = 0;
     }
     return self;
 }
@@ -34,14 +35,16 @@
 
 - (void)willGoSingleView:(NSNotification *)notification
 {
-    NSNumber* sectionIndex = [notification.userInfo objectForKey:@"SectionInex"];
+    
+    NSNumber* sectionIndex = [notification.userInfo objectForKey:@"SectionIndex"];
     NSNumber *index = [notification.userInfo objectForKey:@"index"];
     NSInteger indexOf = [index intValue];
     NSInteger sectionIndexOf = [sectionIndex intValue];
     SingleViewController* viewController = [self.storyboard instantiateViewControllerWithIdentifier:@"SingleImageViewContoller"];
     viewController.sectionIndex = sectionIndexOf;
     viewController.index = indexOf;
-    [self.navigationController pushViewController:viewController animated:YES];
+
+     [self.navigationController pushViewController:viewController animated:YES];
 }
 
 
@@ -82,6 +85,8 @@
     //navigationItemのtitleViewをLabelに置き換える
     self.navigationItem.titleView = navigationTitle;
     */
+    self.m_countOfViews = self.navigationController.viewControllers.count;
+
     self.navigationItem.title = libraryName;
 }
 
@@ -94,7 +99,13 @@
 
 - (void)viewWillDisappear:(BOOL)animated
 {
-    [self.m_appDelegate.m_imageLibrary cleanupSectionsData];
+    NSInteger count = self.navigationController.viewControllers.count;
+    if( self.m_countOfViews < count )
+    {
+        
+    }else{
+        [self.m_appDelegate.m_imageLibrary cleanupSectionsData];
+    }
 }
 
 - (void)didReceiveMemoryWarning
@@ -145,5 +156,12 @@
 -(CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout sizeForItemAtIndexPath:(NSIndexPath *)indexPath {
     CGSize size = CGSizeMake(self.closeBaseCollectionView.frame.size.width, 190);
     return size;
+}
+- (IBAction)testNext:(id)sender {
+    UIViewController* viewController = [self.storyboard instantiateViewControllerWithIdentifier:@"TestViewController"];
+    //viewController.sectionIndex = sectionIndexOf;
+    //viewController.index = indexOf;
+    
+    [self.navigationController pushViewController:viewController animated:YES];
 }
 @end

@@ -69,9 +69,11 @@
 
 - (NSString*)getGroupNameAtIndex:(NSInteger)index;
 
-- (NSString*)getSectonNameAtGroup:(NSString*)groupName index:(NSInteger)index;
+//- (NSString*)getSectonNameAtGroup:(NSString*)groupName index:(NSInteger)index;
 
 - (NSInteger)getNumOfImagesInSection:(NSString*)sectionName;
+
+- (NSInteger)getNumOfImagesInSectionBySectonIndex:(NSInteger)sectionIndex;
 
 - (NSInteger)getNumOfImagesInGroup:(NSString*)groupName;
 

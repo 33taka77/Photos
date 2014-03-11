@@ -59,11 +59,11 @@
 {
     GroupCell* cell = [collectionView dequeueReusableCellWithReuseIdentifier:@"GroupCell" forIndexPath:indexPath];
     NSInteger index = indexPath.row;
-    NSLog(@"index %d",index);
+    NSLog(@"index %ld",(long)index);
     NSString* name = [self.m_appDelegate.m_imageLibrary getGroupNameAtIndex:indexPath.row];
     cell.groupName.text = name;
     NSInteger count =  [self.m_appDelegate.m_imageLibrary getNumOfImagesInGroup:name];
-    NSString* num = [NSString stringWithFormat:@"(%d)",count ];
+    NSString* num = [NSString stringWithFormat:@"(%ld)",(long)count ];
     cell.groupCont.text = num;
 
     if( count > 2 )

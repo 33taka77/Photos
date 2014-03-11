@@ -24,9 +24,11 @@ static AssetManager* g_assetManager = nil;
 {
     static dispatch_once_t onceToken;
     dispatch_once(&onceToken, ^{
-        g_assetManager = [[AssetManager alloc] init];
-        g_assetManager.m_assetLibrary = [[ALAssetsLibrary alloc] init];
-        g_assetManager.m_assetsGroups = [[NSMutableArray alloc] init];
+        @autoreleasepool{
+            g_assetManager = [[AssetManager alloc] init];
+            g_assetManager.m_assetLibrary = [[ALAssetsLibrary alloc] init];
+            g_assetManager.m_assetsGroups = [[NSMutableArray alloc] init];
+        }
     });
     return g_assetManager;
 }
@@ -192,7 +194,9 @@ static AssetManager* g_assetManager = nil;
 {
     __block ALAsset* retAsset = nil;
     void (^getAssetBlock)(ALAsset*) = ^(ALAsset* asset){
-        retAsset = asset;
+        @autoreleasepool{
+            retAsset = asset;
+        }
     };
     
     void (^failBlock)(NSError*) = ^(NSError* error){
@@ -200,15 +204,18 @@ static AssetManager* g_assetManager = nil;
     };
     [self.m_assetLibrary assetForURL:url resultBlock:getAssetBlock failureBlock:failBlock];
     while (retAsset == nil) {
-        [[NSRunLoop currentRunLoop] runUntilDate:[NSDate dateWithTimeIntervalSinceNow:0.05]];
+        [[NSRunLoop currentRunLoop] runUntilDate:[NSDate dateWithTimeIntervalSinceNow:0.001]];
     }
     
     return retAsset;
 }
+
 - (void)getAssetByURL:(NSURL*)url selector:(SEL)foundAsset withObject:(id)obj
 {
     void (^getAssetBlock)(ALAsset*) = ^(ALAsset* asset){
-        [self performSelector: foundAsset withObject:(id)asset afterDelay:0.0f];
+        @autoreleasepool{
+            [self performSelector: foundAsset withObject:(id)asset afterDelay:0.0f];
+        }
     };
     
     void (^failBlock)(NSError*) = ^(NSError* error){
