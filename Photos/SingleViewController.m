@@ -122,7 +122,22 @@
         imageView.contentMode = UIViewContentModeScaleAspectFit;
         [scrollView addSubview:imageView];
     }
+/*
+    NSInteger num = self.index;
     
+    UIImageView* imageView = (UIImageView*)scrollView.subviews[ self.index ];
+    imageView.image = [self.m_appDelegate.m_imageLibrary getFullSreenViewImageAtSectionByIndex:self.sectionIndex index:self.index];
+    if( self.index > 0 )
+    {
+        imageView = (UIImageView*)scrollView.subviews[ self.index -1];
+        imageView.image = [self.m_appDelegate.m_imageLibrary getFullSreenViewImageAtSectionByIndex:self.sectionIndex index:self.index-1];
+    }
+    if( self.index < scrollView.subviews.count -1 )
+    {
+        imageView = (UIImageView*)scrollView.subviews[ self.index +1];
+        imageView.image = [self.m_appDelegate.m_imageLibrary getFullSreenViewImageAtSectionByIndex:self.sectionIndex index:self.index+1];
+    }
+*/
     // ページコントロールのインスタンス化
     CGFloat x = (width - 300) / 2;
     pageControl = [[UIPageControl alloc]initWithFrame:CGRectMake(x, self.view.frame.size.height-70, 300, 50)];
@@ -164,6 +179,24 @@
     if ((NSInteger)fmod(scrollView.contentOffset.x , pageWidth) == 0) {
         // ページコントロールに現在のページを設定
         pageControl.currentPage = scrollView.contentOffset.x / pageWidth;
+/*
+        UIImageView* imageView = (UIImageView*)scrollView.subviews[ pageControl.currentPage ];
+        //imageView.image = nil;
+        NSInteger i =pageControl.currentPage;
+        imageView.image = [self.m_appDelegate.m_imageLibrary getFullSreenViewImageAtSectionByIndex:self.sectionIndex index:pageControl.currentPage];
+        if( pageControl.currentPage > 1 )
+        {
+            imageView = (UIImageView*)scrollView.subviews[ pageControl.currentPage -1];
+            //imageView.image = nil;
+            imageView.image = [self.m_appDelegate.m_imageLibrary getFullSreenViewImageAtSectionByIndex:self.sectionIndex index:pageControl.currentPage-1];
+        }
+        if( pageControl.currentPage < scrollView.subviews.count -1 )
+        {
+            imageView = (UIImageView*)scrollView.subviews[ pageControl.currentPage +1];
+            //imageView.image = nil;
+            imageView.image = [self.m_appDelegate.m_imageLibrary getFullSreenViewImageAtSectionByIndex:self.sectionIndex index:pageControl.currentPage+1];
+        }
+*/
     }
 }
 - (void)pageControl_Tapped:(id)sender
