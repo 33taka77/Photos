@@ -42,7 +42,7 @@
     self.m_appDelegate = appDelegate;
     NSString* libraryName = [self.m_appDelegate.m_imageLibrary getGroupNameAtIndex:[self.m_appDelegate.m_imageLibrary getCurrentGroupIndex]];
     self.titleLabel.text = libraryName;
-    //[self.imageSelectCollectionView reloadData];
+    [self.imageSelectCollectionView reloadData];
 }
 
 - (void)didReceiveMemoryWarning

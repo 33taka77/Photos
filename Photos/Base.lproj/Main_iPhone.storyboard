@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="4514" systemVersion="13C64" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" initialViewController="iIl-LP-cIV">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="4514" systemVersion="13B42" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" initialViewController="iIl-LP-cIV">
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="3747"/>
     </dependencies>
@@ -300,21 +300,21 @@
                         <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <subviews>
-                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="p2m-eL-FIG">
-                                <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+                            <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Ywd-su-PNy">
+                                <rect key="frame" x="0.0" y="0.0" width="320" height="574"/>
                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                            </imageView>
+                            </scrollView>
                         </subviews>
                         <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
-                            <constraint firstAttribute="trailing" secondItem="p2m-eL-FIG" secondAttribute="trailing" id="96U-dC-twg"/>
-                            <constraint firstItem="p2m-eL-FIG" firstAttribute="leading" secondItem="pLA-Za-7TH" secondAttribute="leading" id="H02-1L-4t2"/>
-                            <constraint firstItem="D2b-XE-VRz" firstAttribute="top" secondItem="p2m-eL-FIG" secondAttribute="bottom" id="ZCV-5f-jnn"/>
-                            <constraint firstItem="p2m-eL-FIG" firstAttribute="top" secondItem="pLA-Za-7TH" secondAttribute="top" id="nte-tR-4pf"/>
+                            <constraint firstItem="Ywd-su-PNy" firstAttribute="leading" secondItem="pLA-Za-7TH" secondAttribute="leading" id="8Gg-6d-fa0"/>
+                            <constraint firstItem="Ywd-su-PNy" firstAttribute="top" secondItem="pLA-Za-7TH" secondAttribute="top" id="Wdx-jc-LPP"/>
+                            <constraint firstAttribute="bottom" secondItem="Ywd-su-PNy" secondAttribute="bottom" constant="-6" id="XyZ-fF-IIE"/>
+                            <constraint firstAttribute="trailing" secondItem="Ywd-su-PNy" secondAttribute="trailing" id="cS1-Or-r8b"/>
                         </constraints>
                     </view>
                     <connections>
-                        <outlet property="fullImageView" destination="p2m-eL-FIG" id="f4X-Ho-wR5"/>
+                        <outlet property="singleScrollView" destination="Ywd-su-PNy" id="zsk-jJ-RdP"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="xoN-8n-lmL" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -483,9 +483,17 @@
                                     <action selector="CloseButtonClicked:" destination="3pY-Kp-pQG" eventType="touchUpInside" id="QmF-hh-ul9"/>
                                 </connections>
                             </button>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="dPh-5k-Xwg">
+                                <rect key="frame" x="97" y="179" width="127" height="128"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                            </imageView>
                         </subviews>
                         <color key="backgroundColor" red="0.3535668008753553" green="1" blue="0.41792945346936394" alpha="1" colorSpace="calibratedRGB"/>
+                        <gestureRecognizers/>
                     </view>
+                    <connections>
+                        <outlet property="imageView" destination="dPh-5k-Xwg" id="KgX-Jc-BJ8"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="GwP-4x-K8L" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
