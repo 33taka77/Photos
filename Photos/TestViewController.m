@@ -50,6 +50,7 @@
     [self.view addGestureRecognizer:swipeRecognizer];
     //---------------------------------------------------
     
+    /*
     //UIPageControl関係-----------------------------------
     NSInteger pageSize = 5; // ページ数
     CGFloat width = self.view.bounds.size.width;
@@ -105,10 +106,11 @@
     
     // ページコントロールを貼付ける
     [self.view addSubview:pageControl];
-
+    */
     
 }
 
+/*
 - (void)scrollViewDidScroll:(UIScrollView *)_scrollView
 {
     CGFloat pageWidth = scrollView.frame.size.width;
@@ -123,7 +125,7 @@
     frame.origin.x = frame.size.width * pageControl.currentPage;
     [scrollView scrollRectToVisible:frame animated:YES];
 }
-
+*/
 - (void)didReceiveMemoryWarning
 {
     [super didReceiveMemoryWarning];

@@ -16,6 +16,8 @@
     //UIPageControl関係-----------------------------------
     UIScrollView *scrollView;
     UIPageControl *pageControl;
+    NSInteger currentPageIndex;
+    NSInteger munOfPage;
     //----------------------------------------------------
 
 }
@@ -66,33 +68,9 @@
 - (void)initializeSingleScollView
 {
     NSInteger numOfsectionItems = [self.m_appDelegate.m_imageLibrary getNumOfImagesInSectionBySectonIndex:self.sectionIndex];
-/*
-    CGSize s = self.singleScrollView.frame.size;
-    CGRect contentRect = CGRectMake(0, 0, s.width * numOfsectionItems, s.height);
-    UIView *contentView = [[UIView alloc] initWithFrame:contentRect];
-
-    for( int i = 0; i < numOfsectionItems; i++ )
-    {
-        UIImageView *subContentView = [[UIImageView alloc] initWithFrame:CGRectMake(320 * i, 0, s.width, s.height)];
-        subContentView.image = [self.m_appDelegate.m_imageLibrary getFullSreenViewImageAtSectionByIndex:self.sectionIndex index:i];
-        subContentView.contentMode = UIViewContentModeScaleAspectFit;
-        [contentView addSubview:subContentView];
-    }
-    // スクロールViewにコンテンツViewを追加する。
-    [self.singleScrollView addSubview:contentView];
-    
-    self.singleScrollView.pagingEnabled = YES;
-    //self.scrollview.contentSize = self.view.bounds.size;
-    self.singleScrollView.contentSize = contentView.frame.size;
-    self.singleScrollView.contentOffset = CGPointMake(0, 0);
-    self.singleScrollView.showsHorizontalScrollIndicator = NO;// 横スクロールバー非表示
-    self.singleScrollView.showsVerticalScrollIndicator = NO; // 縦スクロールバー非表示
-    self.singleScrollView.scrollsToTop = NO; // ステータスバーのタップによるトップ移動禁止
-    
-    self.singleScrollView.delegate = self;
-*/
     //UIPageControl関係-----------------------------------
     NSInteger pageSize = numOfsectionItems; // ページ数
+    munOfPage = numOfsectionItems;
     CGFloat width = self.view.bounds.size.width;
     CGFloat height = self.view.bounds.size.height;
     
@@ -118,11 +96,11 @@
     // スクロールビューにラベルを貼付ける
     for (int i = 0; i < numOfsectionItems; i++) {
         UIImageView *imageView = [[UIImageView alloc]initWithFrame:CGRectMake(i * width, 0, width, height)];
-        imageView.image = [self.m_appDelegate.m_imageLibrary getFullSreenViewImageAtSectionByIndex:self.sectionIndex index:i];
+        //imageView.image = [self.m_appDelegate.m_imageLibrary getFullSreenViewImageAtSectionByIndex:self.sectionIndex index:i];
         imageView.contentMode = UIViewContentModeScaleAspectFit;
         [scrollView addSubview:imageView];
     }
-/*
+
     NSInteger num = self.index;
     
     UIImageView* imageView = (UIImageView*)scrollView.subviews[ self.index ];
@@ -137,7 +115,7 @@
         imageView = (UIImageView*)scrollView.subviews[ self.index +1];
         imageView.image = [self.m_appDelegate.m_imageLibrary getFullSreenViewImageAtSectionByIndex:self.sectionIndex index:self.index+1];
     }
-*/
+
     // ページコントロールのインスタンス化
     CGFloat x = (width - 300) / 2;
     pageControl = [[UIPageControl alloc]initWithFrame:CGRectMake(x, self.view.frame.size.height-70, 300, 50)];
@@ -150,6 +128,7 @@
     
     // 現在のページを設定
     pageControl.currentPage = self.index;
+    currentPageIndex = self.index;
     
     // ページコントロールをタップされたときに呼ばれるメソッドを設定
     pageControl.userInteractionEnabled = YES;
@@ -179,26 +158,73 @@
     if ((NSInteger)fmod(scrollView.contentOffset.x , pageWidth) == 0) {
         // ページコントロールに現在のページを設定
         pageControl.currentPage = scrollView.contentOffset.x / pageWidth;
+
+        if( pageControl.currentPage != currentPageIndex )
+        {
+            if( pageControl.currentPage == currentPageIndex-1)
+            {
+                if( pageControl.currentPage >= 1 )
+                {
+                    UIImageView* imageView = (UIImageView*)scrollView.subviews[ pageControl.currentPage -1];
+                    //imageView.image = nil;
+                    imageView.image = [self.m_appDelegate.m_imageLibrary getFullSreenViewImageAtSectionByIndex:self.sectionIndex index:pageControl.currentPage-1];
+                }
+               
+            }else if(pageControl.currentPage == currentPageIndex+1 )
+            {
+                if( pageControl.currentPage < munOfPage-1 )
+                {
+                    UIImageView* imageView = (UIImageView*)scrollView.subviews[ pageControl.currentPage+1];
+                    //imageView.image = nil;
+                    imageView.image = [self.m_appDelegate.m_imageLibrary getFullSreenViewImageAtSectionByIndex:self.sectionIndex index:pageControl.currentPage+1];
+                }
+                
+            }
+            currentPageIndex = pageControl.currentPage;
 /*
-        UIImageView* imageView = (UIImageView*)scrollView.subviews[ pageControl.currentPage ];
-        //imageView.image = nil;
-        NSInteger i =pageControl.currentPage;
-        imageView.image = [self.m_appDelegate.m_imageLibrary getFullSreenViewImageAtSectionByIndex:self.sectionIndex index:pageControl.currentPage];
-        if( pageControl.currentPage > 1 )
-        {
-            imageView = (UIImageView*)scrollView.subviews[ pageControl.currentPage -1];
+            UIImageView* imageView = (UIImageView*)scrollView.subviews[ pageControl.currentPage ];
             //imageView.image = nil;
-            imageView.image = [self.m_appDelegate.m_imageLibrary getFullSreenViewImageAtSectionByIndex:self.sectionIndex index:pageControl.currentPage-1];
-        }
-        if( pageControl.currentPage < scrollView.subviews.count -1 )
-        {
-            imageView = (UIImageView*)scrollView.subviews[ pageControl.currentPage +1];
-            //imageView.image = nil;
-            imageView.image = [self.m_appDelegate.m_imageLibrary getFullSreenViewImageAtSectionByIndex:self.sectionIndex index:pageControl.currentPage+1];
-        }
+            NSInteger i =pageControl.currentPage;
+            imageView.image = [self.m_appDelegate.m_imageLibrary getFullSreenViewImageAtSectionByIndex:self.sectionIndex index:pageControl.currentPage];
+            if( pageControl.currentPage > 1 )
+            {
+                imageView = (UIImageView*)scrollView.subviews[ pageControl.currentPage -1];
+                //imageView.image = nil;
+                imageView.image = [self.m_appDelegate.m_imageLibrary getFullSreenViewImageAtSectionByIndex:self.sectionIndex index:pageControl.currentPage-1];
+            }
+            if( pageControl.currentPage < scrollView.subviews.count -1 )
+            {
+                imageView = (UIImageView*)scrollView.subviews[ pageControl.currentPage +1];
+                //imageView.image = nil;
+                imageView.image = [self.m_appDelegate.m_imageLibrary getFullSreenViewImageAtSectionByIndex:self.sectionIndex index:pageControl.currentPage+1];
+            }
 */
+        }
     }
 }
+
+/* 横向き対応のため追加 */
+- (void)didRotateFromInterfaceOrientation:(UIInterfaceOrientation)fromInterfaceOrientation{
+    scrollView.frame = self.view.bounds;
+    CGFloat width = self.view.bounds.size.width;
+    CGFloat height = self.view.bounds.size.height;
+    [scrollView setContentSize:CGSizeMake((munOfPage * width), height)];
+
+    for( int i = 0; i < munOfPage; i++ )
+    {
+        UIImageView* imageView = (UIImageView*)scrollView.subviews[ i ];
+        CGRect rect = CGRectMake(i * width, 0, width, height);
+        imageView.frame = rect;
+        
+    }
+    CGFloat x = (width - 300) / 2;
+    pageControl = [[UIPageControl alloc]initWithFrame:CGRectMake(x, self.view.frame.size.height-70, 300, 50)];
+    //CGRect frame = scrollView.frame;
+    //frame.origin.x = frame.size.width * pageControl.currentPage;
+    //[scrollView scrollRectToVisible:frame animated:YES];
+
+}
+
 - (void)pageControl_Tapped:(id)sender
 {
     CGRect frame = scrollView.frame;
@@ -207,7 +233,7 @@
 }
 /*
 - (void)scrollViewDidScroll:(UIScrollView *)scrollView {
-    
+
     // 現在の表示位置（左上）のx座標とUIScrollViewの表示幅(320px)を
     // 用いて現在のページ番号を計算します。
     CGPoint offset = scrollView.contentOffset;
