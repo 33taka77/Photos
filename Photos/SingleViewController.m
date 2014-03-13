@@ -74,9 +74,18 @@
     CGFloat width = self.view.bounds.size.width;
     CGFloat height = self.view.bounds.size.height;
     
+    //BOOL isDevicePortrait = UIInterfaceOrientationIsPortrait([[UIApplication sharedApplication] statusBarOrientation]);
+    BOOL isDevicelandscape = UIInterfaceOrientationIsLandscape([[UIApplication sharedApplication] statusBarOrientation]);
+    if( isDevicelandscape )
+    {
+        CGFloat temp = width;
+        width = height;
+        height = temp;
+    }
     // UIScrollViewのインスタンス化
     scrollView = [[UIScrollView alloc]init];
-    scrollView.frame = self.view.bounds;
+    CGRect frameRect = CGRectMake(0, 0, width, height);
+    scrollView.frame = frameRect;//self.view.bounds;
     
     // 横スクロールのインジケータを非表示にする
     scrollView.showsHorizontalScrollIndicator = NO;
