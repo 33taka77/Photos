@@ -9,7 +9,11 @@
 #import "ViewController.h"
 #import "AppDelegate.h"
 #import "GroupCell.h"
-#import "ImageLibrary.h"
+//#import "ImageLibrary.h"
+#import "FlickrKit.h"
+#import "UIViewController+CWPopup.h"
+#import "AuthViewController.h"
+#import "FlickrMngr.h"
 
 @interface ViewController () <UICollectionViewDataSource, UICollectionViewDelegateFlowLayout>
 
@@ -34,13 +38,50 @@
     //[self.groupCollectionView reloadData];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(updateData:) name:@"BaseCollectionInit" object:nil];
     self.navigationItem.title = @"Library";
-    
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(startAuthPage:) name:@"UserAuthStart" object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(userAuthenticateCallback:) name:@"UserAuthCallbackNotification" object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(userAuthenticateCComplete:) name:@"UserAuthComplete" object:nil];
+
+    // If Flickr option is set, do as follow.
+    BOOL result = [[FlickrMngr sharedFlkckrMngr] loginToFlickr];
+    if( result == YES )
+    {
+        NSString* caption = [NSString stringWithFormat: @"Login to %@.", [FlickrMngr sharedFlkckrMngr].userName];
+        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Login" message:caption delegate:nil cancelButtonTitle:@"OK" otherButtonTitles: nil];
+        [alert show];
+    }else{
+        /*
+        NSString* caption = @"Login Error !!!";
+        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error" message:caption delegate:nil cancelButtonTitle:@"OK" otherButtonTitles: nil];
+        [alert show];
+         */
+    }
 }
 
 - (void)updateData:(NSNotification *)notification
 {
     [self.groupCollectionView reloadData];
     //NSLog(@"reload is called");
+}
+
+- (void)startAuthPage:(NSNotification *)notification
+{
+    AuthViewController *samplePopupViewController = [[AuthViewController alloc] initWithNibName:@"AuthViewController" bundle:nil];
+    [self presentPopupViewController:samplePopupViewController animated:YES completion:^(void) {
+        NSLog(@"popup view presented");
+    }];
+}
+- (void)userAuthenticateCComplete:(NSNotification *)notification
+{
+    if (self.popupViewController != nil) {
+        [self dismissPopupViewControllerAnimated:YES completion:nil];
+    }
+}
+
+- (void) userAuthenticateCallback:(NSNotification *)notification {
+	NSURL *callbackURL = notification.object;
+    FlickrMngr* flickrMngr = [FlickrMngr sharedFlkckrMngr];
+    [flickrMngr authCallback:callbackURL callback:nil];
 }
 
 - (void)didReceiveMemoryWarning

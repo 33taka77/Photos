@@ -7,9 +7,20 @@
 //
 
 #import "AppDelegate.h"
+#import "FlickrMngr.h"
 
 
 @implementation AppDelegate
+
+- (BOOL) application:(UIApplication *)application handleOpenURL:(NSURL *)url {
+    NSString *scheme = [url scheme];
+	if([@"photosapp" isEqualToString:scheme]) {
+		// I don't recommend doing it like this, it's just a demo... I use an authentication
+		// controller singleton object in my projects
+		[[NSNotificationCenter defaultCenter] postNotificationName:@"UserAuthCallbackNotification" object:url userInfo:nil];
+    }
+    return YES;
+}
 
 - (void)updateView
 {
@@ -29,6 +40,7 @@
     {
         NSLog(@"SectionName: %@",name);
     }
+    [[FlickrMngr sharedFlkckrMngr] initialize];
     return YES;
 }
 
