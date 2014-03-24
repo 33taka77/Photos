@@ -107,9 +107,9 @@
                     data.m_photoData = [photoData copy];
                     NSURL* url = [m_flickrMngr makePhotoURLBySize:FMPhotoSizeLargeSquare150 photoData:photoData];
                     data.m_thumbnailUrl = url;
-                    [m_flickrMngr getExifData:photoData completion:^(NSDictionary *exifData) {
-                        data.m_exifData = [exifData copy];
-                    }];
+                    //[m_flickrMngr getExifData:photoData completion:^(NSDictionary *exifData) {
+                    //    data.m_exifData = [exifData copy];
+                    //}];
                 }
                 [self.delegate updateView];
             });

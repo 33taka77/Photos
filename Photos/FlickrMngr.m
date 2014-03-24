@@ -111,26 +111,32 @@ const NSInteger cNumOfLoadPhotosAtonece = 3;
     BOOL result = YES;
     __block NSMutableArray* returnPhotosArray = [[NSMutableArray alloc] init];
     if ([FlickrKit sharedFlickrKit].isAuthorized) {
-        NSInteger page = 1;
+        __block NSInteger page = 1;
         __block BOOL isFinish = NO;
+        __block BOOL pass = YES;
         while(!isFinish){
-            self.myPhotostreamOp = [[FlickrKit sharedFlickrKit] call:@"flickr.photos.search" args:@{@"user_id": self.userID, @"per_page": [NSString stringWithFormat:@"%d",cNumOfLoadPhotosAtonece], @"page": [NSString stringWithFormat:@"%d", page]} maxCacheAge:FKDUMaxAgeNeverCache completion:^(NSDictionary *response, NSError *error) {
-//              dispatch_async(dispatch_get_main_queue(), ^{
-                    if (response) {
-                        NSArray* getPhotos = [response valueForKeyPath:@"photos.photo"];
-                        [returnPhotosArray addObjectsFromArray:getPhotos];
-                        if( getPhotos.count < cNumOfLoadPhotosAtonece )
-                        {
-                            completion( returnPhotosArray );
+            if( pass == YES ){
+                self.myPhotostreamOp = [[FlickrKit sharedFlickrKit] call:@"flickr.photos.search" args:@{@"user_id": self.userID, @"per_page": [NSString stringWithFormat:@"%d",cNumOfLoadPhotosAtonece], @"page": [NSString stringWithFormat:@"%d", page]} maxCacheAge:FKDUMaxAgeNeverCache completion:^(NSDictionary *response, NSError *error) {
+//                  dispatch_async(dispatch_get_main_queue(), ^{
+                        if (response) {
+                            NSArray* getPhotos = [response valueForKeyPath:@"photos.photo"];
+                            [returnPhotosArray addObjectsFromArray:getPhotos];
+                            if( getPhotos.count < cNumOfLoadPhotosAtonece )
+                            {
+                                completion( returnPhotosArray );
+                                isFinish = YES;
+                            }
+                            page++;
+                            pass = YES;
+                        } else {
+                            NSLog(@"getPhotoList error");
                             isFinish = YES;
                         }
-                    } else {
-                        NSLog(@"getPhotoList error");
-                        isFinish = YES;
-                    }
-//              });
-            }];
-            page++;
+//                  });
+                }];
+                pass = NO;
+            }
+
         }
     }else{
         result = NO;
