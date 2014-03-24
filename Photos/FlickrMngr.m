@@ -13,7 +13,8 @@
 @property (nonatomic, retain) FKDUNetworkOperation* checkAuthOp;
 @property (nonatomic, retain) FKDUNetworkOperation* authOp;
 @property (nonatomic, retain) FKDUNetworkOperation* completeAuthOp;
-
+@property (nonatomic, retain) FKDUNetworkOperation* myPhotostreamOp;
+@property (nonatomic, retain) FKDUNetworkOperation* exifOp;
 @end
 
 
@@ -80,6 +81,8 @@ static bool g_authIsComplete = NO;
     [self.authOp cancel];
     [self.checkAuthOp cancel];
     [self.completeAuthOp cancel];
+    [self.myPhotostreamOp cancel];
+    [self.exifOp cancel];
 }
 
 - (void)authCallback:(NSURL*)callbackUrl callback:(FlickrMngrWebAuthCallback)callback
@@ -101,6 +104,170 @@ static bool g_authIsComplete = NO;
 	}];
 
 }
+
+const NSInteger cNumOfLoadPhotosAtonece = 3;
+- (BOOL)getPhotoList:(FlickrMngrPhotoGetStreamComplete)completion
+{
+    BOOL result = YES;
+    __block NSMutableArray* returnPhotosArray = [[NSMutableArray alloc] init];
+    if ([FlickrKit sharedFlickrKit].isAuthorized) {
+        NSInteger page = 1;
+        __block BOOL isFinish = NO;
+        while(!isFinish){
+            self.myPhotostreamOp = [[FlickrKit sharedFlickrKit] call:@"flickr.photos.search" args:@{@"user_id": self.userID, @"per_page": [NSString stringWithFormat:@"%d",cNumOfLoadPhotosAtonece], @"page": [NSString stringWithFormat:@"%d", page]} maxCacheAge:FKDUMaxAgeNeverCache completion:^(NSDictionary *response, NSError *error) {
+//              dispatch_async(dispatch_get_main_queue(), ^{
+                    if (response) {
+                        NSArray* getPhotos = [response valueForKeyPath:@"photos.photo"];
+                        [returnPhotosArray addObjectsFromArray:getPhotos];
+                        if( getPhotos.count < cNumOfLoadPhotosAtonece )
+                        {
+                            completion( returnPhotosArray );
+                            isFinish = YES;
+                        }
+                    } else {
+                        NSLog(@"getPhotoList error");
+                        isFinish = YES;
+                    }
+//              });
+            }];
+            page++;
+        }
+    }else{
+        result = NO;
+    }
+    return result;
+}
+
+- (NSURL*)makePhotoURLBySize:(FlickrMngrPhotoSize)size photoData:(NSDictionary*)photo
+{
+    FKPhotoSize sizeOfImage;
+    switch (size) {
+        case FMPhotoSizeUnknown:
+            sizeOfImage = FKPhotoSizeUnknown;
+            break;
+        case FMPhotoSizeCollectionIconLarge:
+            sizeOfImage = FKPhotoSizeCollectionIconLarge;
+            break;
+        case FMPhotoSizeBuddyIcon:
+            sizeOfImage = FKPhotoSizeBuddyIcon;
+            break;
+        case FMPhotoSizeSmallSquare75:
+            sizeOfImage = FKPhotoSizeSmallSquare75;
+            break;
+        case FMPhotoSizeLargeSquare150:
+            sizeOfImage = FKPhotoSizeLargeSquare150;
+            break;
+        case FMPhotoSizeThumbnail100:
+            sizeOfImage = FKPhotoSizeThumbnail100;
+            break;
+        case FMPhotoSizeSmall240:
+            sizeOfImage = FKPhotoSizeSmall240;
+            break;
+        case FMPhotoSizeSmall320:
+            sizeOfImage = FKPhotoSizeSmall320;
+            break;
+        case FMPhotoSizeMedium500:
+            sizeOfImage = FKPhotoSizeMedium500;
+            break;
+        case FMPhotoSizeMedium640:
+            sizeOfImage = FKPhotoSizeMedium640;
+            break;
+        case FMPhotoSizeMedium800:
+            sizeOfImage = FKPhotoSizeMedium800;
+            break;
+        case FMPhotoSizeLarge1024:
+            sizeOfImage = FKPhotoSizeLarge1024;
+            break;
+        case FMPhotoSizeLarge1600:
+            sizeOfImage = FKPhotoSizeLarge1600;
+            break;
+        case FMPhotoSizeLarge2048:
+            sizeOfImage = FKPhotoSizeLarge2048;
+            break;
+        case FMPhotoSizeOriginal:
+            sizeOfImage = FKPhotoSizeOriginal;
+            break;
+        case FMPhotoSizeVideoOriginal:
+            sizeOfImage = FKPhotoSizeVideoOriginal;
+            break;
+        case FMPhotoSizeVideoHDMP4:
+            sizeOfImage = FKPhotoSizeVideoHDMP4;
+            break;
+        case FMPhotoSizeVideoSiteMP4:
+            sizeOfImage = FKPhotoSizeVideoSiteMP4;
+            break;
+        case FMPhotoSizeVideoMobileMP4:
+            sizeOfImage = FKPhotoSizeVideoMobileMP4;
+            break;
+        case FMPhotoSizeVideoPlayer:
+            sizeOfImage = FKPhotoSizeVideoPlayer;
+            break;
+            
+        default:
+            break;
+    }
+    NSURL *url = [[FlickrKit sharedFlickrKit] photoURLForSize:sizeOfImage fromPhotoDictionary:photo];
+    return url;
+}
+
+- (void)getPhotoData:(NSURL*)url completion:(FlickrMngrGetPhotoDataComplete)completion
+{
+    NSURLRequest *request = [NSURLRequest requestWithURL:url];
+    [NSURLConnection sendAsynchronousRequest:request queue:[NSOperationQueue mainQueue] completionHandler:^(NSURLResponse *response, NSData *data, NSError *error) {
+        
+        UIImage *image = [[UIImage alloc] initWithData:data];
+        completion( image );
+    }];
+}
+
+- (void)getExifData:(NSDictionary*)photo completion:(FlickrMngrGetExifDataComplete)completion
+{
+    FKFlickrPhotosGetExif *exif = [[FKFlickrPhotosGetExif alloc] init];
+    NSString* idNumberString = [photo valueForKey:@"id"];
+    exif.photo_id = idNumberString;
+    self.exifOp = [[FlickrKit sharedFlickrKit] call:exif completion:^(NSDictionary *response, NSError *error) {
+        if (response) {
+            NSArray* getExifDataArray = [response valueForKeyPath:@"photo.exif"];
+            NSMutableDictionary* returnDictionary = [[NSMutableDictionary alloc] init];
+            for( NSDictionary* exifItem in getExifDataArray )
+            {
+                if( [[exifItem valueForKey:@"tag"] isEqualToString:@"Make"] )
+                    [returnDictionary setObject:[[exifItem valueForKey:@"raw"] valueForKey:@"_content"] forKey:@"Make"];
+                if( [[exifItem valueForKey:@"tag"] isEqualToString:@"Model"] )
+                    [returnDictionary setObject:[[exifItem valueForKey:@"raw"] valueForKey:@"_content"] forKey:@"Model"];
+                if( [[exifItem valueForKey:@"tag"] isEqualToString:@"Orientation"] )
+                    [returnDictionary setObject:[[exifItem valueForKey:@"raw"] valueForKey:@"_content"] forKey:@"Orientation"];
+                if( [[exifItem valueForKey:@"tag"] isEqualToString:@"Artist"] )
+                    [returnDictionary setObject:[[exifItem valueForKey:@"raw"] valueForKey:@"_content"] forKey:@"Artist"];
+                if( [[exifItem valueForKey:@"tag"] isEqualToString:@"ExposureTime"] )
+                    [returnDictionary setObject:[[exifItem valueForKey:@"raw"] valueForKey:@"_content"] forKey:@"ExposureTime"];
+                if( [[exifItem valueForKey:@"tag"] isEqualToString:@"FNumber"] )
+                    [returnDictionary setObject:[[exifItem valueForKey:@"raw"] valueForKey:@"_content"] forKey:@"FNumber"];
+                if( [[exifItem valueForKey:@"tag"] isEqualToString:@"ISO"] )
+                    [returnDictionary setObject:[[exifItem valueForKey:@"raw"] valueForKey:@"_content"] forKey:@"ISO"];
+                if( [[exifItem valueForKey:@"tag"] isEqualToString:@"DateTimeOriginal"] )
+                    [returnDictionary setObject:[[exifItem valueForKey:@"raw"] valueForKey:@"_content"] forKey:@"DateTimeOriginal"];
+                if( [[exifItem valueForKey:@"tag"] isEqualToString:@"ExposureCompensation"] )
+                    [returnDictionary setObject:[[exifItem valueForKey:@"raw"] valueForKey:@"_content"] forKey:@"ExposureCompensation"];
+                if( [[exifItem valueForKey:@"tag"] isEqualToString:@"MaxApertureValue"] )
+                    [returnDictionary setObject:[[exifItem valueForKey:@"raw"] valueForKey:@"_content"] forKey:@"MaxApertureValue"];
+                if( [[exifItem valueForKey:@"tag"] isEqualToString:@"Flash"] )
+                    [returnDictionary setObject:[[exifItem valueForKey:@"raw"] valueForKey:@"_content"] forKey:@"Flash"];
+                if( [[exifItem valueForKey:@"tag"] isEqualToString:@"FocalLength"] )
+                    [returnDictionary setObject:[[exifItem valueForKey:@"raw"] valueForKey:@"_content"] forKey:@"FocalLength"];
+                if( [[exifItem valueForKey:@"tag"] isEqualToString:@"LensInfo"] )
+                    [returnDictionary setObject:[[exifItem valueForKey:@"raw"] valueForKey:@"_content"] forKey:@"LensInfo"];
+                if( [[exifItem valueForKey:@"tag"] isEqualToString:@"LensModel"] )
+                    [returnDictionary setObject:[[exifItem valueForKey:@"raw"] valueForKey:@"_content"] forKey:@"LensModel"];
+                if( [[exifItem valueForKey:@"tag"] isEqualToString:@"Lens"] )
+                    [returnDictionary setObject:[[exifItem valueForKey:@"raw"] valueForKey:@"_content"] forKey:@"Lens"];
+            }
+            completion( returnDictionary );
+        }
+    }];
+
+}
+
 // ----- local functions ------------------------------------------------------------------
 
 - (BOOL)ckeckAuth:(FlickrMngrLoginCmplete)completon isSync:(BOOL)isSync

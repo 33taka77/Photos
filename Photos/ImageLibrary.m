@@ -10,6 +10,7 @@
 #import "AssetManager.h"
 #import "AssetObject.h"
 #import "SectionData.h"
+#import "FlickrMngr.h"
 
 @interface ImageLibrary () <AssetLibraryDelegate>
 {
@@ -17,10 +18,13 @@
     BOOL m_isFlickr;
     BOOL m_Facebook;
     AssetManager* m_assetMngr;
+    FlickrMngr* m_flickrMngr;
 }
+
 @property NSInteger m_currentGroup;
 @property (nonatomic, retain) NSMutableArray* m_sectionDatas; /* array of SectionData */
 @property (nonatomic, retain) NSMutableArray* m_assetGroups; /* array of AssetObject */
+@property (nonatomic, retain) NSMutableArray* m_flickrPhotos;
 
 @end
 
@@ -78,12 +82,15 @@
 {
     self.m_assetGroups = [[NSMutableArray alloc] init];
     self.m_sectionDatas = [[NSMutableArray alloc] init];
-  
+    self.m_flickrPhotos = [[NSMutableArray alloc] init];
+    
     m_assetMngr = [AssetManager sharedAssetManager];
      [m_assetMngr setAssetManagerModeIsHoldItemData:NO];
     m_assetMngr.delegate = self;
     [m_assetMngr enumeAssetItems];
 
+    m_flickrMngr = [FlickrMngr sharedFlkckrMngr];
+    [m_flickrMngr initialize];
 }
 
 
