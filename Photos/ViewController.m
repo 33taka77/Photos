@@ -49,6 +49,7 @@
         NSString* caption = [NSString stringWithFormat: @"Login to %@.", [FlickrMngr sharedFlkckrMngr].userName];
         UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Login" message:caption delegate:nil cancelButtonTitle:@"OK" otherButtonTitles: nil];
         [alert show];
+        [[NSNotificationCenter defaultCenter] postNotificationName:@"StartFlickrDataLoad" object:nil userInfo:nil];
     }else{
         /*
         NSString* caption = @"Login Error !!!";
@@ -75,6 +76,7 @@
 {
     if (self.popupViewController != nil) {
         [self dismissPopupViewControllerAnimated:YES completion:nil];
+        [[NSNotificationCenter defaultCenter] postNotificationName:@"StartFlickrDataLoad" object:self userInfo:nil];
     }
 }
 

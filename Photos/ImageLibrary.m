@@ -11,6 +11,8 @@
 #import "AssetObject.h"
 #import "SectionData.h"
 #import "FlickrMngr.h"
+#import "FlickrPhotoData.h"
+
 
 @interface ImageLibrary () <AssetLibraryDelegate>
 {
@@ -91,8 +93,29 @@
 
     m_flickrMngr = [FlickrMngr sharedFlkckrMngr];
     [m_flickrMngr initialize];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(flickrDataLoad:) name:@"StartFlickrDataLoad" object:nil];
 }
 
+- (void)flickrDataLoad:(NSNotification *)notification
+{
+    [m_flickrMngr getPhotoList:^(NSArray *photos) {
+        @autoreleasepool{
+            dispatch_async(dispatch_get_main_queue(), ^{
+                for( NSDictionary* photoData in photos )
+                {
+                    FlickrPhotoData* data = [[FlickrPhotoData alloc] init];
+                    data.m_photoData = [photoData copy];
+                    NSURL* url = [m_flickrMngr makePhotoURLBySize:FMPhotoSizeLargeSquare150 photoData:photoData];
+                    data.m_thumbnailUrl = url;
+                    [m_flickrMngr getExifData:photoData completion:^(NSDictionary *exifData) {
+                        data.m_exifData = [exifData copy];
+                    }];
+                }
+                [self.delegate updateView];
+            });
+        }
+    }];    
+}
 
 - (void)setCurrentGroup:(NSInteger)index
 {
