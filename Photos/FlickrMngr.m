@@ -232,33 +232,33 @@ const NSInteger cNumOfLoadPhotosAtonece = 3;
             for( NSDictionary* exifItem in getExifDataArray )
             {
                 if( [[exifItem valueForKey:@"tag"] isEqualToString:@"Make"] )
-                    [returnDictionary setObject:[[exifItem valueForKey:@"raw"] valueForKey:@"_content"] forKey:@"Make"];
+                    [returnDictionary setObject:[[exifItem valueForKey:@"raw"] valueForKey:@"_content"] forKey:@"Make"];continue;
                 if( [[exifItem valueForKey:@"tag"] isEqualToString:@"Model"] )
-                    [returnDictionary setObject:[[exifItem valueForKey:@"raw"] valueForKey:@"_content"] forKey:@"Model"];
+                    [returnDictionary setObject:[[exifItem valueForKey:@"raw"] valueForKey:@"_content"] forKey:@"Model"];continue;
                 if( [[exifItem valueForKey:@"tag"] isEqualToString:@"Orientation"] )
-                    [returnDictionary setObject:[[exifItem valueForKey:@"raw"] valueForKey:@"_content"] forKey:@"Orientation"];
+                    [returnDictionary setObject:[[exifItem valueForKey:@"raw"] valueForKey:@"_content"] forKey:@"Orientation"];continue;
                 if( [[exifItem valueForKey:@"tag"] isEqualToString:@"Artist"] )
-                    [returnDictionary setObject:[[exifItem valueForKey:@"raw"] valueForKey:@"_content"] forKey:@"Artist"];
+                    [returnDictionary setObject:[[exifItem valueForKey:@"raw"] valueForKey:@"_content"] forKey:@"Artist"];continue;
                 if( [[exifItem valueForKey:@"tag"] isEqualToString:@"ExposureTime"] )
-                    [returnDictionary setObject:[[exifItem valueForKey:@"raw"] valueForKey:@"_content"] forKey:@"ExposureTime"];
+                    [returnDictionary setObject:[[exifItem valueForKey:@"raw"] valueForKey:@"_content"] forKey:@"ExposureTime"];continue;
                 if( [[exifItem valueForKey:@"tag"] isEqualToString:@"FNumber"] )
-                    [returnDictionary setObject:[[exifItem valueForKey:@"raw"] valueForKey:@"_content"] forKey:@"FNumber"];
+                    [returnDictionary setObject:[[exifItem valueForKey:@"raw"] valueForKey:@"_content"] forKey:@"FNumber"];continue;
                 if( [[exifItem valueForKey:@"tag"] isEqualToString:@"ISO"] )
-                    [returnDictionary setObject:[[exifItem valueForKey:@"raw"] valueForKey:@"_content"] forKey:@"ISO"];
+                    [returnDictionary setObject:[[exifItem valueForKey:@"raw"] valueForKey:@"_content"] forKey:@"ISO"];continue;
                 if( [[exifItem valueForKey:@"tag"] isEqualToString:@"DateTimeOriginal"] )
-                    [returnDictionary setObject:[[exifItem valueForKey:@"raw"] valueForKey:@"_content"] forKey:@"DateTimeOriginal"];
+                    [returnDictionary setObject:[[exifItem valueForKey:@"raw"] valueForKey:@"_content"] forKey:@"DateTimeOriginal"];continue;
                 if( [[exifItem valueForKey:@"tag"] isEqualToString:@"ExposureCompensation"] )
-                    [returnDictionary setObject:[[exifItem valueForKey:@"raw"] valueForKey:@"_content"] forKey:@"ExposureCompensation"];
+                    [returnDictionary setObject:[[exifItem valueForKey:@"raw"] valueForKey:@"_content"] forKey:@"ExposureCompensation"];continue;
                 if( [[exifItem valueForKey:@"tag"] isEqualToString:@"MaxApertureValue"] )
-                    [returnDictionary setObject:[[exifItem valueForKey:@"raw"] valueForKey:@"_content"] forKey:@"MaxApertureValue"];
+                    [returnDictionary setObject:[[exifItem valueForKey:@"raw"] valueForKey:@"_content"] forKey:@"MaxApertureValue"];continue;
                 if( [[exifItem valueForKey:@"tag"] isEqualToString:@"Flash"] )
-                    [returnDictionary setObject:[[exifItem valueForKey:@"raw"] valueForKey:@"_content"] forKey:@"Flash"];
+                    [returnDictionary setObject:[[exifItem valueForKey:@"raw"] valueForKey:@"_content"] forKey:@"Flash"];continue;
                 if( [[exifItem valueForKey:@"tag"] isEqualToString:@"FocalLength"] )
-                    [returnDictionary setObject:[[exifItem valueForKey:@"raw"] valueForKey:@"_content"] forKey:@"FocalLength"];
+                    [returnDictionary setObject:[[exifItem valueForKey:@"raw"] valueForKey:@"_content"] forKey:@"FocalLength"];continue;
                 if( [[exifItem valueForKey:@"tag"] isEqualToString:@"LensInfo"] )
-                    [returnDictionary setObject:[[exifItem valueForKey:@"raw"] valueForKey:@"_content"] forKey:@"LensInfo"];
+                    [returnDictionary setObject:[[exifItem valueForKey:@"raw"] valueForKey:@"_content"] forKey:@"LensInfo"];continue;
                 if( [[exifItem valueForKey:@"tag"] isEqualToString:@"LensModel"] )
-                    [returnDictionary setObject:[[exifItem valueForKey:@"raw"] valueForKey:@"_content"] forKey:@"LensModel"];
+                    [returnDictionary setObject:[[exifItem valueForKey:@"raw"] valueForKey:@"_content"] forKey:@"LensModel"];continue;
                 if( [[exifItem valueForKey:@"tag"] isEqualToString:@"Lens"] )
                     [returnDictionary setObject:[[exifItem valueForKey:@"raw"] valueForKey:@"_content"] forKey:@"Lens"];
             }
