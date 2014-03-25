@@ -141,6 +141,36 @@
     return image;
 }
 
+- (void)createSectionForFlickr
+{
+    for( FlickrPhotoData* photo in self.m_flickrPhotos )
+    {
+        NSDictionary* exifDict = photo.m_exifData;
+        NSString* dateTimeString = [exifDict valueForKey:@"DateTimeOriginal"];
+
+        BOOL isNew = YES;
+        for( SectionData* sectionData in self.m_sectionDatas )
+        {
+            if( [dateTimeString isEqualToString:sectionData.sectionTitle] )
+            {
+                [sectionData.items addObject:photo.m_thumbnailUrl];
+                isNew = NO;
+                break;
+            }
+        }
+        if( isNew == YES )
+        {
+            SectionData* newSection = [[SectionData alloc] init];
+            newSection.sectionTitle = dateTimeString;
+            newSection.items = [[NSMutableArray alloc] init];
+            [newSection.items addObject:photo.m_thumbnailUrl];
+            [self.m_sectionDatas addObject:newSection];
+        }
+    }
+    
+}
+
+
 - (void)setCurrentGroup:(NSInteger)index
 {
     self.m_currentGroup = index;
@@ -195,10 +225,15 @@
                 break;
         }
 }
-
 - (void)createSectionDataAndSortByDateAtGroup:(NSInteger)groupIndex
 {
-    if( m_isLocal )
+    if( self.m_assetGroups.count == groupIndex )
+    {
+        if( m_isFlickr )
+        {
+            [self createSectionForFlickr];
+        }
+    }else if( m_isLocal )
     {
         AssetObject* assetObject = self.m_assetGroups[groupIndex];
         
