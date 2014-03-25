@@ -127,12 +127,87 @@
     }];    
 }
 
-- (UIImage*)GetFlickrThumbnail:(NSInteger)index
+- (UIImage*)GetFlickrThumbnailAtGroup:(NSInteger)index
 {
     FlickrPhotoData* filkrPhoto = self.m_flickrPhotos[index];
     __block UIImage* image = nil;
-    NSURL* url = filkrPhoto.m_thumbnailUrl;
+    [m_flickrMngr getPhotoData:filkrPhoto.m_thumbnailUrl completion:^(UIImage *photoData) {
+        image = photoData;
+    }];
+    while (image == nil) {
+        [[NSRunLoop currentRunLoop] runUntilDate:[NSDate dateWithTimeIntervalSinceNow:0.001]];
+    }
+    return image;
+}
+
+- (UIImage*)GetFlickrThumbnail:(NSURL*)url
+{
+    __block UIImage* image = nil;
     [m_flickrMngr getPhotoData:url completion:^(UIImage *photoData) {
+        image = photoData;
+    }];
+    while (image == nil) {
+        [[NSRunLoop currentRunLoop] runUntilDate:[NSDate dateWithTimeIntervalSinceNow:0.001]];
+    }
+    return image;
+}
+
+- (UIImage*)GetFlickrAspectThumbnail:(NSURL*)url
+{
+    FlickrPhotoData* targetPhoto;
+    for( FlickrPhotoData* filkrPhoto in self.m_flickrPhotos ){
+        if( filkrPhoto.m_thumbnailUrl == url ){
+            targetPhoto = filkrPhoto;
+            break;
+        }
+    }
+    __block UIImage* image = nil;
+    
+    NSURL* targetUrl = [m_flickrMngr makePhotoURLBySize:FMPhotoSizeSmall240 photoData:targetPhoto.m_photoData];
+    [m_flickrMngr getPhotoData:targetUrl completion:^(UIImage *photoData) {
+        image = photoData;
+    }];
+    while (image == nil) {
+        [[NSRunLoop currentRunLoop] runUntilDate:[NSDate dateWithTimeIntervalSinceNow:0.001]];
+    }
+    return image;
+}
+
+- (UIImage*)GetFlickrFullSizeImage:(NSURL*)url
+{
+    FlickrPhotoData* targetPhoto;
+    for( FlickrPhotoData* filkrPhoto in self.m_flickrPhotos ){
+        if( filkrPhoto.m_thumbnailUrl == url ){
+            targetPhoto = filkrPhoto;
+            break;
+        }
+    }
+    __block UIImage* image = nil;
+    
+    NSURL* targetUrl = [m_flickrMngr makePhotoURLBySize:FMPhotoSizeOriginal photoData:targetPhoto.m_photoData];
+    [m_flickrMngr getPhotoData:targetUrl completion:^(UIImage *photoData) {
+        image = photoData;
+    }];
+    while (image == nil) {
+        [[NSRunLoop currentRunLoop] runUntilDate:[NSDate dateWithTimeIntervalSinceNow:0.001]];
+    }
+    return image;
+
+}
+
+- (UIImage*)GetFlickrFullScreenSizeImage:(NSURL*)url
+{
+    FlickrPhotoData* targetPhoto;
+    for( FlickrPhotoData* filkrPhoto in self.m_flickrPhotos ){
+        if( filkrPhoto.m_thumbnailUrl == url ){
+            targetPhoto = filkrPhoto;
+            break;
+        }
+    }
+    __block UIImage* image = nil;
+    
+    NSURL* targetUrl = [m_flickrMngr makePhotoURLBySize:FMPhotoSizeLarge1024 photoData:targetPhoto.m_photoData];
+    [m_flickrMngr getPhotoData:targetUrl completion:^(UIImage *photoData) {
         image = photoData;
     }];
     while (image == nil) {
@@ -147,11 +222,13 @@
     {
         NSDictionary* exifDict = photo.m_exifData;
         NSString* dateTimeString = [exifDict valueForKey:@"DateTimeOriginal"];
-
+        NSArray* separateString = [dateTimeString componentsSeparatedByString:@" "];
+        NSString* dateString = separateString[0];
+        NSString* sectionDateString = [dateString stringByReplacingOccurrencesOfString:@":" withString:@"/"];
         BOOL isNew = YES;
         for( SectionData* sectionData in self.m_sectionDatas )
         {
-            if( [dateTimeString isEqualToString:sectionData.sectionTitle] )
+            if( [sectionDateString isEqualToString:sectionData.sectionTitle] )
             {
                 [sectionData.items addObject:photo.m_thumbnailUrl];
                 isNew = NO;
@@ -161,9 +238,10 @@
         if( isNew == YES )
         {
             SectionData* newSection = [[SectionData alloc] init];
-            newSection.sectionTitle = dateTimeString;
+            newSection.sectionTitle = sectionDateString;
             newSection.items = [[NSMutableArray alloc] init];
             [newSection.items addObject:photo.m_thumbnailUrl];
+            newSection.kind = SectionKindIsFlickr;
             [self.m_sectionDatas addObject:newSection];
         }
     }
@@ -259,6 +337,7 @@
                 newSection.sectionTitle = strDate;
                 newSection.items = [[NSMutableArray alloc] init];
                 [newSection.items addObject:url];
+                newSection.kind = SectionKindIsLocal;
                 [self.m_sectionDatas addObject:newSection];
             }
         }
@@ -343,9 +422,9 @@
 - (NSInteger)getNumOfImagesInGroup:(NSString*)groupName
 {
     NSInteger num = 0;
-    if( m_isFlickr )
+    if( [groupName isEqualToString:cFlickrGroupName] )
     {
-        if( [groupName isEqualToString:cFlickrGroupName] )
+        if( m_isFlickr )
         {
             num = self.m_flickrPhotos.count;
         }
@@ -401,11 +480,11 @@
 */
 - (UIImage*)getThumbnailAtGroupByIndex:(NSInteger)groupIndex index:(NSInteger)index
 {
-    if( m_isFlickr )
+    if( self.m_assetGroups.count == groupIndex )
     {
-        if( self.m_assetGroups.count == groupIndex )
+        if( m_isFlickr )
         {
-            return [self GetFlickrThumbnail:index];
+            return [self GetFlickrThumbnailAtGroup:index];
         }
     }else if( m_isLocal )
     {
@@ -427,14 +506,25 @@
 - (UIImage*)getThumbnailAtSectionByIndex:(NSInteger)sectionIndex index:(NSInteger)index
 {
     SectionData* sectionData = self.m_sectionDatas[sectionIndex];
-    return [m_assetMngr getThumbnail:sectionData.items[index]];
+    if( sectionData.kind == SectionKindIsLocal){
+        return [m_assetMngr getThumbnail:sectionData.items[index]];
+    }else if( sectionData.kind == SectionKindIsFlickr ){
+        return [self GetFlickrThumbnail:sectionData.items[index]];
+    }
+    return nil;
 }
 
 - (UIImage*)getAspectThumbnailAtSectionByIndex:(NSInteger)sectionIndex index:(NSInteger)index
 {
     SectionData* sectionData = self.m_sectionDatas[sectionIndex];
-    return [m_assetMngr getThumbnailAspect:sectionData.items[index]];
+    if( sectionData.kind == SectionKindIsLocal){
+        return [m_assetMngr getThumbnailAspect:sectionData.items[index]];
+    }else if( sectionData.kind == SectionKindIsFlickr ){
+        return [self GetFlickrAspectThumbnail:sectionData.items[index]];
+    }
+    return nil;
 }
+
 /*
 - (UIImage*)getThumbnailAtSectionName:(NSString*)sectionName index:(NSInteger)index
 {
@@ -463,14 +553,25 @@
 - (UIImage*)getFullViewImageAtSectionByIndex:(NSInteger)sectionIndex index:(NSInteger)index
 {
     SectionData* sectionData = self.m_sectionDatas[sectionIndex];
-    return [m_assetMngr getFullImage:sectionData.items[index]];
+    if( sectionData.kind == SectionKindIsLocal){
+        return [m_assetMngr getFullImage:sectionData.items[index]];
+    }else if( sectionData.kind == SectionKindIsFlickr ){
+        return [self GetFlickrFullSizeImage:sectionData.items[index]];
+    }
+    return nil;
 }
 
 - (UIImage*)getFullSreenViewImageAtSectionByIndex:(NSInteger)sectionIndex index:(NSInteger)index
 {
     SectionData* sectionData = self.m_sectionDatas[sectionIndex];
-    return [m_assetMngr getFullScreenImage:sectionData.items[index]];
+    if( sectionData.kind == SectionKindIsLocal){
+        return [m_assetMngr getFullScreenImage:sectionData.items[index]];
+    }else if( sectionData.kind == SectionKindIsFlickr ){
+        return [self GetFlickrFullScreenSizeImage:sectionData.items[index]];
+    }
+    return nil;
 }
+
 /*
 - (UIImage*)getFullViewImageAtSectionName:(NSString*)sectionName index:(NSInteger)index
 {

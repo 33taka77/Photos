@@ -8,10 +8,17 @@
 
 #import <Foundation/Foundation.h>
 
+typedef enum {
+    SectionKindIsUnknown = 0,
+    SectionKindIsLocal,
+    SectionKindIsFlickr,
+    SectionKindIsFacebook
+} KindOfSectionData;
+
 @interface SectionData : NSObject
 @property (nonatomic, retain) NSString* sectionTitle;
 @property (nonatomic, retain) NSMutableArray* items;
-@property  NSInteger kind;
+@property  KindOfSectionData kind;
 
 - (id)init;
 - (id)initWithTitle:(NSString*)title;
