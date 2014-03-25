@@ -214,7 +214,7 @@ static AssetManager* g_assetManager = nil;
     };
     [self.m_assetLibrary groupForURL:url resultBlock:getAssetGroupBlock failureBlock:failBlock];
     while (retAssetGroup == nil) {
-        [[NSRunLoop currentRunLoop] runUntilDate:[NSDate dateWithTimeIntervalSinceNow:0.05]];
+        [[NSRunLoop currentRunLoop] runUntilDate:[NSDate dateWithTimeIntervalSinceNow:0.001]];
     }
     
     return retAssetGroup;

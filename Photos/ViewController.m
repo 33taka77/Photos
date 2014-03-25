@@ -62,7 +62,7 @@
 - (void)updateData:(NSNotification *)notification
 {
     [self.groupCollectionView reloadData];
-    //NSLog(@"reload is called");
+    NSLog(@" ***** reload is called *****");
 }
 
 - (void)startAuthPage:(NSNotification *)notification
@@ -94,12 +94,15 @@
 
 - (NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section
 {
+    NSLog(@"+++++ numberOfItemsInSection update +++++");
+
     NSInteger num = [self.m_appDelegate.m_imageLibrary getGroupCount];
     return num;
 }
 
 - (UICollectionViewCell*)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath
 {
+    NSLog(@"+++++ collectionView update +++++");
     GroupCell* cell = [collectionView dequeueReusableCellWithReuseIdentifier:@"GroupCell" forIndexPath:indexPath];
     NSInteger index = indexPath.row;
     NSLog(@"index %ld",(long)index);

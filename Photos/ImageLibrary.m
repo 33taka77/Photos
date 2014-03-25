@@ -33,7 +33,9 @@
 
 @implementation ImageLibrary
 
+
     static ImageLibrary* g_Library;
+    static NSString* cFlickrGroupName = @"Flickr:photostream";
 
 /*
 - (void)updateView
@@ -101,20 +103,42 @@
     [m_flickrMngr getPhotoList:^(NSArray *photos) {
         @autoreleasepool{
             dispatch_async(dispatch_get_main_queue(), ^{
+                __block NSInteger count = 0;
                 for( NSDictionary* photoData in photos )
                 {
                     FlickrPhotoData* data = [[FlickrPhotoData alloc] init];
                     data.m_photoData = [photoData copy];
                     NSURL* url = [m_flickrMngr makePhotoURLBySize:FMPhotoSizeLargeSquare150 photoData:photoData];
                     data.m_thumbnailUrl = url;
-                    //[m_flickrMngr getExifData:photoData completion:^(NSDictionary *exifData) {
-                    //    data.m_exifData = [exifData copy];
-                    //}];
+                    [m_flickrMngr getExifData:photoData completion:^(NSDictionary *exifData) {
+                        data.m_exifData = [exifData copy];
+                        [self.m_flickrPhotos addObject:data];
+                        count++;
+                        if( count == photoData.count )
+                        {
+                            NSLog(@"===== set exif data ======");
+                            [self.delegate updateView];
+                        }
+                        
+                    }];
                 }
-                [self.delegate updateView];
             });
         }
     }];    
+}
+
+- (UIImage*)GetFlickrThumbnail:(NSInteger)index
+{
+    FlickrPhotoData* filkrPhoto = self.m_flickrPhotos[index];
+    __block UIImage* image = nil;
+    NSURL* url = filkrPhoto.m_thumbnailUrl;
+    [m_flickrMngr getPhotoData:url completion:^(UIImage *photoData) {
+        image = photoData;
+    }];
+    while (image == nil) {
+        [[NSRunLoop currentRunLoop] runUntilDate:[NSDate dateWithTimeIntervalSinceNow:0.001]];
+    }
+    return image;
 }
 
 - (void)setCurrentGroup:(NSInteger)index
@@ -212,7 +236,15 @@
     NSArray* groupArray = [m_assetMngr getGroupNames];
     return groupArray.count;
     */
-    return self.m_assetGroups.count;
+    NSInteger num = self.m_assetGroups.count;
+    if(m_isFlickr)
+    {
+        if( self.m_flickrPhotos.count != 0 )
+        {
+            num++;
+        }
+    }
+    return num;
 }
 
 - (NSInteger)getSectionCount
@@ -231,10 +263,15 @@
             NSString* name = [m_assetMngr getGroupNameByURL:obj.m_groupURL];
             [retArray addObject:name];
         }
-        return retArray;
     }
-    return nil;
+    if( m_isFlickr )
+    {
+        NSString* flickrName = [NSString stringWithString:cFlickrGroupName];
+        [retArray addObject:flickrName];
+    }
+    return retArray;
 }
+
 
 - (NSArray*)getSectionNames
 {
@@ -255,6 +292,13 @@
 - (NSString*)getGroupNameAtIndex:(NSInteger)index
 {
     NSString* str;
+    if( index == self.m_assetGroups.count )
+    {
+        if( m_isFlickr )
+        {
+            return cFlickrGroupName;
+        }
+    }
     AssetObject* obj = self.m_assetGroups[index];
     str = [m_assetMngr getGroupNameByURL:obj.m_groupURL];
     return str;
@@ -263,7 +307,19 @@
 
 - (NSInteger)getNumOfImagesInGroup:(NSString*)groupName
 {
-    return [m_assetMngr getCountOfImagesInGroup:groupName];
+    NSInteger num = 0;
+    if( m_isFlickr )
+    {
+        if( [groupName isEqualToString:cFlickrGroupName] )
+        {
+            num = self.m_flickrPhotos.count;
+        }
+    }else if( m_isLocal )
+    {
+        num = [m_assetMngr getCountOfImagesInGroup:groupName];
+    }
+    
+    return num;
 }
 
 - (NSInteger)getNumOfImagesInSectionBySectonIndex:(NSInteger)sectionIndex
@@ -310,8 +366,18 @@
 */
 - (UIImage*)getThumbnailAtGroupByIndex:(NSInteger)groupIndex index:(NSInteger)index
 {
-    AssetObject* assetObj = self.m_assetGroups[groupIndex];
-    return [m_assetMngr getThumbnail:assetObj.m_items[index]];
+    if( m_isFlickr )
+    {
+        if( self.m_assetGroups.count == groupIndex )
+        {
+            return [self GetFlickrThumbnail:index];
+        }
+    }else if( m_isLocal )
+    {
+        AssetObject* assetObj = self.m_assetGroups[groupIndex];
+        return [m_assetMngr getThumbnail:assetObj.m_items[index]];
+    }
+    return nil;
 }
 /*
 - (UIImage*)getThumbnailAtGroupName:(NSString*)groupName index:(NSInteger)index

@@ -31,7 +31,7 @@
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
     // Override point for customization after application launch.
-    self.m_imageLibrary = [ImageLibrary sharedLibrary:kImageLibraryTypeLocal];
+    self.m_imageLibrary = [ImageLibrary sharedLibrary:(kImageLibraryTypeLocal|kImageLibraryTypeFlickr)];
     [self.m_imageLibrary initializeLibrary];
     self.m_imageLibrary.delegate = self;
     //[self.m_imageLibrary createSectionDataAndSortByDate];
