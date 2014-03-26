@@ -23,6 +23,7 @@
 - (IBAction)applicationSettingButtonClicked:(id)sender;
 
 - (IBAction)abortButtonClicked:(id)sender;
+@property (weak, nonatomic) IBOutlet UIBarButtonItem *hartButtonClicked;
 
 @end
 
@@ -43,20 +44,24 @@
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(userAuthenticateCComplete:) name:@"UserAuthComplete" object:nil];
 
     // If Flickr option is set, do as follow.
-    BOOL result = [[FlickrMngr sharedFlkckrMngr] loginToFlickr];
-    if( result == YES )
-    {
-        NSString* caption = [NSString stringWithFormat: @"Login to %@.", [FlickrMngr sharedFlkckrMngr].userName];
-        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Login" message:caption delegate:nil cancelButtonTitle:@"OK" otherButtonTitles: nil];
-        [alert show];
-        [[NSNotificationCenter defaultCenter] postNotificationName:@"StartFlickrDataLoad" object:nil userInfo:nil];
-    }else{
-        /*
-        NSString* caption = @"Login Error !!!";
-        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error" message:caption delegate:nil cancelButtonTitle:@"OK" otherButtonTitles: nil];
-        [alert show];
-         */
-    }
+    [[FlickrMngr sharedFlkckrMngr] loginToFlickr:^(BOOL status, NSString* userId, NSString *fullNam){
+        if( status == YES )
+        {
+            
+            NSString* caption = [NSString stringWithFormat: @"Login in %@.", [FlickrMngr sharedFlkckrMngr].userName];
+            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Login" message:caption delegate:nil cancelButtonTitle:@"OK" otherButtonTitles: nil];
+            [alert show];
+            [[NSNotificationCenter defaultCenter] postNotificationName:@"StartFlickrDataLoad" object:nil userInfo:nil];
+            
+        }else{
+            NSString* caption = [NSString stringWithFormat: @"Login to Flickr"];
+            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Login" message:caption delegate:nil cancelButtonTitle:@"OK" otherButtonTitles: nil];
+            [alert show];
+            [[NSNotificationCenter defaultCenter] postNotificationName:@"StartFlickrDataLoad" object:nil userInfo:nil];
+
+            [[FlickrMngr sharedFlkckrMngr] retryAuth];
+        }
+    }];
 }
 
 - (void)updateData:(NSNotification *)notification
@@ -166,5 +171,6 @@
 - (IBAction)applicationSettingButtonClicked:(id)sender {
 }
 - (IBAction)abortButtonClicked:(id)sender {
+    [[FlickrMngr sharedFlkckrMngr] retryAuth];
 }
 @end

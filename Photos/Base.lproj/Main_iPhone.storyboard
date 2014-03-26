@@ -128,6 +128,7 @@
                     <connections>
                         <outlet property="groupCollectionView" destination="Pam-1n-Bti" id="gwU-eo-Gf8"/>
                         <outlet property="groupToolBar" destination="TuE-b9-dGI" id="93g-tK-0aA"/>
+                        <outlet property="hartButtonClicked" destination="2bT-If-UmH" id="g5n-Ah-1iV"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="x5A-6p-PRh" sceneMemberID="firstResponder"/>

@@ -40,24 +40,20 @@ static bool g_authIsComplete = NO;
     [[FlickrKit sharedFlickrKit] initializeWithAPIKey:apiKey sharedSecret:secret];
 }
 
-- (BOOL)loginToFlickr
+- (void)loginToFlickr:(FlickrMngrLoginCmplete)completion
 {
-    BOOL isAuth;
-    FlickrMngrLoginCmplete completion = ^(BOOL* result, NSString* userId, NSString* userName){
-        
-    };
-    isAuth = [self ckeckAuth:completion isSync:YES];
-    if( isAuth == NO )
-    {
-        [self DoAuth];
+    [self ckeckAuth:completion isSync:NO];
+    //[self DoAuth];
+}
+
+- (void)retryAuth
+{
+    if (![FlickrKit sharedFlickrKit].isAuthorized) {
+        //AuthViewController *authView = [[AuthViewController alloc] init];
+        [[NSNotificationCenter defaultCenter] postNotificationName:@"UserAuthStart" object:nil userInfo:nil];
+        //AuthViewController* authView = [self.storyboard instantiateViewControllerWithIdentifier:@"AuthViewController"];
+        //[self.navigationController pushViewController:authView animated:YES];
     }
-    /*
-    while (!g_authIsComplete) {
-        [[NSRunLoop currentRunLoop] runUntilDate:[NSDate dateWithTimeIntervalSinceNow:0.01]];
-    }
-    */ 
-    isAuth = [[FlickrKit sharedFlickrKit] isAuthorized ];
-    return isAuth;
 }
 
 - (void)beginWebAuth:(NSString*)callbackURLString load:(FlickrMngrWebAuthLoad)callbackForLoad
@@ -280,6 +276,7 @@ const NSInteger cNumOfLoadPhotosAtonece = 3;
 {
     __block BOOL result = NO;
     __block BOOL pass = NO;
+    //return YES;
     self.checkAuthOp = [[FlickrKit sharedFlickrKit] checkAuthorizationOnCompletion:^(NSString *userName, NSString *userId, NSString *fullName, NSError *error) {
 		dispatch_async(dispatch_get_main_queue(), ^{
 			if (!error) {
@@ -287,13 +284,15 @@ const NSInteger cNumOfLoadPhotosAtonece = 3;
                 self.userName = userName;
                 result = YES;
                 pass = YES;
-                completon(&result, userId, userName);
+                if( completon != nil )
+                    completon(result, userId, userName);
 			} else {
 				self.userID = nil;
                 self.userName = nil;
                 result = NO;
                 pass = YES;
-                completon(&result, userId, userName);
+                if( completon != nil )
+                    completon(result, userId, userName);
 			}
         });
 	}];
@@ -306,15 +305,6 @@ const NSInteger cNumOfLoadPhotosAtonece = 3;
     return result;
 }
 
-- (void)DoAuth
-{
-    if (![FlickrKit sharedFlickrKit].isAuthorized) {
-        //AuthViewController *authView = [[AuthViewController alloc] init];
-        [[NSNotificationCenter defaultCenter] postNotificationName:@"UserAuthStart" object:nil userInfo:nil];
-        //AuthViewController* authView = [self.storyboard instantiateViewControllerWithIdentifier:@"AuthViewController"];
-        //[self.navigationController pushViewController:authView animated:YES];
-    }
-}
 
 
 

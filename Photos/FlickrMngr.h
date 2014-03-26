@@ -31,7 +31,7 @@ typedef enum {
     FMPhotoSizeVideoPlayer,
 } FlickrMngrPhotoSize;
 
-typedef void (^FlickrMngrLoginCmplete)(BOOL *status, NSString* userId, NSString *fullName);
+typedef void (^FlickrMngrLoginCmplete)(BOOL status, NSString* userId, NSString *fullName);
 typedef void (^FlickrMngrWebAuthLoad)(NSMutableURLRequest* requestURL);
 typedef void (^FlickrMngrWebAuthCallback)(NSString* userId, NSString* userName);
 typedef void (^FlickrMngrPhotoGetStreamComplete)(NSArray* photos);
@@ -44,7 +44,8 @@ typedef void (^FlickrMngrGetExifDataComplete)(NSDictionary* exifData);
 
 + (FlickrMngr*)sharedFlkckrMngr;
 - (void)initialize;
-- (BOOL)loginToFlickr;
+- (void)loginToFlickr:(FlickrMngrLoginCmplete)completion;
+- (void)retryAuth;
 - (void)beginWebAuth:(NSString*)callbackURLString load:(FlickrMngrWebAuthLoad)callbackForLoad;
 - (void)cancelAuthOperation;
 - (void)authCallback:(NSURL*)callbackUrl callback:(FlickrMngrWebAuthCallback)callback;

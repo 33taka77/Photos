@@ -100,27 +100,33 @@
 
 - (void)flickrDataLoad:(NSNotification *)notification
 {
+    
     [m_flickrMngr getPhotoList:^(NSArray *photos) {
         @autoreleasepool{
             dispatch_async(dispatch_get_main_queue(), ^{
                 __block NSInteger count = 0;
                 for( NSDictionary* photoData in photos )
                 {
+                    
                     FlickrPhotoData* data = [[FlickrPhotoData alloc] init];
                     data.m_photoData = [photoData copy];
                     NSURL* url = [m_flickrMngr makePhotoURLBySize:FMPhotoSizeLargeSquare150 photoData:photoData];
                     data.m_thumbnailUrl = url;
+                    
                     [m_flickrMngr getExifData:photoData completion:^(NSDictionary *exifData) {
-                        data.m_exifData = [exifData copy];
-                        [self.m_flickrPhotos addObject:data];
-                        count++;
-                        if( count == photoData.count )
-                        {
-                            NSLog(@"===== set exif data ======");
-                            [self.delegate updateView];
-                        }
+                        dispatch_async(dispatch_get_main_queue(), ^{
+                            data.m_exifData = [exifData copy];
+                            [self.m_flickrPhotos addObject:data];
+                            count++;
+                            if( count == photoData.count )
+                            {
+                                NSLog(@"===== set exif data ======");
+                                [self.delegate updateView];
+                            }
+                        });
                         
                     }];
+                    
                 }
             });
         }
