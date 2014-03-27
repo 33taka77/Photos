@@ -118,9 +118,9 @@
                             data.m_exifData = [exifData copy];
                             [self.m_flickrPhotos addObject:data];
                             count++;
-                            if( count == photoData.count )
+                            if( count == photos.count )
                             {
-                                NSLog(@"===== set exif data ======");
+                                NSLog(@"===== set exif data %d======",count);
                                 [self.delegate updateView];
                             }
                         });

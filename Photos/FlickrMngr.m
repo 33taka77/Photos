@@ -101,7 +101,7 @@ static bool g_authIsComplete = NO;
 
 }
 
-const NSInteger cNumOfLoadPhotosAtonece = 3;
+const NSInteger cNumOfLoadPhotosAtonece = 20;
 - (BOOL)getPhotoList:(FlickrMngrPhotoGetStreamComplete)completion
 {
     BOOL result = YES;
@@ -110,6 +110,7 @@ const NSInteger cNumOfLoadPhotosAtonece = 3;
         __block NSInteger page = 1;
         __block BOOL isFinish = NO;
         __block BOOL pass = YES;
+        __block NSInteger num = 0;
         while(!isFinish){
             if( pass == YES ){
                 self.myPhotostreamOp = [[FlickrKit sharedFlickrKit] call:@"flickr.photos.search" args:@{@"user_id": self.userID, @"per_page": [NSString stringWithFormat:@"%d",cNumOfLoadPhotosAtonece], @"page": [NSString stringWithFormat:@"%d", page]} maxCacheAge:FKDUMaxAgeNeverCache completion:^(NSDictionary *response, NSError *error) {
@@ -117,9 +118,11 @@ const NSInteger cNumOfLoadPhotosAtonece = 3;
                         if (response) {
                             NSArray* getPhotos = [response valueForKeyPath:@"photos.photo"];
                             [returnPhotosArray addObjectsFromArray:getPhotos];
+                            num = num + getPhotos.count;
                             if( getPhotos.count < cNumOfLoadPhotosAtonece )
                             {
                                 completion( returnPhotosArray );
+                                NSLog(@"found photo are %d.",num);
                                 isFinish = YES;
                             }
                             page++;
