@@ -89,15 +89,53 @@
     self.m_countOfViews = self.navigationController.viewControllers.count;
 
     self.navigationItem.title = libraryName;
+    
+    [[UIDevice currentDevice] beginGeneratingDeviceOrientationNotifications];
+//    [[NSNotificationCenter defaultCenter] addObserver:self
+//                                             selector:@selector(didRotate:)
+//                                                 name:UIDeviceOrientationDidChangeNotification
+//                                               object:nil];
 }
 
 /* 横向き対応のため追加 */
 - (void)didRotateFromInterfaceOrientation:(UIInterfaceOrientation)fromInterfaceOrientation{
     [self.closeBaseCollectionView performBatchUpdates:nil completion:nil];
+    [self.closeBaseCollectionView reloadData];
 }
 
+- (void)willRotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration
+{
+    [super willRotateToInterfaceOrientation:toInterfaceOrientation duration:duration];
+    [self.self.closeBaseCollectionView.collectionViewLayout invalidateLayout];
+    //self.flowLayout.itemSize = [self itemSizeInCurrentOrientation];
+    //[self.closeBaseCollectionView reloadData];
+    //[[NSNotificationCenter defaultCenter] postNotificationName:@"WillRotateView" object:nil userInfo:nil];
+}
+/*
+- (void)didRotate:(NSNotification*)notification
+{
+    CGSize size = (CGSize){self.frame.size.width, self.frame.size.height};
+    [self.closeBaseCollectionView.collectionViewLayout  setItemSize:size];
+    
+    [self.closeBaseCollectionView.collectionViewLayout invalidateLayout];
+    [self.closeBaseCollectionView reloadData];
 
+}
 
+- (UICollectionViewFlowLayout *)flowLayout {
+   return (UICollectionViewFlowLayout *)self.closeBaseCollectionView.collectionViewLayout;
+}
+
+- (CGSize)itemSizeInCurrentOrientation {
+    CGFloat windowWidth = self.self.closeBaseCollectionView.window.bounds.size.width;
+    
+    CGFloat width = (windowWidth - self.flowLayout.sectionInset.left - self.flowLayout.sectionInset.right);
+    
+    CGFloat height = 190.0f;
+    
+    return CGSizeMake(width, height);
+}
+*/
 - (void)viewWillDisappear:(BOOL)animated
 {
     NSInteger count = self.navigationController.viewControllers.count;
@@ -158,6 +196,7 @@
     CGSize size = CGSizeMake(self.closeBaseCollectionView.frame.size.width, 190);
     return size;
 }
+ 
 - (IBAction)testNext:(id)sender {
     /*
     UIViewController* viewController = [self.storyboard instantiateViewControllerWithIdentifier:@"TestViewController"];

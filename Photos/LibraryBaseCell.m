@@ -38,6 +38,8 @@
     {
         AppDelegate* appDelegate = [[UIApplication sharedApplication] delegate];
         self.m_appDelegate = appDelegate;
+        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(willRotateView:) name:@"WillRotateView" object:nil];
+
     }
     return self;
 }
@@ -49,6 +51,10 @@
     // Drawing code
 }
 */
+- (void)willRotateView:(NSNotification *)notification
+{
+    [self.itemThumbnailCollection reloadData];
+}
 
 - (NSInteger)numberOfSectionsInCollectionView:(UICollectionView *)collectionView
 {
