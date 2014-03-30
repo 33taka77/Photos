@@ -79,26 +79,29 @@
      //NSInteger num = sectionData.items.count;
      //return num;
      */
+    //return 5;
     NSInteger numOfImage = self.items.count;
     return numOfImage;
 }
 
 - (UICollectionViewCell*)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath
 {
+    
     ItemThumbnailCell* cell = [collectionView dequeueReusableCellWithReuseIdentifier:@"ItemThumbnailCell" forIndexPath:indexPath];
+    
     UIImage* thumbnailData = [self.m_appDelegate.m_imageLibrary getThumbnailAtSectionByIndex:self.sectionIndex index:indexPath.row];
     cell.thumbnailImageView.image = thumbnailData;
+    //cell.thumbnailImageView.image = nil;
     return cell;
 }
 
+/*
 - (CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout sizeForItemAtIndexPath:(NSIndexPath *)indexPath
 {
+    return CGSizeMake(150, 150);
+    
     UIImage* thumbnailData = [self.m_appDelegate.m_imageLibrary getThumbnailAtSectionByIndex:self.sectionIndex index:indexPath.row];
     
-    /*
-    NSString* searchTerm = self.searches[indexPath.section];
-    FlickrPhoto* photo = self.searchResults[searchTerm][indexPath.row];
-    */
     float width = thumbnailData.size.width;
     float height = thumbnailData.size.height;
     if( height > kBaseCellHeight )
@@ -115,6 +118,7 @@
 {
     return UIEdgeInsetsMake(50, 20, 50, 20);
 }
+*/
 
 - (void)collectionView:(UICollectionView*)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath
 {

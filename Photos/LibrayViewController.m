@@ -106,7 +106,7 @@
 - (void)willRotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration
 {
     [super willRotateToInterfaceOrientation:toInterfaceOrientation duration:duration];
-    [self.self.closeBaseCollectionView.collectionViewLayout invalidateLayout];
+    [self.closeBaseCollectionView.collectionViewLayout invalidateLayout];
     //self.flowLayout.itemSize = [self itemSizeInCurrentOrientation];
     //[self.closeBaseCollectionView reloadData];
     //[[NSNotificationCenter defaultCenter] postNotificationName:@"WillRotateView" object:nil userInfo:nil];
@@ -155,12 +155,14 @@
 
 - (NSInteger)numberOfSectionsInCollectionView:(UICollectionView *)collectionView
 {
+    //[self.closeBaseCollectionView.collectionViewLayout invalidateLayout];
     NSInteger sections = [self.m_appDelegate.m_imageLibrary getSectionCount];
     return sections;
 }
 
 - (NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section
 {
+    //[self.closeBaseCollectionView.collectionViewLayout invalidateLayout];
     return 1;
 }
 
@@ -182,6 +184,7 @@
     return baseCell;
 }
 
+
 - (UICollectionReusableView *)collectionView:(UICollectionView *)collectionView viewForSupplementaryElementOfKind:(NSString *)kind atIndexPath:(NSIndexPath *)indexPath
 {
     baseCollectionHeader *headerView = [collectionView dequeueReusableSupplementaryViewOfKind:UICollectionElementKindSectionHeader withReuseIdentifier:@"baseCollectionHeader" forIndexPath:indexPath];
@@ -192,7 +195,10 @@
     return headerView;
 }
 
+
 -(CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout sizeForItemAtIndexPath:(NSIndexPath *)indexPath {
+    NSInteger section = indexPath.section;
+    NSLog( @"section:%d",section );
     CGSize size = CGSizeMake(self.closeBaseCollectionView.frame.size.width, 190);
     return size;
 }
