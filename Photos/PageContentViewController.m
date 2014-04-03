@@ -34,7 +34,7 @@
      //UIImage* image = [UIImage imageNamed:@"1.jpg"];
     UIImage* image = [self.appDelegate.m_imageLibrary getFullSreenViewImageAtSectionByIndex:self.sectionIndex index:self.pageIndex];
     self.imageView.image =image;
-}
+ }
 
 - (void)didReceiveMemoryWarning
 {

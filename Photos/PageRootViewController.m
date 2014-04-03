@@ -46,16 +46,22 @@
     [self addChildViewController:self.pageViewController];
     [self.view addSubview:self.pageViewController.view];
     [self.pageViewController didMoveToParentViewController:self];
+    self.navigationItem.title = [NSString stringWithFormat: @"%d/%d",[self indexOfViewController:[self.pageViewController.viewControllers objectAtIndex:0]]+1,[self.appDelegate.m_imageLibrary getNumOfImagesInSectionBySectonIndex:self.sectionIndex]];
+
 }
 
 - (UIViewController*)pageViewController:(UIPageViewController *)pageViewController viewControllerBeforeViewController:(UIViewController *)viewController
 {
+    self.navigationItem.title = [NSString stringWithFormat: @"%d/%d",[self indexOfViewController:[self.pageViewController.viewControllers objectAtIndex:0]]+1,[self.appDelegate.m_imageLibrary getNumOfImagesInSectionBySectonIndex:self.sectionIndex]];
+
     NSInteger indexOfPage = ((PageContentViewController*)viewController).pageIndex;
+ 
     if( (indexOfPage == 0) || (indexOfPage == NSNotFound) )
     {
         return nil;
     }
     indexOfPage --;
+
     return [self viewControllerAtIndex:indexOfPage];
 }
 - (UIViewController*)pageViewController:(UIPageViewController *)pageViewController viewControllerAfterViewController:(UIViewController *)viewController
@@ -65,9 +71,12 @@
         return nil;
     }
     indexOfPage ++;
+    self.navigationItem.title = [NSString stringWithFormat: @"%d/%d",[self indexOfViewController:[self.pageViewController.viewControllers objectAtIndex:0]]+1,[self.appDelegate.m_imageLibrary getNumOfImagesInSectionBySectonIndex:self.sectionIndex]];
+
     if( indexOfPage >= self.numOfPages ){
         return nil;
     }
+
     return [self viewControllerAtIndex:indexOfPage];
 }
 
@@ -88,9 +97,15 @@
     //UIImage* image = [UIImage imageNamed:@"1.jpg"];
     pageviewController.sectionIndex = self.sectionIndex;
     pageviewController.pageIndex = indexOfPage;
+    
+
     return pageviewController;
 }
 
+- (NSUInteger)indexOfViewController:(PageContentViewController *)viewController
+{
+    return viewController.pageIndex;
+}
 /*
 #pragma mark - Navigation
 
