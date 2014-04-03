@@ -11,4 +11,5 @@
 @interface PageContentViewController : UIViewController
 @property (weak, nonatomic) IBOutlet UIImageView *imageView;
 @property NSInteger pageIndex;
+@property NSInteger sectionIndex;
 @end

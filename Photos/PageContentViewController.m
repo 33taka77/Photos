@@ -7,8 +7,10 @@
 //
 
 #import "PageContentViewController.h"
+#import "AppDelegate.h"
 
 @interface PageContentViewController ()
+@property (nonatomic, retain) AppDelegate* appDelegate;
 
 @end
 
@@ -27,6 +29,11 @@
 {
     [super viewDidLoad];
     // Do any additional setup after loading the view.
+    AppDelegate* appDelegate = [[UIApplication sharedApplication] delegate];
+    self.appDelegate = appDelegate;
+     //UIImage* image = [UIImage imageNamed:@"1.jpg"];
+    UIImage* image = [self.appDelegate.m_imageLibrary getFullSreenViewImageAtSectionByIndex:self.sectionIndex index:self.pageIndex];
+    self.imageView.image =image;
 }
 
 - (void)didReceiveMemoryWarning

@@ -76,6 +76,7 @@
 		F9A16D8618DEA754001A7DAF /* UIViewController+CWPopup.m in Sources */ = {isa = PBXBuildFile; fileRef = F9A16D8518DEA754001A7DAF /* UIViewController+CWPopup.m */; };
 		F9A16D8B18DEAED5001A7DAF /* AuthViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F9A16D8A18DEAED5001A7DAF /* AuthViewController.m */; };
 		F9A16DD918DF0E41001A7DAF /* AuthViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = F9A16DD818DF0E41001A7DAF /* AuthViewController.xib */; };
+		F9C8E99718ED618800985268 /* 1.jpg in Resources */ = {isa = PBXBuildFile; fileRef = F9C8E99618ED618800985268 /* 1.jpg */; };
 		F9F26BA318CB51EC000E9B64 /* LibraryBaseCell.m in Sources */ = {isa = PBXBuildFile; fileRef = F9F26B9D18CB51EC000E9B64 /* LibraryBaseCell.m */; };
 		F9F26BA418CB51EC000E9B64 /* baseCollectionHeader.m in Sources */ = {isa = PBXBuildFile; fileRef = F9F26B9F18CB51EC000E9B64 /* baseCollectionHeader.m */; };
 		F9F26BA518CB51EC000E9B64 /* ItemThumbnailCell.m in Sources */ = {isa = PBXBuildFile; fileRef = F9F26BA218CB51EC000E9B64 /* ItemThumbnailCell.m */; };
@@ -207,6 +208,7 @@
 		F9A16D8918DEAED5001A7DAF /* AuthViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AuthViewController.h; sourceTree = "<group>"; };
 		F9A16D8A18DEAED5001A7DAF /* AuthViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AuthViewController.m; sourceTree = "<group>"; };
 		F9A16DD818DF0E41001A7DAF /* AuthViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = AuthViewController.xib; sourceTree = "<group>"; };
+		F9C8E99618ED618800985268 /* 1.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = 1.jpg; sourceTree = "<group>"; };
 		F9F26B9D18CB51EC000E9B64 /* LibraryBaseCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LibraryBaseCell.m; sourceTree = "<group>"; };
 		F9F26B9E18CB51EC000E9B64 /* baseCollectionHeader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = baseCollectionHeader.h; sourceTree = "<group>"; };
 		F9F26B9F18CB51EC000E9B64 /* baseCollectionHeader.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = baseCollectionHeader.m; sourceTree = "<group>"; };
@@ -284,6 +286,7 @@
 		F95833E518C8BAB300114C29 /* Photos */ = {
 			isa = PBXGroup;
 			children = (
+				F9C8E99618ED618800985268 /* 1.jpg */,
 				F9A16D8318DEA736001A7DAF /* CWpopup */,
 				F97B3D7D18CF4E7D0042DA5C /* icon */,
 				F9F26BFF18CC7E38000E9B64 /* DataModel */,
@@ -566,6 +569,7 @@
 				F97B3DBB18CF50AB0042DA5C /* arrow_left_24.png in Resources */,
 				F97B3DA218CF4ED40042DA5C /* info_64.png in Resources */,
 				F97B3D9A18CF4ED40042DA5C /* gear_24.png in Resources */,
+				F9C8E99718ED618800985268 /* 1.jpg in Resources */,
 				F97B3DAB18CF4ED40042DA5C /* trash_64.png in Resources */,
 				F97B3DA918CF4ED40042DA5C /* trash_24.png in Resources */,
 				F97B3DA518CF4ED40042DA5C /* reload_64.png in Resources */,

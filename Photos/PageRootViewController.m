@@ -39,7 +39,7 @@
     self.numOfPages =  [self.appDelegate.m_imageLibrary getNumOfImagesInSectionBySectonIndex:self.sectionIndex];
     self.pageViewController = [self.storyboard instantiateViewControllerWithIdentifier:@"PageViewController"];
     self.pageViewController.dataSource = self;
-    PageContentViewController* startViewController = [self viewControllerAtIndex:0];
+    PageContentViewController* startViewController = [self viewControllerAtIndex:self.index];
     NSArray* viewControllers = @[startViewController];
     [self.pageViewController setViewControllers:viewControllers direction:UIPageViewControllerNavigationDirectionForward animated:NO completion:nil];
     self.pageViewController.view.frame = CGRectMake(0, 0, self.view.frame.size.width, self.view.frame.size.height);
@@ -84,8 +84,9 @@
     }
     
     PageContentViewController* pageviewController = [self.storyboard instantiateViewControllerWithIdentifier:@"PageContentViewController"];
-    UIImage* image = [self.appDelegate.m_imageLibrary getFullSreenViewImageAtSectionByIndex:self.sectionIndex index:indexOfPage];
-    pageviewController.imageView.image = image;
+    //UIImage* image = [self.appDelegate.m_imageLibrary getFullSreenViewImageAtSectionByIndex:self.sectionIndex index:indexOfPage];
+    //UIImage* image = [UIImage imageNamed:@"1.jpg"];
+    pageviewController.sectionIndex = self.sectionIndex;
     pageviewController.pageIndex = indexOfPage;
     return pageviewController;
 }
