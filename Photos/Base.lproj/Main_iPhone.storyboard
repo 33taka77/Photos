@@ -320,7 +320,66 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="xoN-8n-lmL" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1370" y="-12"/>
+            <point key="canvasLocation" x="1435" y="-2"/>
+        </scene>
+        <!--Page Root View Controller-->
+        <scene sceneID="tD6-gN-Omj">
+            <objects>
+                <viewController storyboardIdentifier="PageRootViewController" useStoryboardIdentifierAsRestorationIdentifier="YES" id="OCE-tz-p46" customClass="PageRootViewController" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="emg-ro-0Yb"/>
+                        <viewControllerLayoutGuide type="bottom" id="vHC-jc-IHH"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="tee-CY-zfN">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+                    </view>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="dUk-4Q-QFR" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1440" y="658"/>
+        </scene>
+        <!--Page Content View Controller-->
+        <scene sceneID="ehZ-XL-s8Z">
+            <objects>
+                <viewController storyboardIdentifier="PageContentViewController" useStoryboardIdentifierAsRestorationIdentifier="YES" id="ySg-hk-uac" customClass="PageContentViewController" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="jTO-SR-9ff"/>
+                        <viewControllerLayoutGuide type="bottom" id="0gV-lB-gKE"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="ZzU-6b-f3g">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                        <subviews>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="ioU-e0-TbS">
+                                <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+                                <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                            </imageView>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstItem="0gV-lB-gKE" firstAttribute="top" secondItem="ioU-e0-TbS" secondAttribute="bottom" id="E3G-AN-fgi"/>
+                            <constraint firstAttribute="trailing" secondItem="ioU-e0-TbS" secondAttribute="trailing" id="bIv-E0-yjA"/>
+                            <constraint firstItem="ioU-e0-TbS" firstAttribute="leading" secondItem="ZzU-6b-f3g" secondAttribute="leading" id="n2b-Zq-7r7"/>
+                            <constraint firstItem="ioU-e0-TbS" firstAttribute="top" secondItem="ZzU-6b-f3g" secondAttribute="top" id="zf0-we-iyU"/>
+                        </constraints>
+                    </view>
+                    <connections>
+                        <outlet property="imageView" destination="ioU-e0-TbS" id="Nfp-kM-hdR"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="szq-wY-3UX" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1880" y="676"/>
+        </scene>
+        <!--Page View Controller-->
+        <scene sceneID="cV7-vs-PNu">
+            <objects>
+                <pageViewController storyboardIdentifier="PageViewController" autoresizesArchivedViewToFullSize="NO" useStoryboardIdentifierAsRestorationIdentifier="YES" transitionStyle="scroll" navigationOrientation="horizontal" spineLocation="none" id="jjO-00-K3I" sceneMemberID="viewController"/>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="5w6-0n-y1n" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1876" y="-2"/>
         </scene>
         <!--Image Select View Controller-->
         <scene sceneID="Wni-iF-h6m">
@@ -502,7 +561,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="GwP-4x-K8L" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1381" y="658"/>
+            <point key="canvasLocation" x="1371" y="1368"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="7NM-e5-rUh">

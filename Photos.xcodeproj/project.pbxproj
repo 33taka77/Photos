@@ -8,6 +8,8 @@
 
 /* Begin PBXBuildFile section */
 		8138942918CEE459009D967D /* TestViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8138942818CEE459009D967D /* TestViewController.m */; };
+		81BA286D18ECFD1E0058BAE0 /* PageRootViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 81BA286C18ECFD1E0058BAE0 /* PageRootViewController.m */; };
+		81BA287118ECFE740058BAE0 /* PageContentViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 81BA287018ECFE740058BAE0 /* PageContentViewController.m */; };
 		F9152D4218CDD7620039E71E /* AssetObject.m in Sources */ = {isa = PBXBuildFile; fileRef = F9152D4118CDD7620039E71E /* AssetObject.m */; };
 		F95833E018C8BAB300114C29 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F95833DF18C8BAB300114C29 /* Foundation.framework */; };
 		F95833E218C8BAB300114C29 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F95833E118C8BAB300114C29 /* CoreGraphics.framework */; };
@@ -117,6 +119,10 @@
 /* Begin PBXFileReference section */
 		8138942718CEE459009D967D /* TestViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TestViewController.h; sourceTree = "<group>"; };
 		8138942818CEE459009D967D /* TestViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TestViewController.m; sourceTree = "<group>"; };
+		81BA286B18ECFD1E0058BAE0 /* PageRootViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PageRootViewController.h; sourceTree = "<group>"; };
+		81BA286C18ECFD1E0058BAE0 /* PageRootViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PageRootViewController.m; sourceTree = "<group>"; };
+		81BA286F18ECFE740058BAE0 /* PageContentViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PageContentViewController.h; sourceTree = "<group>"; };
+		81BA287018ECFE740058BAE0 /* PageContentViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PageContentViewController.m; sourceTree = "<group>"; };
 		F9152D4018CDD7620039E71E /* AssetObject.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AssetObject.h; sourceTree = "<group>"; };
 		F9152D4118CDD7620039E71E /* AssetObject.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AssetObject.m; sourceTree = "<group>"; };
 		F95833DC18C8BAB300114C29 /* Photos.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Photos.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -405,6 +411,10 @@
 		F9F26BFE18CC7E29000E9B64 /* Controller */ = {
 			isa = PBXGroup;
 			children = (
+				81BA286F18ECFE740058BAE0 /* PageContentViewController.h */,
+				81BA287018ECFE740058BAE0 /* PageContentViewController.m */,
+				81BA286B18ECFD1E0058BAE0 /* PageRootViewController.h */,
+				81BA286C18ECFD1E0058BAE0 /* PageRootViewController.m */,
 				F9F26BA718CB5250000E9B64 /* LibrayViewController.h */,
 				F9F26BA618CB5250000E9B64 /* LibrayViewController.m */,
 				F95833F718C8BAB300114C29 /* ViewController.h */,
@@ -625,8 +635,10 @@
 				F958342118C8BB8D00114C29 /* AssetMngr.m in Sources */,
 				F977E16E18E061D4009CE952 /* FlickrPhotoData.m in Sources */,
 				F95833EC18C8BAB300114C29 /* main.m in Sources */,
+				81BA287118ECFE740058BAE0 /* PageContentViewController.m in Sources */,
 				F9F26BA418CB51EC000E9B64 /* baseCollectionHeader.m in Sources */,
 				F9152D4218CDD7620039E71E /* AssetObject.m in Sources */,
+				81BA286D18ECFD1E0058BAE0 /* PageRootViewController.m in Sources */,
 				F9A16D8218DE871F001A7DAF /* FlickrMngr.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -773,7 +785,7 @@
 				GCC_PREFIX_HEADER = "Photos/Photos-Prefix.pch";
 				INFOPLIST_FILE = "Photos/Photos-Info.plist";
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				USER_HEADER_SEARCH_PATHS = "~/Documents/XcodeWorkSpace/iOS/FlickrKit-master/classes/**";
+				USER_HEADER_SEARCH_PATHS = "~/Documents/XcodeWorkSpace/iOS/FlickrKit-master/classes/** ~/Documents/Development/iOS/FlickrKit-master/classes/**";
 				WRAPPER_EXTENSION = app;
 			};
 			name = Debug;
@@ -787,7 +799,7 @@
 				GCC_PREFIX_HEADER = "Photos/Photos-Prefix.pch";
 				INFOPLIST_FILE = "Photos/Photos-Info.plist";
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				USER_HEADER_SEARCH_PATHS = "~/Documents/XcodeWorkSpace/iOS/FlickrKit-master/classes/**";
+				USER_HEADER_SEARCH_PATHS = "~/Documents/XcodeWorkSpace/iOS/FlickrKit-master/classes/** ~/Documents/Development/iOS/FlickrKit-master/classes/**";
 				WRAPPER_EXTENSION = app;
 			};
 			name = Release;

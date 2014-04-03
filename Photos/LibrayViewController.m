@@ -13,6 +13,7 @@
 #import "ItemThumbnailCollectionView.h"
 #import "SingleViewController.h"
 #import "TestViewController.h"
+#import "PageRootViewController.h"
 
 
 @interface LibrayViewController ()
@@ -41,7 +42,7 @@
     NSNumber *index = [notification.userInfo objectForKey:@"index"];
     NSInteger indexOf = [index intValue];
     NSInteger sectionIndexOf = [sectionIndex intValue];
-    SingleViewController* viewController = [self.storyboard instantiateViewControllerWithIdentifier:@"SingleImageViewContoller"];
+    PageRootViewController* viewController = [self.storyboard instantiateViewControllerWithIdentifier:@"PageRootViewController"];
     viewController.sectionIndex = sectionIndexOf;
     viewController.index = indexOf;
 
