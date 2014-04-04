@@ -179,6 +179,31 @@ static AssetManager* g_assetManager = nil;
     }
 }
 
+- (NSDictionary*)getMetaDataByURL:(NSURL*)url
+{
+    NSMutableDictionary* dict = [[NSMutableDictionary alloc] init];
+    @autoreleasepool {
+        ALAsset* asset = [self getAssetByURL:url];
+        ALAssetRepresentation* assetRepresentaion = [asset defaultRepresentation];
+        [dict setObject:[assetRepresentaion.metadata valueForKeyPath:@"TIFF.Make" ] forKey:@"Make"];
+        [dict setObject:[assetRepresentaion.metadata valueForKeyPath:@"TIFF.Model" ] forKey:@"Model"];
+        [dict setObject:[assetRepresentaion.metadata valueForKeyPath:@"Orientation" ] forKey:@"Orientation"];
+        [dict setObject:nil forKey:@"Artist"];
+        [dict setObject:[assetRepresentaion.metadata valueForKeyPath:@"Exif.ExposureTime" ] forKey:@"ExposureTime"];
+        [dict setObject:[assetRepresentaion.metadata valueForKeyPath:@"Exif.FNumber" ] forKey:@"FNumber"];
+        [dict setObject:[assetRepresentaion.metadata valueForKeyPath:@"Exif.ISOSpeedRatings" ] forKey:@"ISO"];
+        [dict setObject:[assetRepresentaion.metadata valueForKeyPath:@"Exif.DateTimeOriginal" ] forKey:@"Dariginal"];
+        [dict setObject:nil forKey:@"ExposureCompensation"];
+        [dict setObject:nil forKey:@"MaxApertureValue"];
+        [dict setObject:[assetRepresentaion.metadata valueForKeyPath:@"Exif.Flash" ] forKey:@"Flash"];
+        [dict setObject:[assetRepresentaion.metadata valueForKeyPath:@"Exif.FocalLength" ] forKey:@"FocalLength"];
+        [dict setObject:nil forKey:@"LensInfo"];
+        [dict setObject:nil forKey:@"LensModel"];
+        [dict setObject:nil forKey:@"Lens"];
+       
+    }
+    return dict;
+}
 
 // ------- internal functions -------------------------------------------------------------------------
 
