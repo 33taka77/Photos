@@ -8,6 +8,7 @@
 
 #import "AssetManager.h"
 #import "AssetGroupData.h"
+#import <ImageIO/ImageIO.h>
 
 @interface AssetManager ()
 @property (nonatomic, retain) ALAssetsLibrary* m_assetLibrary;
@@ -179,27 +180,183 @@ static AssetManager* g_assetManager = nil;
     }
 }
 
+- (NSString*)makeExposureString:(NSNumber*)exposure
+{
+    if( exposure == nil )
+        return @"";
+    int i =0;
+    double val = [exposure doubleValue];
+    int intVal;
+    intVal = (int)val;
+    while (fmod(val,intVal) != 0.0) {
+        val = val*10;
+        i++;
+        if( i > 7)
+            break;
+        intVal = (int)val;
+    }
+    int bunsi;
+    int bunbo;
+    bunsi = val;
+    bunbo = pow(10,i);
+    
+    int a0;
+    int b0;
+    int a=bunsi;
+    int b=bunbo;
+    a0=a;
+    b0=b;
+    int c;
+    while(1)
+    {
+        c=b%a;if(c==0)break;
+        b=a;
+        a=c;
+    }
+    bunsi = a0/a;
+    bunbo = b0/a;
+    NSString* str;
+    if( bunbo == 1 )
+    {
+        str = [NSString stringWithFormat:@"%d",bunsi];
+    }else{
+        str = [NSString stringWithFormat:@"%d/%d",bunsi, bunbo];
+    }
+    return str;
+    
+}
+
+- (NSString*)makeFNumberString:(NSNumber*)fnumber
+{
+    if( fnumber == nil )
+        return @"";
+    NSString* str;
+    double val = [fnumber doubleValue];
+    str = [NSString stringWithFormat:@"%f",val];
+    return str;
+}
+
+- (NSString*)makeISOString:(NSArray*)iso
+{
+    if( iso == nil )
+        return @"";
+    NSNumber* isoNumber = iso[0];
+    NSString* str = [isoNumber stringValue];
+    return str;
+}
+
+- (NSString*)makeFlashString:(NSNumber*)flash
+{
+    if( flash == nil )
+        return @"";
+    NSString* str;
+    double val = [flash doubleValue];
+    int intVal = (int)val;
+    if( (intVal&0x00000001) != 0 )
+    {
+        str = @"Flash ON";
+    }else{
+        str = @"Flash OFF";
+    }
+    return str;
+}
+
+- (NSString*)makeFocalLengthString:(NSNumber*)forcalLength
+{
+    if( forcalLength == nil )
+        return @"";
+    NSString* str;
+    str = [forcalLength stringValue];
+    return str;
+}
+
+- (NSDictionary*)getmetadata:(ALAssetRepresentation*)assetRepresentation
+{
+    @autoreleasepool {
+        NSUInteger size = (NSInteger)[assetRepresentation size];
+        uint8_t *buff = (uint8_t *)malloc(sizeof(uint8_t)*size);
+        NSData *photo;
+        if(buff != nil){
+            NSError *error = nil;
+            NSUInteger bytesRead = [assetRepresentation getBytes:buff fromOffset:0 length:size error:&error];
+            if (bytesRead && !error) {
+                photo = [NSData dataWithBytesNoCopy:buff length:bytesRead freeWhenDone:YES];
+            }
+            if (error) {
+                NSLog(@"error:%@", error);
+                free(buff);
+                return nil;
+            }
+        }
+        CGImageSourceRef cgImage = CGImageSourceCreateWithData((CFDataRef)CFBridgingRetain(photo), nil);
+        NSDictionary *metadata = (NSDictionary *)CFBridgingRelease(CGImageSourceCopyPropertiesAtIndex(cgImage, 0, nil));
+        if (metadata) {
+            NSLog(@"%@", [metadata description]);
+        } else {
+            NSLog(@"no metadata");
+        }
+        free(buff);
+        CFRelease(cgImage);
+        return metadata;
+    }
+}
+
 - (NSDictionary*)getMetaDataByURL:(NSURL*)url
 {
     NSMutableDictionary* dict = [[NSMutableDictionary alloc] init];
     @autoreleasepool {
         ALAsset* asset = [self getAssetByURL:url];
         ALAssetRepresentation* assetRepresentaion = [asset defaultRepresentation];
-        [dict setObject:[assetRepresentaion.metadata valueForKeyPath:@"TIFF.Make" ] forKey:@"Make"];
-        [dict setObject:[assetRepresentaion.metadata valueForKeyPath:@"TIFF.Model" ] forKey:@"Model"];
-        [dict setObject:[assetRepresentaion.metadata valueForKeyPath:@"Orientation" ] forKey:@"Orientation"];
-        [dict setObject:nil forKey:@"Artist"];
-        [dict setObject:[assetRepresentaion.metadata valueForKeyPath:@"Exif.ExposureTime" ] forKey:@"ExposureTime"];
-        [dict setObject:[assetRepresentaion.metadata valueForKeyPath:@"Exif.FNumber" ] forKey:@"FNumber"];
-        [dict setObject:[assetRepresentaion.metadata valueForKeyPath:@"Exif.ISOSpeedRatings" ] forKey:@"ISO"];
-        [dict setObject:[assetRepresentaion.metadata valueForKeyPath:@"Exif.DateTimeOriginal" ] forKey:@"Dariginal"];
-        [dict setObject:nil forKey:@"ExposureCompensation"];
-        [dict setObject:nil forKey:@"MaxApertureValue"];
-        [dict setObject:[assetRepresentaion.metadata valueForKeyPath:@"Exif.Flash" ] forKey:@"Flash"];
-        [dict setObject:[assetRepresentaion.metadata valueForKeyPath:@"Exif.FocalLength" ] forKey:@"FocalLength"];
-        [dict setObject:nil forKey:@"LensInfo"];
-        [dict setObject:nil forKey:@"LensModel"];
-        [dict setObject:nil forKey:@"Lens"];
+        //NSDictionary* metaData = assetRepresentaion.metadata;
+        NSDictionary* metaData = [self getmetadata:assetRepresentaion];
+        
+        NSDictionary* exif = [metaData valueForKey:@"{Exif}"];
+        NSString* strMaker = [assetRepresentaion.metadata valueForKeyPath:@"{TIFF}.Make" ];
+        if( strMaker == nil )
+            strMaker =@"";
+        [dict setObject:strMaker forKey:@"Maker"];
+        
+        NSString* strModel = [assetRepresentaion.metadata valueForKeyPath:@"{TIFF}.Model" ];
+        if( strModel == nil )
+            strModel =@"";
+        [dict setObject:strModel forKey:@"Model"];
+        
+        [dict setObject:@"" forKey:@"Orientation"];
+        [dict setObject:@"" forKey:@"Artist"];
+        
+        NSString* strExposureTIme = [self makeExposureString:[assetRepresentaion.metadata valueForKeyPath:@"{Exif}.ExposureTime" ]];
+        [dict setObject:strExposureTIme forKey:@"ExposureTime"];
+        
+        NSString* strFNumber = [self makeFNumberString:[assetRepresentaion.metadata valueForKeyPath:@"{Exif}.FNumber" ]];
+        [dict setObject:strFNumber forKey:@"FNumber"];
+        
+        NSString* strIso = [self makeISOString:[assetRepresentaion.metadata valueForKeyPath:@"{Exif}.ISOSpeedRatings" ]];
+        [dict setObject:strIso forKey:@"ISO"];
+        
+        NSString* strDateTime = [assetRepresentaion.metadata valueForKeyPath:@"{Exif}.DateTimeOriginal" ];
+        if( strDateTime == nil )
+            strDateTime =@"";
+        [dict setObject:strDateTime forKey:@"DateTimeOriginal"];
+        
+        [dict setObject:@"" forKey:@"ExposureCompensation"];
+        [dict setObject:@"" forKey:@"MaxApertureValue"];
+        
+        NSString* strFlash = [self makeFlashString:[assetRepresentaion.metadata valueForKeyPath:@"{Exif}.Flash" ]];
+        [dict setObject:strFlash forKey:@"Flash"];
+        
+        NSString* strFocalLength;
+        NSNumber* focalLength = [assetRepresentaion.metadata valueForKeyPath:@"{Exif}.FocalLenIn35mmFilm" ];
+        if(focalLength == nil)
+        {
+            strFocalLength = [self makeFocalLengthString:[assetRepresentaion.metadata valueForKeyPath:@"{Exif}.FocalLength" ]];
+        }else{
+            strFocalLength = [self makeFocalLengthString:focalLength];
+        }
+        [dict setObject:strFocalLength forKey:@"FocalLength"];
+        
+        [dict setObject:@"" forKey:@"LensInfo"];
+        [dict setObject:@"" forKey:@"LensModel"];
+        [dict setObject:@"" forKey:@"Lens"];
        
     }
     return dict;

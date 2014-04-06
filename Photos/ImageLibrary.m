@@ -222,6 +222,18 @@
     return image;
 }
 
+- (NSDictionary*)GetFlickrMetaData:(NSURL*)url
+{
+    FlickrPhotoData* targetPhoto;
+    for( FlickrPhotoData* filkrPhoto in self.m_flickrPhotos ){
+        if( filkrPhoto.m_thumbnailUrl == url ){
+            targetPhoto = filkrPhoto;
+            break;
+        }
+    }
+    return targetPhoto.m_exifData;
+}
+
 - (void)createSectionForFlickr
 {
     for( FlickrPhotoData* photo in self.m_flickrPhotos )
@@ -231,6 +243,8 @@
         NSArray* separateString = [dateTimeString componentsSeparatedByString:@" "];
         NSString* dateString = separateString[0];
         NSString* sectionDateString = [dateString stringByReplacingOccurrencesOfString:@":" withString:@"/"];
+        if( sectionDateString == nil )
+            sectionDateString = @"Unknown";
         BOOL isNew = YES;
         for( SectionData* sectionData in self.m_sectionDatas )
         {
@@ -574,6 +588,17 @@
         return [m_assetMngr getFullScreenImage:sectionData.items[index]];
     }else if( sectionData.kind == SectionKindIsFlickr ){
         return [self GetFlickrFullScreenSizeImage:sectionData.items[index]];
+    }
+    return nil;
+}
+
+- (NSDictionary*)getMetaDataBySectionIndex:(NSInteger)sectionIndex index:(NSInteger)index
+{
+    SectionData* sectionData = self.m_sectionDatas[sectionIndex];
+    if( sectionData.kind == SectionKindIsLocal){
+        return [m_assetMngr getMetaDataByURL:sectionData.items[index]];
+    }else if( sectionData.kind == SectionKindIsFlickr ){
+        return [self GetFlickrMetaData:sectionData.items[index]];
     }
     return nil;
 }

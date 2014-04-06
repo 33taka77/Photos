@@ -9,11 +9,14 @@
 #import "PageRootViewController.h"
 #import "AppDelegate.h"
 #import "PageContentViewController.h"
+#import "UIViewController+CWPopup.h"
+#import "MetaInfoPopupViewController.h"
 
 @interface PageRootViewController () <UIPageViewControllerDataSource>
 @property (nonatomic, retain) AppDelegate* appDelegate;
 @property (nonatomic, retain) UIPageViewController* pageViewController;
 @property NSInteger numOfPages;
+@property BOOL isDisplayMetaInfo;
 @end
 
 @implementation PageRootViewController
@@ -47,11 +50,47 @@
     [self.view addSubview:self.pageViewController.view];
     [self.pageViewController didMoveToParentViewController:self];
     self.navigationItem.title = [NSString stringWithFormat: @"%d/%d",[self indexOfViewController:[self.pageViewController.viewControllers objectAtIndex:0]]+1,[self.appDelegate.m_imageLibrary getNumOfImagesInSectionBySectonIndex:self.sectionIndex]];
+    UIBarButtonItem* button = [[UIBarButtonItem alloc]
+                              initWithTitle:@"Info"
+                              style:UIBarButtonItemStyleBordered
+                              target:self
+                              action:@selector(barButtonClicked:)];
+    [button setImage:[UIImage imageNamed:@"info_24.png"]];
+    self.navigationItem.rightBarButtonItem = button;
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(closeMetaPopupView:) name:@"metaInfoPopupClosed" object:nil];
 
+}
+
+- (void)closeMetaPopupView:(NSNotification*)notification
+{
+    [self dismissPopupViewControllerAnimated:YES completion:^{
+        NSLog(@"popup view closed");
+    }];
+    self.navigationController.navigationBar.hidden = NO;
+    //self.isDisplayMetaInfo = NO;
+}
+
+- (void)barButtonClicked:(id)sender
+{
+    //self.isDisplayMetaInfo = YES;
+    MetaInfoPopupViewController *samplePopupViewController = [[MetaInfoPopupViewController alloc] initWithNibName:@"metaInfoPopup" bundle:nil];
+    [samplePopupViewController setUseBlurForPopup:YES];
+    samplePopupViewController.sectionIndex = self.sectionIndex;
+    samplePopupViewController.index = [self indexOfViewController:[self.pageViewController.viewControllers objectAtIndex:0]];
+    [self presentPopupViewController:samplePopupViewController animated:YES completion:^(void) {
+        NSLog(@"popup view presented");
+    }];
+    self.navigationController.navigationBar.hidden = YES;
 }
 
 - (UIViewController*)pageViewController:(UIPageViewController *)pageViewController viewControllerBeforeViewController:(UIViewController *)viewController
 {
+//    if( self.isDisplayMetaInfo == YES )
+//        return nil;
+    NSDictionary *userInfo = [NSDictionary dictionaryWithObjectsAndKeys:[NSNumber numberWithInt:self.sectionIndex], @"SectionIndex",[NSNumber numberWithInt:[self indexOfViewController:[self.pageViewController.viewControllers objectAtIndex:0]]], @"index", nil];
+    [[NSNotificationCenter defaultCenter] postNotificationName:@"metaInfoPopupChanged" object:self userInfo:userInfo];
+    
     self.navigationItem.title = [NSString stringWithFormat: @"%d/%d",[self indexOfViewController:[self.pageViewController.viewControllers objectAtIndex:0]]+1,[self.appDelegate.m_imageLibrary getNumOfImagesInSectionBySectonIndex:self.sectionIndex]];
 
     NSInteger indexOfPage = ((PageContentViewController*)viewController).pageIndex;
@@ -66,6 +105,11 @@
 }
 - (UIViewController*)pageViewController:(UIPageViewController *)pageViewController viewControllerAfterViewController:(UIViewController *)viewController
 {
+//    if( self.isDisplayMetaInfo == YES )
+//        return nil;
+    NSDictionary *userInfo = [NSDictionary dictionaryWithObjectsAndKeys:[NSNumber numberWithInt:self.sectionIndex], @"SectionIndex",[NSNumber numberWithInt:[self indexOfViewController:[self.pageViewController.viewControllers objectAtIndex:0]]], @"index", nil];
+    [[NSNotificationCenter defaultCenter] postNotificationName:@"metaInfoPopupChanged" object:self userInfo:userInfo];
+
     NSInteger indexOfPage = ((PageContentViewController*)viewController).pageIndex;
     if( indexOfPage == NSNotFound ){
         return nil;

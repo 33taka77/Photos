@@ -237,7 +237,7 @@ const NSInteger cNumOfLoadPhotosAtonece = 20;
             for( NSDictionary* exifItem in getExifDataArray )
             {
                 if( [[exifItem valueForKey:@"tag"] isEqualToString:@"Make"] ){
-                    [returnDictionary setObject:[[exifItem valueForKey:@"raw"] valueForKey:@"_content"] forKey:@"Make"];continue;}
+                    [returnDictionary setObject:[[exifItem valueForKey:@"raw"] valueForKey:@"_content"] forKey:@"Maker"];continue;}
                 if( [[exifItem valueForKey:@"tag"] isEqualToString:@"Model"] ){
                     [returnDictionary setObject:[[exifItem valueForKey:@"raw"] valueForKey:@"_content"] forKey:@"Model"];continue;}
                 if( [[exifItem valueForKey:@"tag"] isEqualToString:@"Orientation"] ){

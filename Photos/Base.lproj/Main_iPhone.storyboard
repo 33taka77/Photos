@@ -25,7 +25,7 @@
                                             <action selector="applicationSettingButtonClicked:" destination="vXZ-lx-hvc" id="Rbc-Gu-cNg"/>
                                         </connections>
                                     </barButtonItem>
-                                    <barButtonItem width="134" style="plain" systemItem="fixedSpace" id="aaq-y9-bOZ"/>
+                                    <barButtonItem width="139" style="plain" systemItem="fixedSpace" id="aaq-y9-bOZ"/>
                                     <barButtonItem image="heart_24.png" width="70" id="2bT-If-UmH">
                                         <connections>
                                             <action selector="abortButtonClicked:" destination="vXZ-lx-hvc" id="VY2-jb-uNp"/>

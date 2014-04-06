@@ -77,6 +77,8 @@
 		F9A16D8B18DEAED5001A7DAF /* AuthViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F9A16D8A18DEAED5001A7DAF /* AuthViewController.m */; };
 		F9A16DD918DF0E41001A7DAF /* AuthViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = F9A16DD818DF0E41001A7DAF /* AuthViewController.xib */; };
 		F9C8E99718ED618800985268 /* 1.jpg in Resources */ = {isa = PBXBuildFile; fileRef = F9C8E99618ED618800985268 /* 1.jpg */; };
+		F9C8E9A418EE71B400985268 /* metaInfoPopup.xib in Resources */ = {isa = PBXBuildFile; fileRef = F9C8E9A318EE71B400985268 /* metaInfoPopup.xib */; };
+		F9C8E9A718EE90C400985268 /* MetaInfoPopupViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F9C8E9A618EE90C400985268 /* MetaInfoPopupViewController.m */; };
 		F9F26BA318CB51EC000E9B64 /* LibraryBaseCell.m in Sources */ = {isa = PBXBuildFile; fileRef = F9F26B9D18CB51EC000E9B64 /* LibraryBaseCell.m */; };
 		F9F26BA418CB51EC000E9B64 /* baseCollectionHeader.m in Sources */ = {isa = PBXBuildFile; fileRef = F9F26B9F18CB51EC000E9B64 /* baseCollectionHeader.m */; };
 		F9F26BA518CB51EC000E9B64 /* ItemThumbnailCell.m in Sources */ = {isa = PBXBuildFile; fileRef = F9F26BA218CB51EC000E9B64 /* ItemThumbnailCell.m */; };
@@ -209,6 +211,9 @@
 		F9A16D8A18DEAED5001A7DAF /* AuthViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AuthViewController.m; sourceTree = "<group>"; };
 		F9A16DD818DF0E41001A7DAF /* AuthViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = AuthViewController.xib; sourceTree = "<group>"; };
 		F9C8E99618ED618800985268 /* 1.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = 1.jpg; sourceTree = "<group>"; };
+		F9C8E9A318EE71B400985268 /* metaInfoPopup.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = metaInfoPopup.xib; sourceTree = "<group>"; };
+		F9C8E9A518EE90C400985268 /* MetaInfoPopupViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MetaInfoPopupViewController.h; sourceTree = "<group>"; };
+		F9C8E9A618EE90C400985268 /* MetaInfoPopupViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MetaInfoPopupViewController.m; sourceTree = "<group>"; };
 		F9F26B9D18CB51EC000E9B64 /* LibraryBaseCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LibraryBaseCell.m; sourceTree = "<group>"; };
 		F9F26B9E18CB51EC000E9B64 /* baseCollectionHeader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = baseCollectionHeader.h; sourceTree = "<group>"; };
 		F9F26B9F18CB51EC000E9B64 /* baseCollectionHeader.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = baseCollectionHeader.m; sourceTree = "<group>"; };
@@ -407,6 +412,7 @@
 				F97B3D7A18CF2CB00042DA5C /* ImageSelectCollectionHeader.h */,
 				F97B3D7B18CF2CB00042DA5C /* ImageSelectCollectionHeader.m */,
 				F9A16DD818DF0E41001A7DAF /* AuthViewController.xib */,
+				F9C8E9A318EE71B400985268 /* metaInfoPopup.xib */,
 			);
 			name = View;
 			sourceTree = "<group>";
@@ -427,11 +433,13 @@
 				F9F26C0018CC7ECB000E9B64 /* SingleViewController.h */,
 				F9F26C0118CC7ECB000E9B64 /* SingleViewController.m */,
 				8138942718CEE459009D967D /* TestViewController.h */,
+				F9C8E9A518EE90C400985268 /* MetaInfoPopupViewController.h */,
 				8138942818CEE459009D967D /* TestViewController.m */,
 				F97B3D7418CF25680042DA5C /* ImageSelectViewController.h */,
 				F97B3D7518CF25680042DA5C /* ImageSelectViewController.m */,
 				F9A16D8918DEAED5001A7DAF /* AuthViewController.h */,
 				F9A16D8A18DEAED5001A7DAF /* AuthViewController.m */,
+				F9C8E9A618EE90C400985268 /* MetaInfoPopupViewController.m */,
 			);
 			name = Controller;
 			sourceTree = "<group>";
@@ -584,6 +592,7 @@
 				F97B3DA718CF4ED40042DA5C /* smile_48.png in Resources */,
 				F97B3D9E18CF4ED40042DA5C /* heart_48.png in Resources */,
 				F97B3D9818CF4ED40042DA5C /* checkmark_48.png in Resources */,
+				F9C8E9A418EE71B400985268 /* metaInfoPopup.xib in Resources */,
 				F97B3DAC18CF4ED40042DA5C /* zoom_in_24.png in Resources */,
 				F97B3D9D18CF4ED40042DA5C /* heart_24.png in Resources */,
 				F97B3D9F18CF4ED40042DA5C /* heart_64.png in Resources */,
@@ -640,6 +649,7 @@
 				F977E16E18E061D4009CE952 /* FlickrPhotoData.m in Sources */,
 				F95833EC18C8BAB300114C29 /* main.m in Sources */,
 				81BA287118ECFE740058BAE0 /* PageContentViewController.m in Sources */,
+				F9C8E9A718EE90C400985268 /* MetaInfoPopupViewController.m in Sources */,
 				F9F26BA418CB51EC000E9B64 /* baseCollectionHeader.m in Sources */,
 				F9152D4218CDD7620039E71E /* AssetObject.m in Sources */,
 				81BA286D18ECFD1E0058BAE0 /* PageRootViewController.m in Sources */,

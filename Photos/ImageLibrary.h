@@ -98,4 +98,8 @@
 
 - (void)cleanupSectionsData;
 
+- (NSDictionary*)getMetaDataBySectionIndex:(NSInteger)sectionIndex index:(NSInteger)index;
+
+
+
 @end
