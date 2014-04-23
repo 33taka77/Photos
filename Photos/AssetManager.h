@@ -37,4 +37,5 @@
 - (UIImage*)getThumbnailAspect:(NSURL *)url;
 - (NSDictionary*)getMetaDataByURL:(NSURL*)url;
 
+
 @end

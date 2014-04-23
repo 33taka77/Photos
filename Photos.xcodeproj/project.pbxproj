@@ -31,6 +31,7 @@
 		F958342318C8BB8D00114C29 /* SectionData.m in Sources */ = {isa = PBXBuildFile; fileRef = F958341B18C8BB8D00114C29 /* SectionData.m */; };
 		F958342518C8BB8D00114C29 /* AssetGroupData.m in Sources */ = {isa = PBXBuildFile; fileRef = F958342018C8BB8D00114C29 /* AssetGroupData.m */; };
 		F958346F18C9AF2200114C29 /* GroupCell.m in Sources */ = {isa = PBXBuildFile; fileRef = F958346E18C9AF2200114C29 /* GroupCell.m */; };
+		F970B68D18F18B6B00DA64F4 /* ExifParser.m in Sources */ = {isa = PBXBuildFile; fileRef = F970B68C18F18B6B00DA64F4 /* ExifParser.m */; };
 		F977E16E18E061D4009CE952 /* FlickrPhotoData.m in Sources */ = {isa = PBXBuildFile; fileRef = F977E16D18E061D4009CE952 /* FlickrPhotoData.m */; };
 		F97B3D7618CF25680042DA5C /* ImageSelectViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F97B3D7518CF25680042DA5C /* ImageSelectViewController.m */; };
 		F97B3D7918CF2B2A0042DA5C /* SelectCollectionCell.m in Sources */ = {isa = PBXBuildFile; fileRef = F97B3D7818CF2B2A0042DA5C /* SelectCollectionCell.m */; };
@@ -158,6 +159,8 @@
 		F958342018C8BB8D00114C29 /* AssetGroupData.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AssetGroupData.m; sourceTree = "<group>"; };
 		F958346D18C9AF2200114C29 /* GroupCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GroupCell.h; sourceTree = "<group>"; };
 		F958346E18C9AF2200114C29 /* GroupCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GroupCell.m; sourceTree = "<group>"; };
+		F970B68B18F18B6B00DA64F4 /* ExifParser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ExifParser.h; sourceTree = "<group>"; };
+		F970B68C18F18B6B00DA64F4 /* ExifParser.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ExifParser.m; sourceTree = "<group>"; };
 		F977E16C18E061D4009CE952 /* FlickrPhotoData.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FlickrPhotoData.h; sourceTree = "<group>"; };
 		F977E16D18E061D4009CE952 /* FlickrPhotoData.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FlickrPhotoData.m; sourceTree = "<group>"; };
 		F97B3D7418CF25680042DA5C /* ImageSelectViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ImageSelectViewController.h; sourceTree = "<group>"; };
@@ -463,6 +466,8 @@
 				F9A16D8118DE871F001A7DAF /* FlickrMngr.m */,
 				F977E16C18E061D4009CE952 /* FlickrPhotoData.h */,
 				F977E16D18E061D4009CE952 /* FlickrPhotoData.m */,
+				F970B68B18F18B6B00DA64F4 /* ExifParser.h */,
+				F970B68C18F18B6B00DA64F4 /* ExifParser.m */,
 			);
 			name = DataModel;
 			sourceTree = "<group>";
@@ -643,6 +648,7 @@
 				F958342318C8BB8D00114C29 /* SectionData.m in Sources */,
 				F9A16D8B18DEAED5001A7DAF /* AuthViewController.m in Sources */,
 				F9F26C0218CC7ECB000E9B64 /* SingleViewController.m in Sources */,
+				F970B68D18F18B6B00DA64F4 /* ExifParser.m in Sources */,
 				F9F26C0518CDCB0E000E9B64 /* AssetManager.m in Sources */,
 				8138942918CEE459009D967D /* TestViewController.m in Sources */,
 				F958342118C8BB8D00114C29 /* AssetMngr.m in Sources */,

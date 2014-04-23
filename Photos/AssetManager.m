@@ -442,5 +442,4 @@ static AssetManager* g_assetManager = nil;
     
 }
 
-
 @end
