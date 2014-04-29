@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="5053" systemVersion="13C64" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" initialViewController="iIl-LP-cIV">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="5056" systemVersion="13C64" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" initialViewController="iIl-LP-cIV">
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="3733"/>
     </dependencies>
@@ -434,8 +434,8 @@
                                                     <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                                     <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                                 </imageView>
-                                                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="lgh-yB-fQA">
-                                                    <rect key="frame" x="2" y="2" width="116" height="116"/>
+                                                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="lgh-yB-fQA">
+                                                    <rect key="frame" x="5" y="5" width="110" height="109"/>
                                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                                 </imageView>
                                             </subviews>
@@ -464,7 +464,7 @@
                                     <rect key="frame" x="0.0" y="0.0" width="320" height="25"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
-                                        <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" misplaced="YES" text="Label" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="tLL-y2-orE">
+                                        <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="tLL-y2-orE">
                                             <rect key="frame" x="28" y="2" width="236" height="21"/>
                                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                             <fontDescription key="fontDescription" type="system" pointSize="20"/>
@@ -475,9 +475,11 @@
                                     <color key="backgroundColor" red="0.015106318847505129" green="0.17305070796880639" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                                     <constraints>
                                         <constraint firstItem="tLL-y2-orE" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="hVf-XH-2MJ" secondAttribute="leading" constant="28" id="ANJ-E1-Z9I"/>
-                                        <constraint firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="tLL-y2-orE" secondAttribute="trailing" constant="56" id="O4J-68-SDa"/>
+                                        <constraint firstItem="tLL-y2-orE" firstAttribute="top" secondItem="hVf-XH-2MJ" secondAttribute="top" constant="2" id="BbJ-0m-JyD"/>
                                         <constraint firstItem="tLL-y2-orE" firstAttribute="leading" secondItem="hVf-XH-2MJ" secondAttribute="leading" constant="28" id="hLf-HZ-EQm"/>
-                                        <constraint firstAttribute="trailing" secondItem="tLL-y2-orE" secondAttribute="trailing" constant="5" id="lav-a1-zGk"/>
+                                        <constraint firstAttribute="trailing" secondItem="tLL-y2-orE" secondAttribute="trailing" constant="56" id="iVt-Zo-DZV"/>
+                                        <constraint firstItem="tLL-y2-orE" firstAttribute="leading" relation="lessThanOrEqual" secondItem="hVf-XH-2MJ" secondAttribute="leading" constant="28" id="reZ-0N-BDA"/>
+                                        <constraint firstItem="tLL-y2-orE" firstAttribute="centerY" secondItem="hVf-XH-2MJ" secondAttribute="centerY" id="wQR-32-0eg"/>
                                     </constraints>
                                     <connections>
                                         <outlet property="selectCollectionHeaderLabel" destination="tLL-y2-orE" id="4Bc-wD-kBW"/>
