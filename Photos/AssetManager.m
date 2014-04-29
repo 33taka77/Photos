@@ -394,7 +394,9 @@ static AssetManager* g_assetManager = nil;
     void (^failBlock)(NSError*) = ^(NSError* error){
         NSLog(@"exception in accessing assets by url. %@", error);
     };
-    [self.m_assetLibrary groupForURL:url resultBlock:getAssetGroupBlock failureBlock:failBlock];
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0), ^{
+        [self.m_assetLibrary groupForURL:url resultBlock:getAssetGroupBlock failureBlock:failBlock];
+    });
     while (retAssetGroup == nil) {
         [[NSRunLoop currentRunLoop] runUntilDate:[NSDate dateWithTimeIntervalSinceNow:0.001]];
     }
@@ -414,7 +416,9 @@ static AssetManager* g_assetManager = nil;
     void (^failBlock)(NSError*) = ^(NSError* error){
         NSLog(@"exception in accessing assets by url. %@", error);
     };
-    [self.m_assetLibrary assetForURL:url resultBlock:getAssetBlock failureBlock:failBlock];
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0), ^{
+        [self.m_assetLibrary assetForURL:url resultBlock:getAssetBlock failureBlock:failBlock];
+    });
     while (retAsset == nil) {
         [[NSRunLoop currentRunLoop] runUntilDate:[NSDate dateWithTimeIntervalSinceNow:0.001]];
     }
