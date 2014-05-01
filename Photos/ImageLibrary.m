@@ -138,7 +138,42 @@ const NSString* cDBFileName = @"ImageInfo.sqlite3";
     */
 }
 
--(void)initializeLibrary
+- (void)insertFlickrDataToDB:(NSURL*)url exifData:(NSDictionary *)metaData
+{
+    SQLiteManager* sqlManager = [SQLiteManager sharedSQLiteManager:(NSString*)cDBFileName];
+    NSString* select = @"select * from";
+    NSString* where = [NSString stringWithFormat:@"where url = '%@' order by sectionDate asc", [url absoluteString]];
+    NSMutableArray* arrayOfItem = [self performSelect:select where:where];
+    if( arrayOfItem.count != 0 ){
+        return;
+    }
+    NSDictionary* objectParam1 = @{@"name":@"DateTimeOriginal", @"type":[NSNumber numberWithInt:TypeReal], @"value":[NSNumber numberWithDouble:[self convertUnixDateTime:[metaData valueForKey:@"DateTimeOriginal"]]] };
+    NSDictionary* objectParam2 = @{@"name":@"groupName", @"type":[NSNumber numberWithInt:TypeText], @"value":@"Flicker"};
+    NSDictionary* objectParam3 = @{@"name":@"sectionDate", @"type":[NSNumber numberWithInt:TypeText], @"value":[self makeShortDateString:[metaData valueForKey:@"DateTimeOriginal"]]};
+    NSDictionary* objectParam4 = @{@"name":@"url", @"type":[NSNumber numberWithInt:TypeText], @"value":[url absoluteString]};
+    NSDictionary* objectParam5 = @{@"name":@"groupUrl", @"type":[NSNumber numberWithInt:TypeText], @"value":@"flickr://"};
+    NSDictionary* objectParam6 = @{@"name":@"Model", @"type":[NSNumber numberWithInt:TypeText], @"value":[metaData valueForKey:@"Model"]};
+    NSDictionary* objectParam7 = @{@"name":@"Maker", @"type":[NSNumber numberWithInt:TypeText], @"value":[metaData valueForKey:@"Maker"]};
+    
+    NSDictionary* objectParam8 = @{@"name":@"ExposureTime", @"type":[NSNumber numberWithInt:TypeText], @"value":[metaData valueForKey:@"ExposureTime"]};
+    NSDictionary* objectParam9 = @{@"name":@"FocalLength", @"type":[NSNumber numberWithInt:TypeText], @"value":[metaData valueForKey:@"FocalLength"]};
+    NSDictionary* objectParam10 = @{@"name":@"Orientation", @"type":[NSNumber numberWithInt:TypeInteger], @"value":[self cnvertNumber: [metaData valueForKey:@"Orientation"]]};
+    NSDictionary* objectParam11 = @{@"name":@"Artist", @"type":[NSNumber numberWithInt:TypeText], @"value":[metaData valueForKey:@"Artist"]};
+    NSDictionary* objectParam12 = @{@"name":@"FNumber", @"type":[NSNumber numberWithInt:TypeText], @"value":[metaData valueForKey:@"FNumber"]};
+    NSDictionary* objectParam13 = @{@"name":@"ISO", @"type":[NSNumber numberWithInt:TypeText], @"value":[metaData valueForKey:@"ISO"]};
+    NSDictionary* objectParam14 = @{@"name":@"MaxApertureValue", @"type":[NSNumber numberWithInt:TypeText], @"value":[metaData valueForKey:@"MaxApertureValue"]};
+    NSDictionary* objectParam15 = @{@"name":@"ExposureCompensation", @"type":[NSNumber numberWithInt:TypeText], @"value":[metaData valueForKey:@"ExposureCompensation"]};
+    NSDictionary* objectParam16 = @{@"name":@"Flash", @"type":[NSNumber numberWithInt:TypeText], @"value":[metaData valueForKey:@"Flash"]};
+    NSDictionary* objectParam17 = @{@"name":@"LensInfo", @"type":[NSNumber numberWithInt:TypeText], @"value":[metaData valueForKey:@"LensInfo"]};
+    NSDictionary* objectParam18 = @{@"name":@"LensInfo", @"type":[NSNumber numberWithInt:TypeText], @"value":[metaData valueForKey:@"LensInfo"]};
+    NSDictionary* objectParam19 = @{@"name":@"Lens", @"type":[NSNumber numberWithInt:TypeText], @"value":[metaData valueForKey:@"Lens"]};
+    
+    
+    [sqlManager insertObject:objectParam1,objectParam2,objectParam3,objectParam4,objectParam5,objectParam6,objectParam7,objectParam8,objectParam9,objectParam10,objectParam11,objectParam12,objectParam13,objectParam14,objectParam15,objectParam16,objectParam17,objectParam18,objectParam19,nil];
+    
+}
+
+- (void)initializeLibrary
 {
     self.m_assetGroups = [[NSMutableArray alloc] init];
     self.m_sectionDatas = [[NSMutableArray alloc] init];
@@ -681,6 +716,17 @@ const NSString* cDBFileName = @"ImageInfo.sqlite3";
 
 - (UIImage*)getAspectThumbnailAtSectionByIndex:(NSInteger)sectionIndex index:(NSInteger)index
 {
+    UIImage* image;
+    NSArray* array = _sectionItems[sectionIndex];
+    NSDictionary* info = array[index];
+    NSString* groupUrlString = [info valueForKey:@"groupUrl"];
+    if( [groupUrlString compare:@"flickr://"] == NSOrderedSame ){
+        
+    }else{
+        image = [m_assetMngr getThumbnailAspect:[NSURL URLWithString:[info valueForKey:@"url"]]];
+    }
+    return image;
+/*
     SectionData* sectionData = self.m_sectionDatas[sectionIndex];
     if( sectionData.kind == SectionKindIsLocal){
         return [m_assetMngr getThumbnailAspect:sectionData.items[index]];
@@ -688,35 +734,22 @@ const NSString* cDBFileName = @"ImageInfo.sqlite3";
         return [self GetFlickrAspectThumbnail:sectionData.items[index]];
     }
     return nil;
+*/
 }
 
-/*
-- (UIImage*)getThumbnailAtSectionName:(NSString*)sectionName index:(NSInteger)index
-{
-    UIImage* image;
-    for( SectionData* section in self.m_sectionDatas )
-    {
-        if( [section.sectionTitle isEqual:sectionName] )
-        {
-            if( section.kind == kImageLibraryTypeLocal )
-            {
-                NSInteger num = section.items.count;
-                if( num < index+1 )
-                {
-                    NSLog(@"error");
-                    break;
-                }
-                NSURL* url = section.items[index];
-                image = [m_assetMngr getThumbnail:url];
-            }
-            break;
-        }
-    }
-    return image;
-}
-*/
 - (UIImage*)getFullViewImageAtSectionByIndex:(NSInteger)sectionIndex index:(NSInteger)index
 {
+    UIImage* image;
+    NSArray* array = _sectionItems[sectionIndex];
+    NSDictionary* info = array[index];
+    NSString* groupUrlString = [info valueForKey:@"groupUrl"];
+    if( [groupUrlString compare:@"flickr://"] == NSOrderedSame ){
+        
+    }else{
+        image = [m_assetMngr getFullImage:[NSURL URLWithString:[info valueForKey:@"url"]]];
+    }
+    return image;
+/*
     SectionData* sectionData = self.m_sectionDatas[sectionIndex];
     if( sectionData.kind == SectionKindIsLocal){
         return [m_assetMngr getFullImage:sectionData.items[index]];
@@ -724,10 +757,22 @@ const NSString* cDBFileName = @"ImageInfo.sqlite3";
         return [self GetFlickrFullSizeImage:sectionData.items[index]];
     }
     return nil;
+*/
 }
 
 - (UIImage*)getFullSreenViewImageAtSectionByIndex:(NSInteger)sectionIndex index:(NSInteger)index
 {
+    UIImage* image;
+    NSArray* array = _sectionItems[sectionIndex];
+    NSDictionary* info = array[index];
+    NSString* groupUrlString = [info valueForKey:@"groupUrl"];
+    if( [groupUrlString compare:@"flickr://"] == NSOrderedSame ){
+        
+    }else{
+        image = [m_assetMngr getFullScreenImage:[NSURL URLWithString:[info valueForKey:@"url"]]];
+    }
+    return image;
+/*
     SectionData* sectionData = self.m_sectionDatas[sectionIndex];
     if( sectionData.kind == SectionKindIsLocal){
         return [m_assetMngr getFullScreenImage:sectionData.items[index]];
@@ -735,10 +780,15 @@ const NSString* cDBFileName = @"ImageInfo.sqlite3";
         return [self GetFlickrFullScreenSizeImage:sectionData.items[index]];
     }
     return nil;
+*/
 }
 
 - (NSDictionary*)getMetaDataBySectionIndex:(NSInteger)sectionIndex index:(NSInteger)index
 {
+    NSArray* array = _sectionItems[sectionIndex];
+    NSDictionary* info = array[index];
+    return info;
+/*
     SectionData* sectionData = self.m_sectionDatas[sectionIndex];
     if( sectionData.kind == SectionKindIsLocal){
         return [m_assetMngr getMetaDataByURL:sectionData.items[index]];
@@ -746,29 +796,14 @@ const NSString* cDBFileName = @"ImageInfo.sqlite3";
         return [self GetFlickrMetaData:sectionData.items[index]];
     }
     return nil;
+*/
 }
 
-/*
-- (UIImage*)getFullViewImageAtSectionName:(NSString*)sectionName index:(NSInteger)index
-{
-    UIImage* image;
-    for( SectionData* section in self.m_sectionDatas )
-    {
-        if( [section.sectionTitle isEqual:sectionName] )
-        {
-            if( section.kind == kImageLibraryTypeLocal )
-            {
-                NSURL* url = section.items[index];
-                image = [m_assetMngr getFullImage:url];
-            }
-            break;
-        }
-    }
-    return image;
-}
-*/
 - (void)cleanupSectionsData
 {
+    [_sectionItems removeAllObjects];
+    [_sections removeAllObjects];
+/*
     for( SectionData* section in self.m_sectionDatas )
     {
         [section.items removeAllObjects];
@@ -776,6 +811,7 @@ const NSString* cDBFileName = @"ImageInfo.sqlite3";
     }
     [self.m_sectionDatas removeAllObjects];
     //m_sectionDatas = nil;
+*/
 }
 
 - (void)createMainTable
