@@ -112,9 +112,11 @@ const NSString* cDBFileName = @"ImageInfo.sqlite3";
     NSDictionary* objectParam17 = @{@"name":@"LensInfo", @"type":[NSNumber numberWithInt:TypeText], @"value":[metaData valueForKey:@"LensInfo"]};
     NSDictionary* objectParam18 = @{@"name":@"LensInfo", @"type":[NSNumber numberWithInt:TypeText], @"value":[metaData valueForKey:@"LensInfo"]};
     NSDictionary* objectParam19 = @{@"name":@"Lens", @"type":[NSNumber numberWithInt:TypeText], @"value":[metaData valueForKey:@"Lens"]};
+    NSDictionary* objectParam20 = @{@"name":@"fullScreenThumbUrl", @"type":[NSNumber numberWithInt:TypeText], @"value":@""};
+    NSDictionary* objectParam21 = @{@"name":@"fullViewUrl", @"type":[NSNumber numberWithInt:TypeText], @"value":@""};
+
     
-    
-    [sqlManager insertObject:objectParam1,objectParam2,objectParam3,objectParam4,objectParam5,objectParam6,objectParam7,objectParam8,objectParam9,objectParam10,objectParam11,objectParam12,objectParam13,objectParam14,objectParam15,objectParam16,objectParam17,objectParam18,objectParam19,nil];
+    [sqlManager insertObject:objectParam1,objectParam2,objectParam3,objectParam4,objectParam5,objectParam6,objectParam7,objectParam8,objectParam9,objectParam10,objectParam11,objectParam12,objectParam13,objectParam14,objectParam15,objectParam16,objectParam17,objectParam18,objectParam19,objectParam20,objectParam21,nil];
 
     /*
     BOOL newGroup = YES;
@@ -138,10 +140,11 @@ const NSString* cDBFileName = @"ImageInfo.sqlite3";
     */
 }
 
-- (void)insertFlickrDataToDB:(NSURL*)url exifData:(NSDictionary *)metaData
+- (void)insertFlickrDataToDB:(NSDictionary*)photoData exifData:(NSDictionary *)metaData
 {
     SQLiteManager* sqlManager = [SQLiteManager sharedSQLiteManager:(NSString*)cDBFileName];
     NSString* select = @"select * from";
+    NSURL* url = [m_flickrMngr makePhotoURLBySize:FMPhotoSizeLargeSquare150 photoData:photoData];
     NSString* where = [NSString stringWithFormat:@"where url = '%@' order by sectionDate asc", [url absoluteString]];
     NSMutableArray* arrayOfItem = [self performSelect:select where:where];
     if( arrayOfItem.count != 0 ){
@@ -167,9 +170,13 @@ const NSString* cDBFileName = @"ImageInfo.sqlite3";
     NSDictionary* objectParam17 = @{@"name":@"LensInfo", @"type":[NSNumber numberWithInt:TypeText], @"value":[metaData valueForKey:@"LensInfo"]};
     NSDictionary* objectParam18 = @{@"name":@"LensInfo", @"type":[NSNumber numberWithInt:TypeText], @"value":[metaData valueForKey:@"LensInfo"]};
     NSDictionary* objectParam19 = @{@"name":@"Lens", @"type":[NSNumber numberWithInt:TypeText], @"value":[metaData valueForKey:@"Lens"]};
+    NSURL* fullScreenUrl = [m_flickrMngr makePhotoURLBySize:FMPhotoSizeLarge1024 photoData:photoData];
+    NSDictionary* objectParam20 = @{@"name":@"fullScreenThumbUrl", @"type":[NSNumber numberWithInt:TypeText], @"value":[fullScreenUrl absoluteString]};
+    NSURL* fullViewnUrl = [m_flickrMngr makePhotoURLBySize:FMPhotoSizeOriginal photoData:photoData];
+    NSDictionary* objectParam21 = @{@"name":@"fullViewUrl", @"type":[NSNumber numberWithInt:TypeText], @"value":[fullViewnUrl absoluteString]};
     
     
-    [sqlManager insertObject:objectParam1,objectParam2,objectParam3,objectParam4,objectParam5,objectParam6,objectParam7,objectParam8,objectParam9,objectParam10,objectParam11,objectParam12,objectParam13,objectParam14,objectParam15,objectParam16,objectParam17,objectParam18,objectParam19,nil];
+    [sqlManager insertObject:objectParam1,objectParam2,objectParam3,objectParam4,objectParam5,objectParam6,objectParam7,objectParam8,objectParam9,objectParam10,objectParam11,objectParam12,objectParam13,objectParam14,objectParam15,objectParam16,objectParam17,objectParam18,objectParam19,objectParam20,objectParam21,nil];
     
 }
 
@@ -227,22 +234,25 @@ const NSString* cDBFileName = @"ImageInfo.sqlite3";
                 for( NSDictionary* photoData in photos )
                 {
                     
-                    FlickrPhotoData* data = [[FlickrPhotoData alloc] init];
-                    data.m_photoData = [photoData copy];
-                    NSURL* url = [m_flickrMngr makePhotoURLBySize:FMPhotoSizeLargeSquare150 photoData:photoData];
-                    data.m_thumbnailUrl = url;
+                    //FlickrPhotoData* data = [[FlickrPhotoData alloc] init];
+                    //data.m_photoData = [photoData copy];
+                    //NSURL* url = [m_flickrMngr makePhotoURLBySize:FMPhotoSizeLargeSquare150 photoData:photoData];
+                    //data.m_thumbnailUrl = url;
                     
                     [m_flickrMngr getExifData:photoData completion:^(NSDictionary *exifData) {
-                        dispatch_async(dispatch_get_main_queue(), ^{
-                            data.m_exifData = [exifData copy];
-                            [self.m_flickrPhotos addObject:data];
+                        ///dispatch_async(dispatch_get_main_queue(), ^{
+                            [self insertFlickrDataToDB:photoData exifData:exifData];
+                            //data.m_exifData = [exifData copy];
+                            //[self.m_flickrPhotos addObject:data];
                             count++;
                             if( count == photos.count )
                             {
-                                NSLog(@"===== set exif data %d======",count);
-                                [self.delegate updateView];
+                                dispatch_async(dispatch_get_main_queue(), ^{
+                                    NSLog(@"===== set exif data %d======",count);
+                                    [self.delegate updateView];
+                                });
                             }
-                        });
+                       // });
                         
                     }];
                     
@@ -254,11 +264,24 @@ const NSString* cDBFileName = @"ImageInfo.sqlite3";
 
 - (UIImage*)GetFlickrThumbnailAtGroup:(NSInteger)index
 {
-    FlickrPhotoData* filkrPhoto = self.m_flickrPhotos[index];
+    
+    NSInteger count = 0;
+    for( NSString* name in _groupNames ){
+        if( [name compare:@"Flickr"] == NSOrderedSame ){
+            break;
+        }
+        count++;
+    }
+    NSDictionary* dict = _groupArray[index];
+    NSURL* url = [NSURL URLWithString:[dict valueForKey:@"url"]];
+    
+    //FlickrPhotoData* filkrPhoto = self.m_flickrPhotos[index];
     __block UIImage* image = nil;
-    [m_flickrMngr getPhotoData:filkrPhoto.m_thumbnailUrl completion:^(UIImage *photoData) {
-        image = photoData;
-    }];
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0), ^{
+        [m_flickrMngr getPhotoData:url completion:^(UIImage *photoData) {
+            image = photoData;
+        }];
+    });
     while (image == nil) {
         [[NSRunLoop currentRunLoop] runUntilDate:[NSDate dateWithTimeIntervalSinceNow:0.001]];
     }
@@ -268,9 +291,11 @@ const NSString* cDBFileName = @"ImageInfo.sqlite3";
 - (UIImage*)GetFlickrThumbnail:(NSURL*)url
 {
     __block UIImage* image = nil;
-    [m_flickrMngr getPhotoData:url completion:^(UIImage *photoData) {
-        image = photoData;
-    }];
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0), ^{
+        [m_flickrMngr getPhotoData:url completion:^(UIImage *photoData) {
+            image = photoData;
+        }];
+    });
     while (image == nil) {
         [[NSRunLoop currentRunLoop] runUntilDate:[NSDate dateWithTimeIntervalSinceNow:0.001]];
     }
@@ -279,19 +304,21 @@ const NSString* cDBFileName = @"ImageInfo.sqlite3";
 
 - (UIImage*)GetFlickrAspectThumbnail:(NSURL*)url
 {
-    FlickrPhotoData* targetPhoto;
-    for( FlickrPhotoData* filkrPhoto in self.m_flickrPhotos ){
-        if( filkrPhoto.m_thumbnailUrl == url ){
-            targetPhoto = filkrPhoto;
-            break;
-        }
-    }
+//    FlickrPhotoData* targetPhoto;
+//    for( FlickrPhotoData* filkrPhoto in self.m_flickrPhotos ){
+//        if( filkrPhoto.m_thumbnailUrl == url ){
+//            targetPhoto = filkrPhoto;
+//            break;
+//        }
+//    }
     __block UIImage* image = nil;
     
-    NSURL* targetUrl = [m_flickrMngr makePhotoURLBySize:FMPhotoSizeSmall240 photoData:targetPhoto.m_photoData];
-    [m_flickrMngr getPhotoData:targetUrl completion:^(UIImage *photoData) {
-        image = photoData;
-    }];
+//    NSURL* targetUrl = [m_flickrMngr makePhotoURLBySize:FMPhotoSizeSmall240 photoData:targetPhoto.m_photoData];
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0), ^{
+        [m_flickrMngr getPhotoData:url completion:^(UIImage *photoData) {
+            image = photoData;
+        }];
+    });
     while (image == nil) {
         [[NSRunLoop currentRunLoop] runUntilDate:[NSDate dateWithTimeIntervalSinceNow:0.001]];
     }
@@ -300,19 +327,21 @@ const NSString* cDBFileName = @"ImageInfo.sqlite3";
 
 - (UIImage*)GetFlickrFullSizeImage:(NSURL*)url
 {
-    FlickrPhotoData* targetPhoto;
-    for( FlickrPhotoData* filkrPhoto in self.m_flickrPhotos ){
-        if( filkrPhoto.m_thumbnailUrl == url ){
-            targetPhoto = filkrPhoto;
-            break;
-        }
-    }
+//    FlickrPhotoData* targetPhoto;
+//    for( FlickrPhotoData* filkrPhoto in self.m_flickrPhotos ){
+//        if( filkrPhoto.m_thumbnailUrl == url ){
+//            targetPhoto = filkrPhoto;
+//            break;
+//        }
+//    }
     __block UIImage* image = nil;
     
-    NSURL* targetUrl = [m_flickrMngr makePhotoURLBySize:FMPhotoSizeOriginal photoData:targetPhoto.m_photoData];
-    [m_flickrMngr getPhotoData:targetUrl completion:^(UIImage *photoData) {
-        image = photoData;
-    }];
+//    NSURL* targetUrl = [m_flickrMngr makePhotoURLBySize:FMPhotoSizeOriginal photoData:targetPhoto.m_photoData];
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0), ^{
+        [m_flickrMngr getPhotoData:url completion:^(UIImage *photoData) {
+            image = photoData;
+        }];
+    });
     while (image == nil) {
         [[NSRunLoop currentRunLoop] runUntilDate:[NSDate dateWithTimeIntervalSinceNow:0.001]];
     }
@@ -322,25 +351,28 @@ const NSString* cDBFileName = @"ImageInfo.sqlite3";
 
 - (UIImage*)GetFlickrFullScreenSizeImage:(NSURL*)url
 {
-    FlickrPhotoData* targetPhoto;
-    for( FlickrPhotoData* filkrPhoto in self.m_flickrPhotos ){
-        if( filkrPhoto.m_thumbnailUrl == url ){
-            targetPhoto = filkrPhoto;
-            break;
-        }
-    }
+//    FlickrPhotoData* targetPhoto;
+//    for( FlickrPhotoData* filkrPhoto in self.m_flickrPhotos ){
+//        if( filkrPhoto.m_thumbnailUrl == url ){
+//           targetPhoto = filkrPhoto;
+//           break;
+//        }
+//    }
     __block UIImage* image = nil;
     
-    NSURL* targetUrl = [m_flickrMngr makePhotoURLBySize:FMPhotoSizeLarge1024 photoData:targetPhoto.m_photoData];
-    [m_flickrMngr getPhotoData:targetUrl completion:^(UIImage *photoData) {
-        image = photoData;
-    }];
+//    NSURL* targetUrl = [m_flickrMngr makePhotoURLBySize:FMPhotoSizeLarge1024 photoData:targetPhoto.m_photoData];
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0), ^{
+        [m_flickrMngr getPhotoData:url completion:^(UIImage *photoData) {
+            image = photoData;
+        }];
+    });
     while (image == nil) {
         [[NSRunLoop currentRunLoop] runUntilDate:[NSDate dateWithTimeIntervalSinceNow:0.001]];
     }
     return image;
 }
 
+/*
 - (NSDictionary*)GetFlickrMetaData:(NSURL*)url
 {
     FlickrPhotoData* targetPhoto;
@@ -352,7 +384,9 @@ const NSString* cDBFileName = @"ImageInfo.sqlite3";
     }
     return targetPhoto.m_exifData;
 }
+*/
 
+/*
 - (void)createSectionForFlickr
 {
     for( FlickrPhotoData* photo in self.m_flickrPhotos )
@@ -386,7 +420,7 @@ const NSString* cDBFileName = @"ImageInfo.sqlite3";
     }
     
 }
-
+*/
 
 - (void)setCurrentGroup:(NSInteger)index
 {
@@ -658,7 +692,7 @@ const NSString* cDBFileName = @"ImageInfo.sqlite3";
     NSDictionary* info = array[index];
     NSString* groupUrlString = [info valueForKey:@"groupUrl"];
     if( [groupUrlString compare:@"flickr://"] == NSOrderedSame ){
-        
+        image = [self GetFlickrThumbnail:[NSURL URLWithString:[info valueForKey:@"url"]]];
     }else{
         image = [m_assetMngr getThumbnail:[NSURL URLWithString:[info valueForKey:@"url"]]];
     }
@@ -696,7 +730,7 @@ const NSString* cDBFileName = @"ImageInfo.sqlite3";
     NSDictionary* info = array[index];
     NSString* groupUrlString = [info valueForKey:@"groupUrl"];
     if( [groupUrlString compare:@"flickr://"] == NSOrderedSame ){
-        
+        image = [self GetFlickrThumbnail:[NSURL URLWithString:[info valueForKey:@"url"]]];
     }else{
         image = [m_assetMngr getThumbnail:[NSURL URLWithString:[info valueForKey:@"url"]]];
     }
@@ -721,7 +755,7 @@ const NSString* cDBFileName = @"ImageInfo.sqlite3";
     NSDictionary* info = array[index];
     NSString* groupUrlString = [info valueForKey:@"groupUrl"];
     if( [groupUrlString compare:@"flickr://"] == NSOrderedSame ){
-        
+        image = [self GetFlickrAspectThumbnail:[NSURL URLWithString:[info valueForKey:@"url"]]];
     }else{
         image = [m_assetMngr getThumbnailAspect:[NSURL URLWithString:[info valueForKey:@"url"]]];
     }
@@ -744,7 +778,7 @@ const NSString* cDBFileName = @"ImageInfo.sqlite3";
     NSDictionary* info = array[index];
     NSString* groupUrlString = [info valueForKey:@"groupUrl"];
     if( [groupUrlString compare:@"flickr://"] == NSOrderedSame ){
-        
+        image = [self GetFlickrFullSizeImage:[NSURL URLWithString:[info valueForKey:@"fullViewUrl"]]];
     }else{
         image = [m_assetMngr getFullImage:[NSURL URLWithString:[info valueForKey:@"url"]]];
     }
@@ -767,7 +801,7 @@ const NSString* cDBFileName = @"ImageInfo.sqlite3";
     NSDictionary* info = array[index];
     NSString* groupUrlString = [info valueForKey:@"groupUrl"];
     if( [groupUrlString compare:@"flickr://"] == NSOrderedSame ){
-        
+        image = [self GetFlickrFullScreenSizeImage:[NSURL URLWithString:[info valueForKey:@"fullScreenThumbUrl"]]];
     }else{
         image = [m_assetMngr getFullScreenImage:[NSURL URLWithString:[info valueForKey:@"url"]]];
     }
@@ -836,9 +870,11 @@ const NSString* cDBFileName = @"ImageInfo.sqlite3";
     NSDictionary* column17 = @{@"name":@"LensInfo", @"type":@"text"};
     NSDictionary* column18 = @{@"name":@"LensModel", @"type":@"text"};
     NSDictionary* column19 = @{@"name":@"Lens", @"type":@"text"};
+    NSDictionary* column20 = @{@"name":@"fullScreenThumbUrl", @"type":@"text"};
+    NSDictionary* column21 = @{@"name":@"fullViewUrl", @"type":@"text"};
     
     
-    NSArray* columns = @[column1,column2,column3,column4,column5,column6,column7,column8,column9,column10,column11,column12,column13,column14,column15,column16,column17,column18,column19 ];
+    NSArray* columns = @[column1,column2,column3,column4,column5,column6,column7,column8,column9,column10,column11,column12,column13,column14,column15,column16,column17,column18,column19,column20, column21 ];
     [sqlManager createTable:@"imageInfoTable" columns:columns];
 }
 
@@ -932,7 +968,11 @@ const NSString* cDBFileName = @"ImageInfo.sqlite3";
     NSDictionary* resultCol17 = @{@"name":@"LensInfo", @"index":[NSNumber numberWithInt:16], @"type":[NSNumber numberWithInt:TypeText]};
     NSDictionary* resultCol18 = @{@"name":@"LensModel", @"index":[NSNumber numberWithInt:17], @"type":[NSNumber numberWithInt:TypeText]};
     NSDictionary* resultCol19 = @{@"name":@"Lens", @"index":[NSNumber numberWithInt:18], @"type":[NSNumber numberWithInt:TypeText]};
-    NSArray* resultFormat = @[resultCol1,resultCol2,resultCol3,resultCol4,resultCol5,resultCol6,resultCol7,resultCol8,resultCol9,resultCol10,resultCol11,resultCol12,resultCol13,resultCol14,resultCol15,resultCol16,resultCol17,resultCol18,resultCol19];
+    NSDictionary* resultCol20 = @{@"name":@"fullScreenThumbUrl", @"index":[NSNumber numberWithInt:18], @"type":[NSNumber numberWithInt:TypeText]};
+    NSDictionary* resultCol21 = @{@"name":@"fullViewUrl", @"index":[NSNumber numberWithInt:18], @"type":[NSNumber numberWithInt:TypeText]};
+    
+    
+    NSArray* resultFormat = @[resultCol1,resultCol2,resultCol3,resultCol4,resultCol5,resultCol6,resultCol7,resultCol8,resultCol9,resultCol10,resultCol11,resultCol12,resultCol13,resultCol14,resultCol15,resultCol16,resultCol17,resultCol18,resultCol19,resultCol20,resultCol21];
     
     SQLiteManager* sqlManager = [SQLiteManager sharedSQLiteManager:(NSString*)cDBFileName];
     return [NSMutableArray arrayWithArray:[sqlManager fetchResultOnSelect:selectString whereAndOrder:whereString format:resultFormat]];
