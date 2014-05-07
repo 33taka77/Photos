@@ -110,7 +110,7 @@ const NSString* cDBFileName = @"ImageInfo.sqlite3";
     NSDictionary* objectParam15 = @{@"name":@"ExposureCompensation", @"type":[NSNumber numberWithInt:TypeText], @"value":[metaData valueForKey:@"ExposureCompensation"]};
     NSDictionary* objectParam16 = @{@"name":@"Flash", @"type":[NSNumber numberWithInt:TypeText], @"value":[metaData valueForKey:@"Flash"]};
     NSDictionary* objectParam17 = @{@"name":@"LensInfo", @"type":[NSNumber numberWithInt:TypeText], @"value":[metaData valueForKey:@"LensInfo"]};
-    NSDictionary* objectParam18 = @{@"name":@"LensInfo", @"type":[NSNumber numberWithInt:TypeText], @"value":[metaData valueForKey:@"LensInfo"]};
+    NSDictionary* objectParam18 = @{@"name":@"LensModel", @"type":[NSNumber numberWithInt:TypeText], @"value":[metaData valueForKey:@"LensModel"]};
     NSDictionary* objectParam19 = @{@"name":@"Lens", @"type":[NSNumber numberWithInt:TypeText], @"value":[metaData valueForKey:@"Lens"]};
     NSDictionary* objectParam20 = @{@"name":@"fullScreenThumbUrl", @"type":[NSNumber numberWithInt:TypeText], @"value":@""};
     NSDictionary* objectParam21 = @{@"name":@"fullViewUrl", @"type":[NSNumber numberWithInt:TypeText], @"value":@""};
@@ -155,21 +155,72 @@ const NSString* cDBFileName = @"ImageInfo.sqlite3";
     NSDictionary* objectParam3 = @{@"name":@"sectionDate", @"type":[NSNumber numberWithInt:TypeText], @"value":[self makeShortDateString:[metaData valueForKey:@"DateTimeOriginal"]]};
     NSDictionary* objectParam4 = @{@"name":@"url", @"type":[NSNumber numberWithInt:TypeText], @"value":[url absoluteString]};
     NSDictionary* objectParam5 = @{@"name":@"groupUrl", @"type":[NSNumber numberWithInt:TypeText], @"value":@"flickr://"};
-    NSDictionary* objectParam6 = @{@"name":@"Model", @"type":[NSNumber numberWithInt:TypeText], @"value":[metaData valueForKey:@"Model"]};
-    NSDictionary* objectParam7 = @{@"name":@"Maker", @"type":[NSNumber numberWithInt:TypeText], @"value":[metaData valueForKey:@"Maker"]};
+    NSString* str =[metaData valueForKey:@"Model"];
+    if( str == nil )
+        str = @"";
+    NSDictionary* objectParam6 = @{@"name":@"Model", @"type":[NSNumber numberWithInt:TypeText], @"value":str};
+    str = [metaData valueForKey:@"Maker"];
+    if( str == nil )
+        str = @"";
+    NSDictionary* objectParam7 = @{@"name":@"Maker", @"type":[NSNumber numberWithInt:TypeText], @"value":str};
+    str = [metaData valueForKey:@"ExposureTime"];
+    if( str == nil )
+        str = @"";
+    NSDictionary* objectParam8 = @{@"name":@"ExposureTime", @"type":[NSNumber numberWithInt:TypeText], @"value":str};
     
-    NSDictionary* objectParam8 = @{@"name":@"ExposureTime", @"type":[NSNumber numberWithInt:TypeText], @"value":[metaData valueForKey:@"ExposureTime"]};
-    NSDictionary* objectParam9 = @{@"name":@"FocalLength", @"type":[NSNumber numberWithInt:TypeText], @"value":[metaData valueForKey:@"FocalLength"]};
-    NSDictionary* objectParam10 = @{@"name":@"Orientation", @"type":[NSNumber numberWithInt:TypeInteger], @"value":[self cnvertNumber: [metaData valueForKey:@"Orientation"]]};
-    NSDictionary* objectParam11 = @{@"name":@"Artist", @"type":[NSNumber numberWithInt:TypeText], @"value":[metaData valueForKey:@"Artist"]};
-    NSDictionary* objectParam12 = @{@"name":@"FNumber", @"type":[NSNumber numberWithInt:TypeText], @"value":[metaData valueForKey:@"FNumber"]};
-    NSDictionary* objectParam13 = @{@"name":@"ISO", @"type":[NSNumber numberWithInt:TypeText], @"value":[metaData valueForKey:@"ISO"]};
-    NSDictionary* objectParam14 = @{@"name":@"MaxApertureValue", @"type":[NSNumber numberWithInt:TypeText], @"value":[metaData valueForKey:@"MaxApertureValue"]};
-    NSDictionary* objectParam15 = @{@"name":@"ExposureCompensation", @"type":[NSNumber numberWithInt:TypeText], @"value":[metaData valueForKey:@"ExposureCompensation"]};
-    NSDictionary* objectParam16 = @{@"name":@"Flash", @"type":[NSNumber numberWithInt:TypeText], @"value":[metaData valueForKey:@"Flash"]};
-    NSDictionary* objectParam17 = @{@"name":@"LensInfo", @"type":[NSNumber numberWithInt:TypeText], @"value":[metaData valueForKey:@"LensInfo"]};
-    NSDictionary* objectParam18 = @{@"name":@"LensInfo", @"type":[NSNumber numberWithInt:TypeText], @"value":[metaData valueForKey:@"LensInfo"]};
-    NSDictionary* objectParam19 = @{@"name":@"Lens", @"type":[NSNumber numberWithInt:TypeText], @"value":[metaData valueForKey:@"Lens"]};
+    str = [metaData valueForKey:@"FocalLength"];
+    if( str == nil )
+        str = @"";
+    NSDictionary* objectParam9 = @{@"name":@"FocalLength", @"type":[NSNumber numberWithInt:TypeText], @"value":str};
+    
+    NSDictionary* objectParam10 = @{@"name":@"Orientation", @"type":[NSNumber numberWithInt:TypeInteger], @"value":[self cnvertNumberFlickr: [metaData valueForKey:@"Orientation"]]};
+    
+    str = [metaData valueForKey:@"Artist"];
+    if( str == nil )
+        str = @"";
+    NSDictionary* objectParam11 = @{@"name":@"Artist", @"type":[NSNumber numberWithInt:TypeText], @"value":str};
+    
+    str = [metaData valueForKey:@"FNumber"];
+    if( str == nil )
+        str = @"";
+    NSDictionary* objectParam12 = @{@"name":@"FNumber", @"type":[NSNumber numberWithInt:TypeText], @"value":str};
+    
+    str = [metaData valueForKey:@"ISO"];
+    if( str == nil )
+        str = @"";
+    NSDictionary* objectParam13 = @{@"name":@"ISO", @"type":[NSNumber numberWithInt:TypeText], @"value":str};
+    
+    str = [metaData valueForKey:@"MaxApertureValue"];
+    if( str == nil )
+        str = @"";
+    NSDictionary* objectParam14 = @{@"name":@"MaxApertureValue", @"type":[NSNumber numberWithInt:TypeText], @"value":str};
+    
+    
+    str = [metaData valueForKey:@"ExposureCompensation"];
+    if( str == nil )
+        str = @"";
+    NSDictionary* objectParam15 = @{@"name":@"ExposureCompensation", @"type":[NSNumber numberWithInt:TypeText], @"value":str};
+
+    str = [metaData valueForKey:@"Flash"];
+    if( str == nil )
+        str = @"";
+    NSDictionary* objectParam16 = @{@"name":@"Flash", @"type":[NSNumber numberWithInt:TypeText], @"value":str};
+    
+    str = [metaData valueForKey:@"LensInfo"];
+    if( str == nil )
+        str = @"";
+    NSDictionary* objectParam17 = @{@"name":@"LensInfo", @"type":[NSNumber numberWithInt:TypeText], @"value":str};
+    
+    str = [metaData valueForKey:@"LensModel"];
+    if( str == nil )
+        str = @"";
+    NSDictionary* objectParam18 = @{@"name":@"LensModel", @"type":[NSNumber numberWithInt:TypeText], @"value":str};
+    
+    str = [metaData valueForKey:@"Lens"];
+    if( str == nil )
+        str = @"";
+    NSDictionary* objectParam19 = @{@"name":@"Lens", @"type":[NSNumber numberWithInt:TypeText], @"value":str};
+    
     NSURL* fullScreenUrl = [m_flickrMngr makePhotoURLBySize:FMPhotoSizeLarge1024 photoData:photoData];
     NSDictionary* objectParam20 = @{@"name":@"fullScreenThumbUrl", @"type":[NSNumber numberWithInt:TypeText], @"value":[fullScreenUrl absoluteString]};
     NSURL* fullViewnUrl = [m_flickrMngr makePhotoURLBySize:FMPhotoSizeOriginal photoData:photoData];
@@ -201,7 +252,7 @@ const NSString* cDBFileName = @"ImageInfo.sqlite3";
     [sqlManager createIndex:@"urlIndex" column:@"url"];
     [sqlManager createIndex:@"dateIndex" column:@"sectionDate"];
     
-    _fetchResultArray = [self performSelect:@"select * from" where:@"where Maker = 'Canon' order by sectionDate asc"];
+    _fetchResultArray = [self performSelect:@"select * from" where:nil /*@"where Maker = 'Canon' order by sectionDate asc"*/];
     NSArray* array = [_fetchResultArray valueForKeyPath:@"groupName"];
     _groupNames = [[NSMutableArray alloc] init ];
     for( NSString* name in array ){
@@ -229,7 +280,7 @@ const NSString* cDBFileName = @"ImageInfo.sqlite3";
     
     [m_flickrMngr getPhotoList:^(NSArray *photos) {
         @autoreleasepool{
-            dispatch_async(dispatch_get_main_queue(), ^{
+//            dispatch_async(dispatch_get_main_queue(), ^{
                 __block NSInteger count = 0;
                 for( NSDictionary* photoData in photos )
                 {
@@ -248,7 +299,7 @@ const NSString* cDBFileName = @"ImageInfo.sqlite3";
                             if( count == photos.count )
                             {
                                 dispatch_async(dispatch_get_main_queue(), ^{
-                                    NSLog(@"===== set exif data %d======",count);
+                                    NSLog(@"===== set exif data %ld======",(long)count);
                                     [self.delegate updateView];
                                 });
                             }
@@ -257,7 +308,7 @@ const NSString* cDBFileName = @"ImageInfo.sqlite3";
                     }];
                     
                 }
-            });
+//            });
         }
     }];    
 }
@@ -883,6 +934,8 @@ const NSString* cDBFileName = @"ImageInfo.sqlite3";
     NSArray* strArray = [dateTime componentsSeparatedByString:@" "];
     NSString* str = [strArray[0] stringByReplacingOccurrencesOfString:@":" withString:@"/"];
     NSString* str2 = [str stringByReplacingOccurrencesOfString:@"-" withString:@"/"];
+    if( str2 == nil )
+        str2 = @"";
     return str2;
     
     //NSDate* date = [self dateTime:dateTime];
@@ -891,6 +944,9 @@ const NSString* cDBFileName = @"ImageInfo.sqlite3";
 
 - (double)convertUnixDateTime:(NSString*)dateTimeString
 {
+    if( dateTimeString == nil ){
+        return 0;
+    }
     NSDate* date = [self dateTime:dateTimeString];
     double seconds = [date timeIntervalSince1970];
     return seconds;
@@ -923,6 +979,16 @@ const NSString* cDBFileName = @"ImageInfo.sqlite3";
     }
     return formatterDate;
 }
+- (NSNumber*)cnvertNumberFlickr:(NSString*)number
+{
+    int num;
+    if( [number compare:@"Horizontal (normal)"] == NSOrderedSame ){
+        num = 0;
+    }else{
+        num = 8;
+    }
+    return [NSNumber numberWithInt:num];
+}
 
 - (NSNumber*)cnvertNumber:(NSString*)number
 {
@@ -930,7 +996,7 @@ const NSString* cDBFileName = @"ImageInfo.sqlite3";
     return [NSNumber numberWithInt:num];
 }
 
-- (void)deleteImage
+- (void)deleteImages
 {
     SQLiteManager* sqlManager = [SQLiteManager sharedSQLiteManager:(NSString*)cDBFileName];
     if( [sqlManager deleteObjectWhere:nil] == YES ){
@@ -939,7 +1005,7 @@ const NSString* cDBFileName = @"ImageInfo.sqlite3";
     //[self.tableView reloadData];
 }
 
-- (void)refleshImage
+- (void)refleshImages
 {
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0), ^{
         AssetManager* assetManager = [AssetManager sharedAssetManager];
@@ -968,8 +1034,8 @@ const NSString* cDBFileName = @"ImageInfo.sqlite3";
     NSDictionary* resultCol17 = @{@"name":@"LensInfo", @"index":[NSNumber numberWithInt:16], @"type":[NSNumber numberWithInt:TypeText]};
     NSDictionary* resultCol18 = @{@"name":@"LensModel", @"index":[NSNumber numberWithInt:17], @"type":[NSNumber numberWithInt:TypeText]};
     NSDictionary* resultCol19 = @{@"name":@"Lens", @"index":[NSNumber numberWithInt:18], @"type":[NSNumber numberWithInt:TypeText]};
-    NSDictionary* resultCol20 = @{@"name":@"fullScreenThumbUrl", @"index":[NSNumber numberWithInt:18], @"type":[NSNumber numberWithInt:TypeText]};
-    NSDictionary* resultCol21 = @{@"name":@"fullViewUrl", @"index":[NSNumber numberWithInt:18], @"type":[NSNumber numberWithInt:TypeText]};
+    NSDictionary* resultCol20 = @{@"name":@"fullScreenThumbUrl", @"index":[NSNumber numberWithInt:19], @"type":[NSNumber numberWithInt:TypeText]};
+    NSDictionary* resultCol21 = @{@"name":@"fullViewUrl", @"index":[NSNumber numberWithInt:20], @"type":[NSNumber numberWithInt:TypeText]};
     
     
     NSArray* resultFormat = @[resultCol1,resultCol2,resultCol3,resultCol4,resultCol5,resultCol6,resultCol7,resultCol8,resultCol9,resultCol10,resultCol11,resultCol12,resultCol13,resultCol14,resultCol15,resultCol16,resultCol17,resultCol18,resultCol19,resultCol20,resultCol21];
@@ -998,7 +1064,7 @@ const NSString* cDBFileName = @"ImageInfo.sqlite3";
     [_sectionItems removeAllObjects];
     for( NSString* name in _sections){
         NSPredicate* predicate = [NSPredicate predicateWithFormat:@"%K = %@",sectionName, name];
-        NSArray* items = [_groupArray filteredArrayUsingPredicate:predicate];
+        NSArray* items = [_groupArray[_currentGroupIndex] filteredArrayUsingPredicate:predicate];
         [_sectionItems addObject:items];
     }
 }

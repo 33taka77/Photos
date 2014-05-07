@@ -50,13 +50,15 @@
 
 - (void)displayMetaDatas
 {
+
     AppDelegate* appDelegate = [[UIApplication sharedApplication] delegate];
     NSDictionary* dict = [appDelegate.m_imageLibrary getMetaDataBySectionIndex:self.sectionIndex index:self.index];
     
     self.imageView.image = [appDelegate.m_imageLibrary getAspectThumbnailAtSectionByIndex:self.sectionIndex index:self.index];
+    
     NSString* maker = [dict valueForKey:@"Maker"];
     self.makerLabel.text = [dict valueForKey:@"Maker"];
-    self.modelLabel.text = [dict valueForKey:@"Model"];
+    self.modelLabel.text  = [dict valueForKey:@"Model"];
     self.ArtistLabel.text = [dict valueForKey:@"Artist"];
     NSString* str = [dict valueForKey:@"FNumber"];
     self.fnumberLabel.text = [dict valueForKey:@"FNumber"];
@@ -65,7 +67,7 @@
     self.exposerTimeLabel.text = [dict valueForKey:@"ExposureTime"];
     self.forcalLengthLabel.text = [dict valueForKey:@"FocalLength"];
     self.flashLabel.text = [dict valueForKey:@"Flash"];
-    self.dateTimeLabel.text = [dict valueForKey:@"DateTimeOriginal"];
+    self.dateTimeLabel.text = [dict valueForKey:@"sectionDate"];
     
 }
 - (void)changeMetaPopupView:(NSNotification*)notification

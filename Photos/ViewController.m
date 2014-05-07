@@ -62,6 +62,7 @@
             [[FlickrMngr sharedFlkckrMngr] retryAuth];
         }
     }];
+    [_m_appDelegate.m_imageLibrary refleshImages];
 }
 
 - (void)updateData:(NSNotification *)notification
@@ -177,6 +178,7 @@
 - (IBAction)applicationSettingButtonClicked:(id)sender {
 }
 - (IBAction)abortButtonClicked:(id)sender {
-    [[FlickrMngr sharedFlkckrMngr] retryAuth];
+    //[[FlickrMngr sharedFlkckrMngr] retryAuth];
+    [self.m_appDelegate.m_imageLibrary refleshImages];
 }
 @end

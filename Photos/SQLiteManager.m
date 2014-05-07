@@ -25,53 +25,68 @@
 static NSMutableArray* gFileNameArray;
 + (SQLiteManager*)sharedSQLiteManager:(NSString*)dbFileName
 {
-    static dispatch_once_t onceToken;
-    dispatch_once(&onceToken, ^{
-        gFileNameArray = [[NSMutableArray alloc] init];
-        //gSQLiteManager = [[SQLiteManager alloc] init];
-        //gSQLiteManager.dbFileName = @"testDB.sqlite3";
-        //[gSQLiteManager createDB:gSQLiteManager.dbFileName];
-    });
+    @synchronized(self){
+        static dispatch_once_t onceToken;
+        dispatch_once(&onceToken, ^{
+            gFileNameArray = [[NSMutableArray alloc] init];
+            //gSQLiteManager = [[SQLiteManager alloc] init];
+            //gSQLiteManager.dbFileName = @"testDB.sqlite3";
+            //[gSQLiteManager createDB:gSQLiteManager.dbFileName];
+        });
     
-    for( NSDictionary* instance in gFileNameArray){
-        if( [instance valueForKey:@"name"] == dbFileName ){
-            return [instance valueForKey:@"instance"];
+        for( NSDictionary* instance in gFileNameArray){
+            if( [instance valueForKey:@"name"] == dbFileName ){
+                return [instance valueForKey:@"instance"];
+            }
         }
-    }
-    SQLiteManager* sqlMngr = [[SQLiteManager alloc] init];
-    NSDictionary* newInstance = @{@"name":dbFileName,@"instance":sqlMngr};
-    [sqlMngr createDB:dbFileName];
-    sqlMngr.dbFileName = dbFileName;
-    [gFileNameArray addObject:newInstance];
-    return sqlMngr;
+        SQLiteManager* sqlMngr = [[SQLiteManager alloc] init];
+        NSDictionary* newInstance = @{@"name":dbFileName,@"instance":sqlMngr};
+        [sqlMngr createDB:dbFileName];
+        sqlMngr.dbFileName = dbFileName;
+        [gFileNameArray addObject:newInstance];
+        return sqlMngr;
     
-    //return gSQLiteManager;
+        //return gSQLiteManager;
+    }
 }
 
 - (BOOL)openDB
 {
-    BOOL result = YES;
-    int ret = sqlite3_open([_dbFilePath UTF8String], &_sqlite);
-    if( ret != SQLITE_OK )
-    {
-        NSLog(@"DB Open error : %s",sqlite3_errmsg(_sqlite));
-        result = NO;
+    //dispatch_queue_t sQueue = dispatch_queue_create("@photos.object.sync", NULL);
+   
+    @synchronized(self){
+        BOOL result = YES;
+        //__block int ret;
+        //dispatch_sync(sQueue,^{
+            int ret = sqlite3_open([_dbFilePath UTF8String], &_sqlite);
+        //});
+        if( ret != SQLITE_OK )
+        {
+            NSLog(@"DB Open error : %s",sqlite3_errmsg(_sqlite));
+            result = NO;
+        }
+        return result;
     }
-    return result;
 }
 
 - (BOOL)closeDB
 {
-    BOOL result = YES;
-    int ret = sqlite3_close(_sqlite);
-    if( ret != SQLITE_OK )
-    {
-        NSLog(@"DB Open error : %s",sqlite3_errmsg(_sqlite));
-        result = NO;
-    }else{
-        _sqlite = nil;
+    @synchronized(self){
+        //dispatch_queue_t sQueue = dispatch_queue_create("@photos.object.sync", NULL);
+        //__block BOOL result = YES;
+        BOOL result = YES;
+        //dispatch_sync(sQueue, ^{
+            int ret = sqlite3_close(_sqlite);
+            if( ret != SQLITE_OK )
+            {
+                NSLog(@"DB Open error : %s",sqlite3_errmsg(_sqlite));
+                result = NO;
+            }else{
+                _sqlite = nil;
+            }
+        //});
+        return result;
     }
-    return result;
 }
 
 // [
@@ -83,65 +98,85 @@ static NSMutableArray* gFileNameArray;
 // ]
 - (BOOL)createTable:(NSString*)tableName  columns:(NSArray*)params
 {
-    BOOL result = YES;
-    _tableName = tableName;
-    NSMutableString* sql = [NSMutableString stringWithFormat:@"CREATE TABLE IF NOT EXISTS %@ (",tableName ];
-    for( NSDictionary* param in params ){
-        NSString* columnName = [param valueForKey:@"name"];
-        NSString* type = [param valueForKey:@"type"];
-        [sql appendFormat:@"%@ %@, ",columnName, type];
-    }
-    NSMutableString *str = [NSMutableString stringWithString:[sql substringToIndex:(sql.length-2)]];
-    [str appendString:@");"];
-    //
-    //str = [NSMutableString stringWithString: @"CREATE TABLE IF NOT EXISTS unkos (name TEXT)"];
-    //
-    NSLog(@"sql = %@",str);
+    @synchronized(self){
+        BOOL result = YES;
+//    __block BOOL result = YES;
+//    dispatch_queue_t sQueue = dispatch_queue_create("@photos.object.sync", NULL);
+//    dispatch_sync(sQueue, ^{
+        _tableName = tableName;
+        NSMutableString* sql = [NSMutableString stringWithFormat:@"CREATE TABLE IF NOT EXISTS %@ (",tableName ];
+        for( NSDictionary* param in params ){
+            NSString* columnName = [param valueForKey:@"name"];
+            NSString* type = [param valueForKey:@"type"];
+            [sql appendFormat:@"%@ %@, ",columnName, type];
+        }
+        NSMutableString *str = [NSMutableString stringWithString:[sql substringToIndex:(sql.length-2)]];
+        [str appendString:@");"];
+        //
+        //str = [NSMutableString stringWithString: @"CREATE TABLE IF NOT EXISTS unkos (name TEXT)"];
+        //
+        NSLog(@"sql = %@",str);
     
-    int ret = sqlite3_prepare_v2(_sqlite, [str UTF8String], -1, &_statement, nil);
-    if( ret != SQLITE_OK ){
-        NSLog(@"sqlite3_prepare_v2 error");
-        result = NO;
+        int ret = sqlite3_prepare_v2(_sqlite, [str UTF8String], -1, &_statement, nil);
+        if( ret != SQLITE_OK ){
+            NSLog(@"sqlite3_prepare_v2 error");
+            result = NO;
+        }
+        ret = sqlite3_step(_statement);
+        /*
+         if( ret  != SQLITE_OK ){
+            NSLog(@"sqlite3_step error");
+            NSLog(@"sqlite3_step : %s",sqlite3_errmsg(_sqlite));
+            result = NO;
+         }
+         */
+        ret = sqlite3_finalize(_statement);
+        if( ret  != SQLITE_OK ){
+            NSLog(@"sqlite3_finalize error");
+            result = NO;
+        }
+//    });
+        return result;
     }
-    ret = sqlite3_step(_statement);
-    /*
-    if( ret  != SQLITE_OK ){
-        NSLog(@"sqlite3_step error");
-        NSLog(@"sqlite3_step : %s",sqlite3_errmsg(_sqlite));
-        result = NO;
-    }
-    */
-    ret = sqlite3_finalize(_statement);
-    if( ret  != SQLITE_OK ){
-        NSLog(@"sqlite3_finalize error");
-        result = NO;
-    }
-    return result;
 }
 
 - (BOOL)insertObjectWithArray:(NSArray*)params
 {
-    return [self insert:params];
+    @synchronized(self){
+        BOOL result;
+        // __block BOOL result;
+        //dispatch_queue_t sQueue = dispatch_queue_create("@photos.object.sync", NULL);
+        //dispatch_sync(sQueue, ^{
+            result = [self insert:params];
+        //});
+        return result;
+    }
 }
 // {"name":"columnName2, "type":type, "value":val, "count":num}
 - (BOOL)insertObject:(NSDictionary*)param, ...
 {
-    //BOOL result = YES;
-    va_list arguments;
-    va_start(arguments, param);
-    NSDictionary* column = param;
-    NSMutableArray* array = [[NSMutableArray alloc] init];
-    [array addObject:column];
-    while ( param ) {
-        param = va_arg(arguments, id);
-        if(param == nil)
-            break;
-        column = param;
+    @synchronized(self){
+        //BOOL result = YES;
+        //__block BOOL result;
+        //dispatch_queue_t sQueue = dispatch_queue_create("@photos.object.sync", NULL);
+        //dispatch_sync(sQueue, ^{
+        va_list arguments;
+        va_start(arguments, param);
+        NSDictionary* column = param;
+        NSMutableArray* array = [[NSMutableArray alloc] init];
         [array addObject:column];
-    }
-    va_end(arguments);
+        while ( param ) {
+            param = va_arg(arguments, id);
+            if(param == nil)
+                break;
+            column = param;
+            [array addObject:column];
+        }
+        va_end(arguments);
 
-    return [self insert:array];
+        return [self insert:array];
+    }
+
 /*
     NSMutableString* sql = [NSMutableString stringWithFormat:@"insert into %@ (",_tableName ];
     for( NSDictionary* param in array ){
@@ -199,141 +234,149 @@ static NSMutableArray* gFileNameArray;
 //{"name":"columnName", "index":index, "type":type}
 - (NSArray*)fetchResultOnSelect:(NSString*)selectString whereAndOrder:(NSString*)whereAndOrderString format:(NSArray*)formatResult
 {
-    NSMutableArray* resultsArray = [[NSMutableArray alloc] init];
-    NSMutableString* sql;
-    if( whereAndOrderString == nil )
-    {
-         sql = [NSMutableString stringWithFormat:@"%@ %@ ",selectString, _tableName];
-    }else{
-         sql = [NSMutableString stringWithFormat:@"%@ %@ %@",selectString, _tableName, whereAndOrderString ];
-    }
-    int ret = sqlite3_prepare_v2(_sqlite, [sql UTF8String], -1, &_statement, nil);
-    if( ret == SQLITE_OK ){
-        while (sqlite3_step(_statement) == SQLITE_ROW) {
-            NSMutableDictionary* resultDictionary = [[NSMutableDictionary alloc] init];
-            //for test
-            int i = 0;
-            for( NSDictionary* column in formatResult ){
-                int index = [[column valueForKey:@"index"] intValue];
-                int type = [[column valueForKey:@"type"] intValue];
-                NSString* columnNameLabel = [column valueForKey:@"name"];
-                switch (type) {
-                    case TypeText:
-                    {
-                        // for test
-                        if( i == 17 )
-                        {
-                            NSLog(@"test");
-                        }
-                        //
-                        char * resultString = (char*)sqlite3_column_text(_statement, index);
-                        NSString* str;
-                        if( resultString == NULL ){
-                            str = @"";
-                        }else{
-                            str = [NSString stringWithUTF8String:resultString];
-                        }
-                        [resultDictionary setObject:str forKey:columnNameLabel];
-                        break;
-                    }
-                    case TypeInteger:
-                    {
-                        int resultInt = sqlite3_column_int(_statement, index);
-                        [resultDictionary setObject:[NSNumber numberWithInt:resultInt] forKey:columnNameLabel];
-                        break;
-                    }
-                    case TypeReal:
-                    {
-                        double resultDouble = sqlite3_column_double(_statement, index);
-                        [resultDictionary setObject:[NSNumber numberWithDouble:resultDouble] forKey:columnNameLabel];
-                        break;
-                    }
-                    case TypeBLOB:
-                    {
-                        void* resultData = (void*)sqlite3_column_blob(_statement, index);
-                        int size = sqlite3_column_bytes(_statement, index);
-                        [resultDictionary setObject:[NSData dataWithBytes:resultData length:size] forKey:columnNameLabel];
-                        break;
-                    }
-                   default:
-                        break;
-                }
-                i++;
-            }
-            [resultsArray addObject:resultDictionary];
+    @synchronized(self){
+        NSMutableArray* resultsArray = [[NSMutableArray alloc] init];
+        NSMutableString* sql;
+        if( whereAndOrderString == nil )
+        {
+            sql = [NSMutableString stringWithFormat:@"%@ %@ ",selectString, _tableName];
+        }else{
+            sql = [NSMutableString stringWithFormat:@"%@ %@ %@",selectString, _tableName, whereAndOrderString ];
         }
-    }else{
-        NSLog(@"sqlite3_prepare_v2 error");
+        int ret = sqlite3_prepare_v2(_sqlite, [sql UTF8String], -1, &_statement, nil);
+        if( ret == SQLITE_OK ){
+            while (sqlite3_step(_statement) == SQLITE_ROW) {
+                NSMutableDictionary* resultDictionary = [[NSMutableDictionary alloc] init];
+                //for test
+                int i = 0;
+                for( NSDictionary* column in formatResult ){
+                    int index = [[column valueForKey:@"index"] intValue];
+                    int type = [[column valueForKey:@"type"] intValue];
+                    NSString* columnNameLabel = [column valueForKey:@"name"];
+                    switch (type) {
+                        case TypeText:
+                        {
+                            // for test
+                            if( i == 17 )
+                            {
+                                NSLog(@"test");
+                            }
+                            //
+                            char * resultString = (char*)sqlite3_column_text(_statement, index);
+                            NSString* str;
+                            if( resultString == NULL ){
+                                str = @"";
+                            }else{
+                                str = [NSString stringWithUTF8String:resultString];
+                            }
+                            [resultDictionary setObject:str forKey:columnNameLabel];
+                            break;
+                        }
+                        case TypeInteger:
+                        {
+                            int resultInt = sqlite3_column_int(_statement, index);
+                            [resultDictionary setObject:[NSNumber numberWithInt:resultInt] forKey:columnNameLabel];
+                            break;
+                        }
+                        case TypeReal:
+                        {
+                            double resultDouble = sqlite3_column_double(_statement, index);
+                            [resultDictionary setObject:[NSNumber numberWithDouble:resultDouble] forKey:columnNameLabel];
+                            break;
+                        }
+                        case TypeBLOB:
+                        {
+                            void* resultData = (void*)sqlite3_column_blob(_statement, index);
+                            int size = sqlite3_column_bytes(_statement, index);
+                            [resultDictionary setObject:[NSData dataWithBytes:resultData length:size] forKey:columnNameLabel];
+                            break;
+                        }
+                        default:
+                            break;
+                    }
+                    i++;
+                }
+                [resultsArray addObject:resultDictionary];
+            }
+        }else{
+            NSLog(@"sqlite3_prepare_v2 error");
+        }
+        return resultsArray;
     }
-    return resultsArray;
 }
 
 
 - (BOOL)createDB:(NSString*)dbfileName
 {
-    BOOL result = YES;
-    _dbFilePath = [self getDocumentDirectoryFilepath:dbfileName];
-    NSLog(@"DB file: %@",_dbFilePath);
-    BOOL isDir;
-    NSFileManager *fileManager = [NSFileManager defaultManager];
-    BOOL fileExists = ([fileManager fileExistsAtPath:_dbFilePath isDirectory:&isDir] && !isDir);
-    BOOL ret;
-    if( fileExists == NO ){
-        NSLog(@"File is not exist.");
-        ret = [fileManager createFileAtPath:_dbFilePath contents:nil attributes:nil];
-        if (!ret) {
-            NSLog(@"createFileAtPath error File is not exist.");
-            result = NO;
+    @synchronized(self){
+        BOOL result = YES;
+        _dbFilePath = [self getDocumentDirectoryFilepath:dbfileName];
+        NSLog(@"DB file: %@",_dbFilePath);
+        BOOL isDir;
+        NSFileManager *fileManager = [NSFileManager defaultManager];
+        BOOL fileExists = ([fileManager fileExistsAtPath:_dbFilePath isDirectory:&isDir] && !isDir);
+        BOOL ret;
+        if( fileExists == NO ){
+            NSLog(@"File is not exist.");
+            ret = [fileManager createFileAtPath:_dbFilePath contents:nil attributes:nil];
+            if (!ret) {
+                NSLog(@"createFileAtPath error File is not exist.");
+                result = NO;
+            }
+        }else{
+            NSLog(@"File is exist.");
         }
-    }else{
-        NSLog(@"File is exist.");
+        return result;
     }
-    return result;
 }
 
 -(BOOL)deleteObjectWhere:(NSString*)whereSqlString
 {
-    BOOL result = YES;
-    NSString* sql;
-    if( whereSqlString == nil ){
-        sql = [NSString stringWithFormat:@"DELETE FROM %@",_tableName ];
-    }else{
-        sql = [NSString stringWithFormat:@"DELETE FROM %@ %@",_tableName, whereSqlString ];
-    }
-    int ret = sqlite3_prepare_v2(_sqlite, [sql UTF8String], -1, &_statement, nil);
-    if( ret != SQLITE_OK ){
-        NSLog(@"sqlite3_prepare_v2 error");
-        result = NO;
+    @synchronized(self){
+        BOOL result = YES;
+        NSString* sql;
+        if( whereSqlString == nil ){
+            sql = [NSString stringWithFormat:@"DELETE FROM %@",_tableName ];
+        }else{
+            sql = [NSString stringWithFormat:@"DELETE FROM %@ %@",_tableName, whereSqlString ];
+        }
+        int ret = sqlite3_prepare_v2(_sqlite, [sql UTF8String], -1, &_statement, nil);
+        if( ret != SQLITE_OK ){
+            NSLog(@"sqlite3_prepare_v2 error");
+            result = NO;
+            return result;
+        }
+        sqlite3_step(_statement);
+        ret = sqlite3_finalize(_statement);
+        if( ret  != SQLITE_OK ){
+            NSLog(@"sqlite3_finalize error");
+            result = NO;
+            return result;
+        }
         return result;
     }
-    sqlite3_step(_statement);
-    ret = sqlite3_finalize(_statement);
-    if( ret  != SQLITE_OK ){
-        NSLog(@"sqlite3_finalize error");
-        result = NO;
-        return result;
-    }
-    return result;
 }
 
 - (BOOL)createIndex:(NSString*)name column:(NSString*)column
 {
-    BOOL result = YES;
-    NSString* sql = [NSString stringWithFormat:@"create index %@ on %@(%@)",name,_tableName,column];
-    int ret = sqlite3_prepare_v2(_sqlite, [sql UTF8String], -1, &_statement, nil);
-    if( ret != SQLITE_OK ){
-        NSLog(@"sqlite3_prepare_v2 error");
-        result = NO;
+    @synchronized(self){
+        BOOL result = YES;
+        NSString* sql = [NSString stringWithFormat:@"create index %@ on %@(%@)",name,_tableName,column];
+        int ret = sqlite3_prepare_v2(_sqlite, [sql UTF8String], -1, &_statement, nil);
+        if( ret != SQLITE_OK ){
+            NSLog(@"sqlite3_prepare_v2 error");
+            result = NO;
+            return result;
+        }
+        sqlite3_step(_statement);
+        ret = sqlite3_finalize(_statement);
+        if( ret  != SQLITE_OK ){
+            NSLog(@"sqlite3_finalize error");
+            result = NO;
+            return result;
+        }
         return result;
     }
-    sqlite3_step(_statement);
-    ret = sqlite3_finalize(_statement);
-    if( ret  != SQLITE_OK ){
-        NSLog(@"sqlite3_finalize error");
-        result = NO;
-        return result;
-    }
-    return result;
 }
 
 - (NSString*)getDocumentDirectoryFilepath:(NSString*)fileName

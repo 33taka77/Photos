@@ -47,6 +47,10 @@
 */
 //- (void)createSectionDataAndSortByDate;
 
+- (void)refleshImages;
+
+- (void)deleteImages;
+
 - (void)createSectionDataAndSortByDateAtGroup:(NSInteger)GroupIndex;
 
 - (void)setCurrentGroup:(NSInteger)index;
